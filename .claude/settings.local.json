@@ -15,7 +15,22 @@
       "Bash(git init *)",
       "Bash(git branch *)",
       "Bash(gh auth *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(npx expo *)",
+      "Bash(npm ls *)",
+      "Bash(start *)",
+      "Bash(npx skills *)",
+      "Bash(taskkill //F //IM \"node.exe\" //FI \"WINDOWTITLE eq *expo*\")",
+      "Bash(taskkill //F //IM \"node.exe\" //FI \"MEMUSAGE gt 100000\")",
+      "Bash(ipconfig)",
+      "Bash(npx qrcode-terminal *)",
+      "Bash(npx *)",
+      "Bash(netstat -ano)",
+      "Bash(tasklist /FI \"PID eq 408\")",
+      "Bash(powershell *)"
     ]
   }
 }

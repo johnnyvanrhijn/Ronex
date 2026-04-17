@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ronex — Welcome Screen Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    gap: 48px;
+    padding: 40px;
+    flex-wrap: wrap;
+  }
+
+  .label {
+    color: #a3a3a3;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .phone {
+    width: 375px;
+    height: 812px;
+    background: #0A0A0A;
+    border-radius: 40px;
+    border: 3px solid #262626;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px 0;
+    color: #fafafa;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-bar-icons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  /* Home indicator */
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: #525252;
+    border-radius: 100px;
+  }
+
+  /* Welcome screen */
+  .welcome-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 54px);
+    padding: 0 28px 40px;
+    justify-content: space-between;
+  }
+
+  .welcome-top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 48px;
+    font-weight: 700;
+    color: #FAFAFA;
+    letter-spacing: -2px;
+  }
+
+  .logo span {
+    color: #22C55E;
+  }
+
+  .tagline {
+    font-size: 16px;
+    color: #A3A3A3;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 260px;
+  }
+
+  .welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+  }
+
+  .btn-primary {
+    background: #22C55E;
+    color: #0A0A0A;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #16A34A; }
+
+  .btn-secondary {
+    background: transparent;
+    color: #FAFAFA;
+    border: 1.5px solid #525252;
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: #A3A3A3; }
+
+  /* Login screen */
+  .login-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 54px);
+    padding: 0 28px 40px;
+  }
+
+  .back-btn {
+    color: #A3A3A3;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 0;
+    width: fit-content;
+  }
+
+  .login-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FAFAFA;
+    margin-top: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .login-sub {
+    font-size: 15px;
+    color: #A3A3A3;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .input-group {
+    margin-top: 32px;
+  }
+
+  .input-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #A3A3A3;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .input-field {
+    width: 100%;
+    background: #171717;
+    border: 1.5px solid #262626;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    color: #FAFAFA;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input-field::placeholder { color: #525252; }
+  .input-field:focus { border-color: #22C55E; }
+
+  .login-bottom {
+    margin-top: auto;
+    padding-bottom: 20px;
+  }
+
+  /* OTP screen */
+  .otp-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 54px);
+    padding: 0 28px 40px;
+  }
+
+  .otp-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FAFAFA;
+    margin-top: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .otp-sub {
+    font-size: 15px;
+    color: #A3A3A3;
+    margin-top: 8px;
+  }
+  .otp-sub strong {
+    color: #FAFAFA;
+    font-weight: 500;
+  }
+
+  .otp-boxes {
+    display: flex;
+    gap: 10px;
+    margin-top: 40px;
+    justify-content: center;
+  }
+
+  .otp-box {
+    width: 48px;
+    height: 60px;
+    background: #171717;
+    border: 1.5px solid #262626;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #FAFAFA;
+    font-family: 'Inter', sans-serif;
+  }
+  .otp-box.filled {
+    border-color: #22C55E;
+    color: #22C55E;
+  }
+  .otp-box.active {
+    border-color: #22C55E;
+    box-shadow: 0 0 0 1px #22C55E;
+  }
+
+  .resend-link {
+    color: #22C55E;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 24px;
+    cursor: pointer;
+  }
+
+  .otp-bottom {
+    margin-top: auto;
+    padding-bottom: 20px;
+  }
+
+  /* Color palette section */
+  .palette-section {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+  }
+  .palette-title {
+    color: #fafafa;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border-radius: 12px;
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 80px;
+    justify-content: flex-end;
+  }
+  .swatch-name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    opacity: 0.7;
+    font-family: monospace;
+  }
+  .light-text { color: #FAFAFA; }
+  .dark-text { color: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 1: Welcome -->
+<div>
+  <div class="label">Welcome Screen</div>
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-bar-icons">
+        <span>&#9679;&#9679;&#9679;&#9679;</span>
+        <span>&#128267;</span>
+      </div>
+    </div>
+    <div class="welcome-content">
+      <div class="welcome-top">
+        <div class="logo">R<span>o</span>nex</div>
+        <div class="tagline">Train. Track. Compete.</div>
+      </div>
+      <div class="welcome-buttons">
+        <button class="btn-primary">Start met trainen</button>
+        <button class="btn-secondary">Ik heb een challenge code</button>
+      </div>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<!-- SCREEN 2: Login -->
+<div>
+  <div class="label">Login — E-mail</div>
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-bar-icons">
+        <span>&#9679;&#9679;&#9679;&#9679;</span>
+        <span>&#128267;</span>
+      </div>
+    </div>
+    <div class="login-content">
+      <button class="back-btn">&#8592;</button>
+      <div class="login-heading">Wat is je e-mail?</div>
+      <div class="login-sub">Je ontvangt een code om in te loggen.</div>
+      <div class="input-group">
+        <label class="input-label">E-mailadres</label>
+        <input type="email" class="input-field" placeholder="naam@voorbeeld.nl" value="johnny@email.com">
+      </div>
+      <div class="login-bottom">
+        <button class="btn-primary">Verstuur code</button>
+      </div>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: OTP -->
+<div>
+  <div class="label">OTP Verificatie</div>
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-bar-icons">
+        <span>&#9679;&#9679;&#9679;&#9679;</span>
+        <span>&#128267;</span>
+      </div>
+    </div>
+    <div class="otp-content">
+      <button class="back-btn">&#8592;</button>
+      <div class="otp-heading">Check je inbox</div>
+      <div class="otp-sub">Code verstuurd naar <strong>johnny@email.com</strong></div>
+      <div class="otp-boxes">
+        <div class="otp-box filled">4</div>
+        <div class="otp-box filled">8</div>
+        <div class="otp-box filled">2</div>
+        <div class="otp-box active"></div>
+        <div class="otp-box"></div>
+        <div class="otp-box"></div>
+      </div>
+      <div class="resend-link">Opnieuw versturen</div>
+      <div class="otp-bottom">
+        <button class="btn-primary" style="opacity: 0.4; cursor: not-allowed;">Verifieer</button>
+      </div>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<!-- Color Palette -->
+<div class="palette-section">
+  <div class="palette-title">Kleurenpalet</div>
+  <div class="palette-grid">
+    <div class="swatch dark-text" style="background:#22C55E"><span class="swatch-name">Primary</span><span class="swatch-hex">#22C55E</span></div>
+    <div class="swatch dark-text" style="background:#16A34A"><span class="swatch-name">Primary Dark</span><span class="swatch-hex">#16A34A</span></div>
+    <div class="swatch light-text" style="background:#0A0A0A; border: 1px solid #262626"><span class="swatch-name">Background</span><span class="swatch-hex">#0A0A0A</span></div>
+    <div class="swatch light-text" style="background:#171717; border: 1px solid #262626"><span class="swatch-name">Surface</span><span class="swatch-hex">#171717</span></div>
+    <div class="swatch light-text" style="background:#262626"><span class="swatch-name">Surface Elevated</span><span class="swatch-hex">#262626</span></div>
+    <div class="swatch dark-text" style="background:#FAFAFA"><span class="swatch-name">Text Primary</span><span class="swatch-hex">#FAFAFA</span></div>
+    <div class="swatch light-text" style="background:#525252"><span class="swatch-name">Text Muted</span><span class="swatch-hex">#525252</span></div>
+    <div class="swatch dark-text" style="background:#EF4444"><span class="swatch-name">Danger</span><span class="swatch-hex">#EF4444</span></div>
+    <div class="swatch dark-text" style="background:#F59E0B"><span class="swatch-name">Warning</span><span class="swatch-hex">#F59E0B</span></div>
+  </div>
+</div>
+
+</body>
+</html>

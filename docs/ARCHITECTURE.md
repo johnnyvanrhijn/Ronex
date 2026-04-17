@@ -4,6 +4,47 @@
 
 ## Setup log
 
+### 2026-04-17 — T-010: Authentication flow (magic link / email OTP)
+- Created `lib/auth.ts`: signInWithEmail, verifyOtp, signOut, getCurrentSession
+- Uses Supabase `signInWithOtp` (email) — sends 6-digit code, no clickable link
+- Created `providers/AuthProvider.tsx`: React context with session/user/isLoading state
+  - Restores session from AsyncStorage on mount
+  - Listens to `onAuthStateChange` for live updates (sign in, sign out, token refresh)
+  - Exposes `useAuth()` hook
+- Route protection in `app/_layout.tsx` via `useProtectedRoute()` hook:
+  - No session + outside `(auth)` group -> redirect to `/(auth)/login`
+  - Has session + inside `(auth)` group -> redirect to `/(tabs)`
+  - While `isLoading`, renders nothing (splash screen stays visible)
+- Created `app/(auth)/_layout.tsx` (Stack) and `app/(auth)/login.tsx` (placeholder UI)
+- Login flow: enter email -> receive OTP -> enter 6-digit code -> session established -> auto-redirect
+- Added auth i18n keys to `i18n/en.json` and `i18n/nl.json`
+- Deep link handling: app scheme `ronex` is configured in app.json; magic link callback will work via Supabase redirect URL config on the dashboard side
+
+### 2026-04-17 — T-013: EAS Build configuration
+- Created `eas.json` with three build profiles: development, preview, production
+- `development`: dev client with iOS simulator support, `distribution: internal`
+- `preview`: internal distribution for TestFlight beta testing, channel `preview`
+- `production`: store distribution with auto-increment build number, channel `production`
+- `cli.appVersionSource: remote` so EAS manages version numbers
+- Updated `app.json`: added `owner`, `extra.eas.projectId` placeholder, `runtimeVersion` (appVersion policy), and `updates.url` for EAS Update OTA support
+- Created `.easignore` to exclude `docs/`, `dashboard/`, `.claude/`, `.git/`, env files, IDE config, test artifacts from build uploads
+- Submit config for iOS includes Apple ID placeholder fields (team ID and ASC app ID need to be filled in)
+
+### 2026-04-17 — T-008: i18next with expo-localization
+- Installed `i18next` 26.x, `react-i18next` 17.x, `expo-localization` 17.x
+- Config in `lib/i18n.ts`: auto-detects device locale via `getLocales()`, supports `en` and `nl`, falls back to `en`
+- Translation files: `i18n/en.json`, `i18n/nl.json` (minimal common keys)
+- Type-safe translations via `i18n/i18next.d.ts` (autocomplete on `t('common.loading')` etc.)
+- Initialized in `app/_layout.tsx` via side-effect import before any component renders
+- Dutch copy is native Dutch, not literal translation
+
+### 2026-04-17 — T-004: Supabase JS client installed and configured
+- Installed `@supabase/supabase-js`, `@react-native-async-storage/async-storage`, `react-native-url-polyfill`
+- Client configured in `lib/supabase.ts` with AsyncStorage as auth storage adapter
+- Auth config: `autoRefreshToken: true`, `persistSession: true`, `detectSessionInUrl: false`
+- Runtime validation: throws if env vars are missing (fail-fast)
+- `.env.example` created for onboarding other devs
+
 ### 2026-04-17 — T-001: Expo project initialized
 - Expo SDK 54 (latest stable) with tabs template
 - React Native 0.81.5, React 19.1.0

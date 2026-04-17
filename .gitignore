@@ -58,3 +58,7 @@ yarn-error.log*
 
 # EAS
 .easignore
+
+# Local dev scratch
+expo-qr.png
+temp-files/
