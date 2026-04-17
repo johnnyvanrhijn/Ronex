@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Read(//c/Projects/**)",
+      "Bash(npx create-expo-app@latest ronex-temp --template tabs)",
+      "Bash(cp -r /c/Projects/ronex-temp/app /c/Projects/ronex/)",
+      "Bash(cp -r /c/Projects/ronex-temp/assets /c/Projects/ronex/)",
+      "Bash(cp -r /c/Projects/ronex-temp/components /c/Projects/ronex/)",
+      "Bash(cp -r /c/Projects/ronex-temp/constants /c/Projects/ronex/)",
+      "Bash(cp /c/Projects/ronex-temp/app.json /c/Projects/ronex/)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\('expo:', p.dependencies.expo\\); console.log\\('react-native:', p.dependencies['react-native']\\)\")",
+      "Bash(git init *)",
+      "Bash(git branch *)",
+      "Bash(gh auth *)",
+      "Bash(git add *)"
+    ]
+  }
+}

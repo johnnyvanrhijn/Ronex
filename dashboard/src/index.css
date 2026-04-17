@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-ink-900 text-bone-50;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(212, 255, 59, 0.04), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(255, 107, 53, 0.025), transparent 35%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(212, 255, 59, 0.3);
+    color: #FAFAF7;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-ink-800 border border-ink-700 rounded-xl;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium text-sm transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-lime-400 text-ink-950 hover:bg-lime-500;
+  }
+
+  .btn-ghost {
+    @apply text-bone-200 hover:bg-ink-700;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium font-mono uppercase tracking-wide;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2A2E35;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3D424B;
+}
+
+/* Drag overlay */
+.dragging {
+  opacity: 0.4;
+}
+.drag-overlay {
+  cursor: grabbing;
+  transform: rotate(2deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}

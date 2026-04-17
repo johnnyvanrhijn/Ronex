@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ronex Tasks",
+  "description": "Structured task data for the Ronex project dashboard",
+  "type": "object",
+  "required": ["project", "phases"],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": ["name", "startDate", "targetLaunchDate"],
+      "properties": {
+        "name": { "type": "string" },
+        "startDate": { "type": "string", "format": "date" },
+        "targetLaunchDate": { "type": "string", "format": "date" },
+        "currentPhase": { "type": "string" }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "order", "goal", "tasks"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^phase-[0-9]+$" },
+          "name": { "type": "string" },
+          "order": { "type": "integer" },
+          "goal": { "type": "string" },
+          "estimatedWeeks": { "type": "number" },
+          "exitCriteria": { "type": "string" },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "owner", "status"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^T-[0-9]+$" },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "owner": {
+                  "type": "string",
+                  "enum": ["pm", "designer", "backend", "copy", "tester"]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["todo", "in_progress", "blocked", "done"]
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["low", "normal", "high", "critical"]
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": { "type": "string", "pattern": "^T-[0-9]+$" }
+                },
+                "estimateHours": { "type": "number" },
+                "blockedReason": { "type": "string" },
+                "notes": { "type": "string" },
+                "completedAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
