@@ -204,6 +204,40 @@ EN:
 - NL: *{{opponent}} is binnen. Even kijken wie er gelijk had.*
 - EN: *{{opponent}} is in. Let's see who was right.*
 
+**Reveal voor verliezer (met Revanche-optie)**
+- NL:
+  *{{winner}} wint.*
+  *Volume: {{winnerVolume}} kg vs. {{loserVolume}} kg.*
+  *[Revanche eisen] [Deel resultaat]*
+- EN:
+  *{{winner}} wins.*
+  *Volume: {{winnerVolume}} kg vs. {{loserVolume}} kg.*
+  *[Demand rematch] [Share result]*
+
+**Reveal voor winnaar**
+- NL:
+  *Je wint.*
+  *Volume: {{winnerVolume}} kg vs. {{loserVolume}} kg.*
+  *[Deel resultaat]*
+- EN:
+  *You win.*
+  *Volume: {{winnerVolume}} kg vs. {{loserVolume}} kg.*
+  *[Share result]*
+
+**Push notification: rematch claimed**
+- NL: *{{loser}} eist revanche. Zelfde workout, nieuwe poging.*
+- EN: *{{loser}} demanded a rematch. Same workout, new attempt.*
+
+**Rematch invite screen (voor winnaar die moet accepteren)**
+- NL:
+  *{{loser}} wil revanche.*
+  *Zelfde workout. Zelfde gewichten.*
+  *[Accepteren] [Later]*
+- EN:
+  *{{loser}} wants a rematch.*
+  *Same workout. Same weights.*
+  *[Accept] [Later]*
+
 ## Banned words list
 
 Use this to grep your own work.

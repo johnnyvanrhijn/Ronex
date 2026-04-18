@@ -76,7 +76,7 @@ export default function LoginScreen() {
         {/* Content */}
         <View className="flex-1 px-6 pt-8">
           <Text
-            className="font-inter-bold text-display text-content"
+            className="text-display-lg text-content"
             accessibilityRole="header"
           >
             {t('auth.loginTitle')}
@@ -88,7 +88,7 @@ export default function LoginScreen() {
 
           {/* Email input */}
           <View className="mt-8">
-            <Text className="mb-2 text-label font-inter-medium text-content-secondary">
+            <Text className="mb-2 text-small-caps uppercase text-content-secondary">
               {t('auth.emailLabel')}
             </Text>
             <TextInput
@@ -128,7 +128,7 @@ export default function LoginScreen() {
               <ActivityIndicator color="#0A0A0A" />
             ) : (
               <Text
-                className={`text-subheading font-inter-semibold ${
+                className={`text-body font-inter-semibold ${
                   isValidEmail ? 'text-background' : 'text-content-muted'
                 }`}
               >

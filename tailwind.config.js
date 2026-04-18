@@ -39,13 +39,18 @@ module.exports = {
         'inter-extrabold': ['Inter_800ExtraBold'],
         'inter-black': ['Inter_900Black'],
       },
+      // SPEC §14 Rule 5 — exactly 3 typographic levels. Do not add a 4th.
+      // Casing for small-caps is applied at the consumer site via Tailwind's
+      // `uppercase` utility (NativeWind does not honor textTransform in
+      // fontSize tuples). Always pair `text-small-caps` with `uppercase`.
       fontSize: {
-        display: ['32px', { lineHeight: '40px', fontWeight: '700' }],
-        heading: ['24px', { lineHeight: '32px', fontWeight: '700' }],
-        subheading: ['18px', { lineHeight: '28px', fontWeight: '600' }],
-        body: ['16px', { lineHeight: '24px', fontWeight: '400' }],
-        label: ['14px', { lineHeight: '20px', fontWeight: '500' }],
-        caption: ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'display-lg': ['32px', { lineHeight: '36px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'body':       ['16px', { lineHeight: '24px' }],
+        'small-caps': ['12px', { lineHeight: '16px', letterSpacing: '1.5px', fontWeight: '600' }],
+      },
+      letterSpacing: {
+        tight: '-0.5px',
+        wide:  '1.5px',
       },
 
       // ─── Spacing (base 4px) ───────────────────────────────

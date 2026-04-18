@@ -160,7 +160,7 @@ export default function VerifyScreen() {
         {/* Content */}
         <View className="flex-1 px-6 pt-8">
           <Text
-            className="font-inter-bold text-display text-content"
+            className="text-display-lg text-content"
             accessibilityRole="header"
           >
             {t('auth.otpSentTitle')}
@@ -187,6 +187,7 @@ export default function VerifyScreen() {
                         : 'border border-surface-elevated bg-surface'
                   }`}
                 >
+                  {/* Documented typography exception — OTP input digits (24px). See docs/design-system.md */}
                   <TextInput
                     ref={(ref) => {
                       inputRefs.current[index] = ref;
@@ -225,7 +226,7 @@ export default function VerifyScreen() {
             accessibilityRole="button"
           >
             <Text
-              className={`text-label font-inter-medium ${
+              className={`text-small-caps uppercase ${
                 resendTimer > 0 ? 'text-content-muted' : 'text-primary'
               }`}
             >
@@ -254,7 +255,7 @@ export default function VerifyScreen() {
               <ActivityIndicator color="#0A0A0A" />
             ) : (
               <Text
-                className={`text-subheading font-inter-semibold ${
+                className={`text-body font-inter-semibold ${
                   isComplete ? 'text-background' : 'text-content-muted'
                 }`}
               >
@@ -270,7 +271,7 @@ export default function VerifyScreen() {
             accessibilityLabel={t('auth.tryDifferentEmail')}
             accessibilityRole="button"
           >
-            <Text className="text-label font-inter-medium text-content-secondary">
+            <Text className="text-small-caps uppercase text-content-secondary">
               {t('auth.tryDifferentEmail')}
             </Text>
           </Pressable>

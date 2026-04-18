@@ -1,0 +1,16 @@
+# Minimal Supabase CLI config stub.
+# Johnny will run `supabase link --project-ref ambnbzvrgvqpiniksklf` to bind
+# this folder to the live project when he first uses the CLI.
+# Until then, migrations in ./migrations can be applied manually via the
+# Supabase dashboard SQL editor.
+
+project_id = "ronex"
+
+[db]
+# Local-dev Postgres (only used by `supabase start`).
+port = 54322
+major_version = 15
+
+[api]
+port = 54321
+schemas = ["public"]

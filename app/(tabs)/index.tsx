@@ -58,7 +58,7 @@ export default function HomeScreen() {
             {t(greetingKey)}
           </Text>
           <Text
-            className="font-inter-bold text-display text-content mt-0.5"
+            className="text-display-lg text-content mt-0.5"
             numberOfLines={1}
             accessibilityLabel={displayName}
           >
@@ -92,7 +92,7 @@ export default function HomeScreen() {
             />
 
             <View className="flex-1 mr-4">
-              <Text className="font-inter-bold text-heading text-background">
+              <Text className="text-display-lg text-background">
                 {t('home.startWorkoutTitle')}
               </Text>
               <Text className="font-inter text-body text-background mt-1 opacity-80">
@@ -116,10 +116,10 @@ export default function HomeScreen() {
             className="flex-1 bg-surface rounded-card p-4 border border-surface-elevated"
             accessibilityLabel={`0 ${t('home.statsWorkouts')}`}
           >
-            <Text className="font-inter-bold text-heading text-content">
+            <Text className="text-display-lg text-content">
               0
             </Text>
-            <Text className="font-inter text-caption text-content-secondary mt-1">
+            <Text className="text-small-caps uppercase text-content-secondary mt-1">
               {t('home.statsWorkouts')}
             </Text>
           </View>
@@ -128,10 +128,10 @@ export default function HomeScreen() {
             className="flex-1 bg-surface rounded-card p-4 border border-surface-elevated"
             accessibilityLabel={`${t('home.statsNoPr')} ${t('home.statsBestPr')}`}
           >
-            <Text className="font-inter-bold text-heading text-primary">
+            <Text className="text-display-lg text-primary">
               {t('home.statsNoPr')}
             </Text>
-            <Text className="font-inter text-caption text-content-secondary mt-1">
+            <Text className="text-small-caps uppercase text-content-secondary mt-1">
               {t('home.statsBestPr')}
             </Text>
           </View>
@@ -140,10 +140,10 @@ export default function HomeScreen() {
             className="flex-1 bg-surface rounded-card p-4 border border-surface-elevated"
             accessibilityLabel={`0 kg ${t('home.statsVolume')}`}
           >
-            <Text className="font-inter-bold text-heading text-content">
+            <Text className="text-display-lg text-content">
               0 kg
             </Text>
-            <Text className="font-inter text-caption text-content-secondary mt-1">
+            <Text className="text-small-caps uppercase text-content-secondary mt-1">
               {t('home.statsVolume')}
             </Text>
           </View>
@@ -151,7 +151,7 @@ export default function HomeScreen() {
 
         {/* Recent workouts section */}
         <View className="mb-4 flex-row items-center justify-between">
-          <Text className="font-inter-semibold text-subheading text-content">
+          <Text className="text-body font-inter-semibold text-content">
             {t('home.recentWorkoutsTitle')}
           </Text>
           <Pressable
@@ -159,7 +159,7 @@ export default function HomeScreen() {
             accessibilityRole="button"
             className="py-1 px-2"
           >
-            <Text className="font-inter-medium text-label text-primary">
+            <Text className="text-small-caps uppercase text-primary">
               {t('home.recentWorkoutsAll')}
             </Text>
           </Pressable>
@@ -172,10 +172,10 @@ export default function HomeScreen() {
             size={32}
             color={colors.content.muted}
           />
-          <Text className="font-inter-semibold text-body text-content mt-4">
+          <Text className="text-body font-inter-semibold text-content mt-4">
             {t('home.recentEmptyTitle')}
           </Text>
-          <Text className="font-inter text-label text-content-secondary mt-1 text-center">
+          <Text className="text-small-caps uppercase text-content-secondary mt-1 text-center">
             {t('home.recentEmptySubtitle')}
           </Text>
         </View>

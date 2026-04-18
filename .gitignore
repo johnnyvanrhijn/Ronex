@@ -62,3 +62,9 @@ yarn-error.log*
 # Local dev scratch
 expo-qr.png
 temp-files/
+
+# Claude Code — local-only settings may hold secrets (MCP tokens, env vars)
+.claude/settings.local.json
+
+# Supabase CLI local cache
+supabase/.temp/

@@ -26,22 +26,46 @@ export const colors = {
   success: '#22C55E',
 } as const;
 
+/**
+ * Typography — SPEC §14 Rule 5 mandates exactly 3 typographic levels.
+ * Do NOT add a 4th level. Weight variation within `body` (400 default,
+ * 600 for emphasis) counts as ONE level — size + line-height define the
+ * level, weight is emphasis within it.
+ *
+ * Documented exceptions (see docs/design-system.md):
+ * - Welcome wordmark (52px) — single brand-hero exception
+ * - OTP input digits (24px) — input-field content, not a hierarchy level
+ */
+export const typography = {
+  displayLg: {
+    fontSize: 32,
+    lineHeight: 36,
+    letterSpacing: -0.5,
+    fontWeight: '800' as const,
+  },
+  body: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  smallCaps: {
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 1.5,
+    fontWeight: '600' as const,
+    textTransform: 'uppercase' as const,
+  },
+} as const;
+
 export const fontSizes = {
-  display: 32,
-  heading: 24,
-  subheading: 18,
+  displayLg: 32,
   body: 16,
-  label: 14,
-  caption: 12,
+  smallCaps: 12,
 } as const;
 
 export const lineHeights = {
-  display: 40,
-  heading: 32,
-  subheading: 28,
+  displayLg: 36,
   body: 24,
-  label: 20,
-  caption: 16,
+  smallCaps: 16,
 } as const;
 
 export const spacing = (units: number) => units * 4;
