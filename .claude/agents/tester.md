@@ -209,3 +209,37 @@ When asked to test, ALWAYS confirm:
 3. What's the expected behavior (per SPEC)?
 
 Then test adversarially. Report what you find.
+
+## Quality check for every test report
+
+Before declaring a test cycle "done":
+
+1. **Device coverage**
+   - Test on iPhone SE AND iPhone 15 Pro at minimum
+   - Document which devices were used in each test run
+   - Bug reports must specify the device
+
+2. **Happy path AND edge paths**
+   - Do not only run "it works" tests
+   - Test: airplane mode, app backgrounding, slow network, very small input, very large input
+   - Test user interruptions (incoming call during flow, push notification mid-action)
+
+3. **Localization validation**
+   - Test every screen in both NL and EN
+   - Verify no text overflow in NL (longest language)
+   - Verify every visible string is localized (no hardcoded English)
+
+4. **Bug prioritization is explicit**
+   - Every bug gets a P0-P3 label with rationale
+   - P0: app crash or data loss
+   - P1: feature broken or significant UX regression
+   - P2: visual issue or edge-case bug
+   - P3: nice-to-have polish
+
+5. **Reproduce steps are mandatory**
+   - Every bug has step-by-step reproduction instructions
+   - Include: device, OS version, app version, exact taps
+
+6. **Visual regression checks**
+   - Send screenshots of before/after for every fix
+   - Verify the fix does not break other screens (regression)

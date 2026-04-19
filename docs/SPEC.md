@@ -379,8 +379,10 @@ Do not message "AI-driven workouts for progression" — that's generic. Message 
 ### Core principle: "Viral visibility, logging dominance"
 
 - Challenges and leagues are immediately visible on app open (acquisition + social hook)
-- But the Workout tab is visually dominant in the tab bar (retention — where users spend most of their time)
-- Logging is not hidden, but not the primary landing either
+- Logging dominance is communicated via CONTENT, not via the tab bar itself (decision 2026-04-19):
+  - Challenge-tab shows a prominent "Start workout" CTA / next-workout card in the top-third
+  - The Workout-tab's own landing page has a large Start button visually dominant within its content
+- Tab bar stays uniform and symmetric for quiet scannability. A 4-tab bar does not support a centre-weighted accent on position 2 without reading asymmetric.
 
 Rationale: Challenges are not a daily habit (0-2× per week). Logging is (3-5× per week). We acquire via viral moments but retain via daily logging value.
 
@@ -389,9 +391,11 @@ Rationale: Challenges are not a daily habit (0-2× per week). Logging is (3-5× 
 Four tabs (decision 2026-04-18: Leaderboard is NOT a standalone tab; it lives as a subsection at the top of the Challenge tab, with a CTA to a full leaderboard sub-screen).
 
 1. **Challenge** (default landing tab on app open — contains Leaderboard subsection at top)
-2. **Workout** (visually dominant — largest icon, lime accent)
+2. **Workout**
 3. **Stats**
 4. **Profile**
+
+All 4 tabs render at 24pt Ionicons. Active state = lime tint on icon + label; inactive = content-secondary. No size-based or tint-based dominance on any single tab.
 
 ### Landing screen (Challenge tab) content order
 
@@ -540,6 +544,32 @@ Optionele global toggle in user profile: "Competitive mode — uitsluitend rauwe
 - Doel: gym-bro segment dat pure kracht-vergelijking wil zonder handicap-complexiteit
 - Niet in MVP omdat: (1) handicap is killer feature, optionele mechanic ondermijnt viraal potentieel, (2) same-gender same-level scenario's krijgen al automatisch minimale handicap (zie Scenario C in t-101 proposal), (3) eerst valideren of er user-demand is
 - Revisit criterium: na 1000+ MVP users. Als 10%+ klaagt over "willen geen handicap" → implementeer in V1.1.
+
+### Unilateral time_seconds Reset — dual-side clear
+
+MVP-gedrag (T-209 Fase 2): Reset wist alleen de huidige kant (L óf R). Intuïtief voor het meest-voorkomende scenario ("één kant verprutst, probeer opnieuw") zonder de al-gelogde tegenkant te verliezen.
+
+Post-launch overwegingen als user-feedback het vraagt:
+- Long-press Reset = wis beide sides (één interactie, ontdekbaar via long-press-patroon elders in de app)
+- Of: twee expliciete reset-opties post-stop ("Reset deze kant" / "Reset beide")
+
+Revisit-criterium: als tijdens beta meer dan één user rapporteert per ongeluk één kant behouden te hebben, of andersom.
+
+### Deferred on 2026-04-19 (product decisions tranche)
+
+**"Herhaal deze workout" CTA on workout-detail view**
+Post-MVP action on read-only workout-detail screen: one-tap duplicate van complete historische workout (exercises + target weights/reps) naar een nieuwe active workout. Krachtig voor plan-users die een goede sessie willen herhalen. Phase 5 territory — hoort bij training-plan functionaliteit omdat duplicate-then-progress het natuurlijke plan-execution-patroon is. Revisit zodra T-506 (weekly schedule display) ship.
+
+**PR-celebration sound toggle**
+Post-MVP profile-tab setting: optional subtle success sound on PR-detection (default OFF). T-215 MVP ship levert alleen haptic + visual. Sound-toggle wordt relevant zodra users feedback geven dat PR-acknowledgement te subtiel is — niet voor MVP.
+
+**Profile-tab post-MVP**
+Bundle of profile features explicitly out of MVP scope:
+- Profielfoto upload (Supabase Storage + cropper)
+- Bio / beschrijving (140 chars, moderated)
+- Notifications preferences (Phase 7+ zodra challenges push-driven zijn)
+- Data export (GDPR Article 20, Phase 8+ compliance hardening)
+- Theme switcher (dark-only bij launch; licht/system-follow pas als user-base het vraagt)
 
 ### Other candidates tracked for consideration
 - Android version

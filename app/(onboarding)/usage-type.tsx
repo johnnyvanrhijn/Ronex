@@ -1,18 +1,33 @@
 /**
  * app/(onboarding)/usage-type.tsx
  *
- * T-113 STUB SCREEN. This file will be replaced when T-110/T-111/T-112 ship
- * the real usage-type / plan preferences / injuries flow. For tonight it
- * exists only so Johnny can see the onboarding funnel connect end-to-end:
+ * T-110 — Onboarding screen 3/5: loose vs. plan.
  *
- *   identity -> experience -> usage-type (this stub) -> (tabs)
+ * Replaces the T-113 stub. Users pick how they want to train:
+ *   - 'loose' → freeform logging; next step is injuries (T-112).
+ *   - 'plan'  → structured schedule; next step is plan preferences (T-111).
  *
- * The Klaar-voor-vandaag CTA calls `flushOnboardingDraft()` which writes
- * display_name + biological_sex + experience_bucket + timezone +
- * onboarding_completed_at to the profiles row. On success it calls
- * `refreshProfile()` so the AuthProvider gate re-evaluates, then
- * `router.replace('/(tabs)')` so the onboarding stack is not retained in
- * the back-swipe history.
+ * Design decisions (Johnny's approval notes, 2026-04-19):
+ *   1. Stacked cards (not a pill-pair) — consistent visual rhythm with the
+ *      experience-bucket screen, just larger. Same border-radius (input),
+ *      same surface token, same 1→2px primary border on select. Cards are
+ *      h-28 (vs h-16 on experience) because they stack a title + helper.
+ *   2. No small-caps LABEL above the card group — the title + subtitle
+ *      already claim the screen. Card structure is strictly:
+ *        - title  (body semibold, normal case)
+ *        - helper (small-caps-helper, one-line, muted)
+ *   3. NO skip link. Continue stays disabled until a choice is made. No
+ *      default selection — we do not want to nudge users toward one path.
+ *   4. Switching from 'plan' to 'loose' clears plan-specific draft fields.
+ *      Implemented in the store setter (see stores/onboardingDraft.ts
+ *      setUsageType), NOT here — rationale in that file.
+ *
+ * Routing (conditional on choice):
+ *   - 'loose' → /(onboarding)/injuries         (T-112)
+ *   - 'plan'  → /(onboarding)/plan-preferences (T-111)
+ *
+ * Both next-routes exist from T-112 onwards — no more flush-and-go fallback.
+ * The terminal screen (injuries) owns the flush + redirect.
  */
 
 import React, { useEffect, useState } from 'react';
@@ -35,42 +50,79 @@ import Animated, {
   interpolateColor,
   Easing,
 } from 'react-native-reanimated';
-import Toast from '@/components/Toast';
 import OnboardingProgress from '@/components/onboarding/OnboardingProgress';
 import BackChevron from '@/components/onboarding/BackChevron';
-import { flushOnboardingDraft } from '@/lib/onboarding';
-import { useAuth } from '@/providers/AuthProvider';
+import {
+  useOnboardingDraft,
+  type UsageType,
+} from '@/stores/onboardingDraft';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 // Palette mirrors tailwind.config.js / lib/theme.ts — kept in sync manually
-// for reanimated interpolateColor transitions (shared-value land, no
+// for the reanimated interpolateColor transitions (shared-value land, no
 // className).
 const COLOR_SURFACE_ELEVATED = '#262626';
 const COLOR_PRIMARY = '#22C55E';
 const COLOR_BACKGROUND = '#0A0A0A';
 const COLOR_CONTENT_MUTED = '#525252';
 
-export default function UsageTypeStubScreen() {
+// Concrete options — null is the "no selection yet" state, not a third card.
+type ConcreteUsage = Exclude<UsageType, null>;
+
+// Literal-union keeps `t(option.titleKey)` strongly typed against the i18n
+// resource types in `i18n/i18next.d.ts`.
+type UsageTitleKey =
+  | 'onboarding.usageTypeLooseTitle'
+  | 'onboarding.usageTypePlanTitle';
+type UsageHelperKey =
+  | 'onboarding.usageTypeLooseHelper'
+  | 'onboarding.usageTypePlanHelper';
+
+const OPTIONS: ReadonlyArray<{
+  value: ConcreteUsage;
+  titleKey: UsageTitleKey;
+  helperKey: UsageHelperKey;
+}> = [
+  {
+    value: 'loose',
+    titleKey: 'onboarding.usageTypeLooseTitle',
+    helperKey: 'onboarding.usageTypeLooseHelper',
+  },
+  {
+    value: 'plan',
+    titleKey: 'onboarding.usageTypePlanTitle',
+    helperKey: 'onboarding.usageTypePlanHelper',
+  },
+];
+
+export default function UsageTypeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { refreshProfile } = useAuth();
 
-  const [submitting, setSubmitting] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const storedUsage = useOnboardingDraft((s) => s.usageType);
+  const setUsageType = useOnboardingDraft((s) => s.setUsageType);
 
-  // Button state mirror of identity.tsx / experience.tsx: animated bg + text
-  // color. Stub is always-enabled (no validation needed), but we still run
-  // the transition to arrive at the "active" palette on mount — keeps the
-  // visual language consistent across the funnel.
+  // Local state mirrors the store for the screen's lifetime — write-on-
+  // continue pattern, same as identity/experience. Hydrating from the store
+  // on mount means back-navigating from plan-preferences or injuries
+  // restores the previous pick.
+  const [selected, setSelected] = useState<ConcreteUsage | null>(
+    storedUsage === null ? null : storedUsage,
+  );
+
+  const isValid = selected !== null;
+  const enabled = isValid;
+
+  // CTA color/text transition — 200ms ease-out, identical to identity.tsx
+  // and experience.tsx so the CTA reads the same across the funnel.
   const enabledProgress = useSharedValue(0);
   useEffect(() => {
-    enabledProgress.value = withTiming(submitting ? 0 : 1, {
+    enabledProgress.value = withTiming(enabled ? 1 : 0, {
       duration: 200,
       easing: Easing.out(Easing.quad),
     });
-  }, [submitting, enabledProgress]);
+  }, [enabled, enabledProgress]);
 
   const buttonAnimatedStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
@@ -88,40 +140,27 @@ export default function UsageTypeStubScreen() {
     ),
   }));
 
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    setToastVisible(true);
+  const handleSelect = (value: ConcreteUsage) => {
+    Haptics.selectionAsync();
+    setSelected(value);
   };
 
-  const handleDone = async () => {
-    if (submitting) return;
+  const handleContinue = () => {
+    if (!enabled || !selected) return;
     Haptics.selectionAsync();
-    setSubmitting(true);
 
-    const result = await flushOnboardingDraft();
+    // Commit to the store. The setter itself enforces the
+    // plan→loose clearing invariant — see stores/onboardingDraft.ts.
+    setUsageType(selected);
 
-    if (!result.success) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      // `result.error` is an i18n key returned by lib/onboarding.ts:mapError.
-      // Fall back to the generic error toast if the key doesn't resolve.
-      let message: string;
-      if (result.error === 'nameNotAvailable') {
-        message = t('onboarding.nameNotAvailable');
-      } else if (result.error === 'network') {
-        message = t('errors.network');
-      } else {
-        message = t('common.errorToast');
-      }
-      showToast(message);
-      setSubmitting(false);
+    if (selected === 'plan') {
+      // T-111 — plan-branch routes through the frequency/split picker first.
+      router.push('/(onboarding)/plan-preferences');
       return;
     }
 
-    // Re-read the profile row so the gate picks up onboarding_completed_at
-    // flipping from null → timestamp. `router.replace` afterward doubles as
-    // a safety net — even if the gate reacts first, we land on (tabs).
-    await refreshProfile();
-    router.replace('/(tabs)');
+    // selected === 'loose' — T-112 loose-branch goes straight to injuries.
+    router.push('/(onboarding)/injuries');
   };
 
   return (
@@ -131,7 +170,7 @@ export default function UsageTypeStubScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
-        {/* Header — stub sits at step 3 of 5, mirroring the real T-110 slot. */}
+        {/* Header — screen 3 of 5, back chevron slotted into progress. */}
         <OnboardingProgress step={3} total={5} leading={<BackChevron />} />
 
         {/* Content */}
@@ -140,7 +179,7 @@ export default function UsageTypeStubScreen() {
             className="mt-8 px-6 text-display-lg text-content"
             accessibilityRole="header"
           >
-            {t('onboarding.stubTitle')}
+            {t('onboarding.usageTypeTitle')}
           </Text>
 
           {/* Subtitle — small-caps-helper variant (normal case, not uppercase).
@@ -149,39 +188,112 @@ export default function UsageTypeStubScreen() {
             className="mt-2 px-6 text-small-caps text-content-muted"
             style={{ textTransform: 'none', lineHeight: 16 }}
           >
-            {t('onboarding.stubSubtitle')}
+            {t('onboarding.usageTypeSubtitle')}
           </Text>
+
+          {/* Option cards — 2 stacked, h-28 each. Same styling primitives as
+              experience-bucket rows (surface bg, rounded-input, border 1→2px
+              primary on select). Larger height absorbs title + helper. */}
+          <View className="mt-8 px-6">
+            {OPTIONS.map((option, index) => (
+              <UsageCard
+                key={option.value}
+                value={option.value}
+                title={t(option.titleKey)}
+                helper={t(option.helperKey)}
+                selected={selected === option.value}
+                onSelect={handleSelect}
+                // `mt-3` on all rows except the first — matches the
+                // 12px rhythm used by bucket rows on experience.tsx.
+                spacingTop={index > 0}
+              />
+            ))}
+          </View>
         </View>
 
-        {/* Bottom CTA — Klaar voor vandaag */}
+        {/* Bottom CTA — thumb zone. No skip link; users must pick. */}
         <View className="px-6 pb-4">
           <AnimatedPressable
             style={buttonAnimatedStyle}
             className="h-14 items-center justify-center rounded-button"
-            onPress={handleDone}
-            disabled={submitting}
-            accessibilityLabel={t('onboarding.stubDone')}
+            onPress={handleContinue}
+            disabled={!enabled}
+            accessibilityLabel={t('common.continue')}
             accessibilityRole="button"
-            accessibilityState={{ disabled: submitting }}
+            accessibilityState={{ disabled: !enabled }}
           >
             <Animated.Text
               style={buttonTextAnimatedStyle}
               className="text-body font-inter-semibold"
             >
-              {t('onboarding.stubDone')}
+              {t('common.continue')}
             </Animated.Text>
           </AnimatedPressable>
         </View>
-
-        <Toast
-          visible={toastVisible}
-          message={toastMessage}
-          onHide={() => {
-            setToastVisible(false);
-            setToastMessage('');
-          }}
-        />
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+type UsageCardProps = {
+  value: ConcreteUsage;
+  title: string;
+  helper: string;
+  selected: boolean;
+  onSelect: (value: ConcreteUsage) => void;
+  /** When true, adds `mt-3` — applied to the second card only. */
+  spacingTop: boolean;
+};
+
+/**
+ * Stacked selection card. Taller than a bucket row (h-28 vs h-16) to hold a
+ * title + helper line. Styling primitives are intentionally identical to
+ * BucketRow on experience.tsx:
+ *   - surface background (bg-surface)
+ *   - rounded-input corners
+ *   - 1px surface-elevated border, flips to 2px primary on select
+ *   - left-aligned text, px-5 horizontal padding
+ * The selected/unselected title colour flip (text-content-secondary →
+ * text-content) mirrors the bucket row as well.
+ *
+ * Typography:
+ *   - Title: `text-body font-inter-semibold`, normal case.
+ *   - Helper: small-caps-helper variant (same token as experience subtitle —
+ *     fontSize 12, lineHeight 16, letter-spacing default (not uppercase)),
+ *     muted colour. One line, `numberOfLines={1}` to enforce the contract.
+ */
+function UsageCard({
+  value: _value,
+  title,
+  helper,
+  selected,
+  onSelect,
+  spacingTop,
+}: UsageCardProps) {
+  return (
+    <Pressable
+      onPress={() => onSelect(_value)}
+      className={`h-28 justify-center rounded-input bg-surface px-5 ${
+        spacingTop ? 'mt-3' : ''
+      } ${selected ? 'border-2 border-primary' : 'border border-surface-elevated'}`}
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      accessibilityLabel={`${title}. ${helper}`}
+    >
+      <Text
+        className={`text-body font-inter-semibold ${
+          selected ? 'text-content' : 'text-content-secondary'
+        }`}
+      >
+        {title}
+      </Text>
+      <Text
+        className="mt-1 text-small-caps text-content-muted"
+        style={{ textTransform: 'none', lineHeight: 16 }}
+        numberOfLines={1}
+      >
+        {helper}
+      </Text>
+    </Pressable>
   );
 }

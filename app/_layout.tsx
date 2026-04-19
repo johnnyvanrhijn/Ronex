@@ -21,8 +21,14 @@ import '../global.css';
 // Initialize i18n before any component renders
 import '@/lib/i18n';
 
+import { QueryClientProvider } from '@tanstack/react-query';
+
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider, useAuth } from '@/providers/AuthProvider';
+import { queryClient } from '@/lib/queryClient';
+import { initSync } from '@/lib/sync/syncActiveWorkout';
+import { useActiveWorkout } from '@/stores/activeWorkout';
+import { useRestTimer } from '@/stores/restTimer';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,14 +67,45 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  // T-212: wire up the sync engine's reconnect listener once, at app root.
+  // Initialized outside the auth gate because the engine internally checks
+  // `supabase.auth.getUser()` before every attempt — safe to run even when
+  // no session exists yet.
+  useEffect(() => {
+    const unsub = initSync();
+    return unsub;
+  }, []);
+
+  // T-204: discard stale active-workout sessions on app-startup.
+  // If the zustand store rehydrated a session whose `startedAt` is older
+  // than 24 hours and it was never completed, quietly reset it. Matches
+  // the brief: the user has moved on, the old session is noise.
+  useEffect(() => {
+    const state = useActiveWorkout.getState();
+    if (!state.startedAt || state.completedAt) return;
+    const startedMs = Date.parse(state.startedAt);
+    if (Number.isNaN(startedMs)) return;
+    const ageMs = Date.now() - startedMs;
+    if (ageMs > 24 * 60 * 60 * 1000) {
+      state.reset();
+      useRestTimer.getState().reset();
+      // A toast would be nice but we can't render one here (before the
+      // navigation tree is mounted). The challenge-tab ResumeCard
+      // detection implicitly handles the "it's gone" case: the user
+      // won't see a stale card, which is the only observable outcome.
+    }
+  }, []);
+
   if (!loaded) {
     return null;
   }
 
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
@@ -124,8 +161,10 @@ function useProtectedRoute() {
     }
 
     // onboardingComplete === true → user belongs in the main app.
+    // Target the concrete landing tab; `/(tabs)` alone has no index route
+    // since T-016 renamed index.tsx → challenge.tsx.
     if (inAuthGroup || inOnboardingGroup) {
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/challenge');
     }
   }, [session, isLoading, onboardingComplete, segments, router]);
 }
@@ -157,6 +196,10 @@ function RootLayoutNav() {
         <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        {/* T-206: picker group hosts modal-presented picker screens */}
+        <Stack.Screen name="picker" options={{ headerShown: false, presentation: 'modal' }} />
+        {/* T-204: active-workout stack (full-screen, not modal). */}
+        <Stack.Screen name="workout" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

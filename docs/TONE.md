@@ -52,6 +52,37 @@ End factually. Never end on motivation or enthusiasm.
 
 The factuality is what makes it believable.
 
+### 6. Active-workout principles
+
+Context-specific rules while a workout is in progress. The user is mid-task, phone in hand, possibly sweating. Copy must disappear into the UI. *(Added 2026-04-19 during T-209 active-workout polish.)*
+
+Active-workout principles build on the core principles above; they don't override them. When in doubt, the core principles win.
+
+**a. Labels over verbs on metadata.** Rest time, volume, set counts — these are status, not actions. Drop the colon, drop the verb noise. `Rest 0:45` not `Rest: 0:45`. `2 oefeningen · 1.250 kg` not `2 oefeningen · 1.250 kg getild`.
+
+**b. The header tells you where you are, not what you did.** H1 on the active screen is the muscle groups being trained (`Borst · Triceps` / `Chest · Triceps`), dynamically assembled from logged exercises. When empty, the H1 disappears entirely — the subtitle carries the screen.
+
+**c. CTAs describe the outcome, not the transaction.** `Klaar voor vandaag` / `Done for today` — not `Finish workout` (mechanical), not `Save and exit` (two verbs). The user isn't finishing a task, they're closing a chapter.
+
+**d. Destructive confirmations name the consequence plainly.** `Workout niet opslaan?` / `Don't save workout?` — framed as the user's choice, not the app's action. Body spells out what's lost in user terms: `De sets die je hebt gelogd verdwijnen.` / `The sets you logged will disappear.` No "unlogged", no "unsaved progress" — speak about what the user actually did.
+
+**e. Commit feedback is factual, not celebratory.** `Set 3 gelogd · 80 kg × 8` / `Set 3 logged · 80 kg × 8`. The flash strip acknowledges; it doesn't cheer. Past tense ("gelogd", "logged"), never passive-aggressive ("vastgelegd" reads like compliance).
+
+Exception: when a logged set is also a PR, the celebration moment (per principle 3) supersedes the factual flash. The flash strip is replaced or extended with the PR acknowledgment. See T-215 spec for the exact pattern.
+
+**f. Save toasts name the object.** `Workout opgeslagen · 1.250 kg` / `Workout saved · 1.250 kg`. The number without the noun is cold (`1.250 kg getild` / `1.250 kg lifted`) — the object (`Workout`) grounds it.
+
+**Canonical set — active-workout:**
+- H1 (dynamic): `{{muscleGroups}}` joined with ` · `, or hidden when empty
+- Subtitle (loaded): `{{count}} oefeningen · {{volume}} kg` / `{{count}} exercises · {{volume}} kg`
+- Subtitle (empty): `Kies een oefening` / `Pick an exercise`
+- Rest chip: `Rust {{time}}` / `Rest {{time}}`
+- Finish CTA: `Klaar voor vandaag` / `Done for today`
+- Discard title: `Workout niet opslaan?` / `Don't save workout?`
+- Discard body: `De sets die je hebt gelogd verdwijnen.` / `The sets you logged will disappear.`
+- Commit flash: `Set {{n}} gelogd · {{summary}}` / `Set {{n}} logged · {{summary}}`
+- Save toast: `Workout opgeslagen · {{volume}} kg` / `Workout saved · {{volume}} kg`
+
 ## Structural frameworks
 
 ### CTAs — always verb-first
@@ -265,6 +296,12 @@ Use this to grep your own work.
 - Keep sentences short — Dutch tends longer than English, counteract that
 - "Workout" is fine as loanword; it's established
 - "Training" and "workout" interchangeable; lean on "workout" for the app
+- "Challenge" is in NL een geaccepteerd loanword (fitness/gaming-context) en blijft in beide talen "Challenge". NL forceert GEEN Nederlandse vorm; dat voelt geforceerd vertaalwerk. Verb-vormen wel vertalen: "Uitdagen" (werkwoord), "Daag [iemand] uit" (imperatief CTA). *(Decision 2026-04-19 by Johnny; overrode earlier agent-proposed rule.)*
+- **Fitness-loanwords in NL (canonical set)** — use the English form when it's the actual gym-floor term; translate only where Dutch is clearly more natural. *(Added 2026-04-19 during T-206 picker polish.)*
+  - Keep English: **Compound, Reps, Core, Biceps, Triceps, Hamstrings, Quads, Glutes, Cable, Barbell, Dumbbell, Kettlebell, Smith machine, Bands, Machine**
+  - Translate: **Borst (chest), Rug (back), Schouders (shoulders), Onderarmen (forearms), Kuiten (calves), Eigen gewicht (bodyweight), Gewicht (weight), Tijd (time)**
+  - Rule of thumb: if a gym-goer would say the English word out loud in a Dutch sentence ("ik doe vandaag glutes / quads / cable rows"), keep it English. If the Dutch word is what actually gets said ("borst-dag", "rug-dag"), translate.
+  - Explicitly rejected alternatives: *Bilspieren* (too clinical), *Billen* (too colloquial), *Quadriceps* (too medical), *Kabel* (nobody says this in a gym).
 
 ### English (EN)
 
@@ -277,3 +314,4 @@ Use this to grep your own work.
 This document is updated as Ronex matures. When a new copy pattern is established, the Copy agent adds it here with a canonical example.
 
 Version: 1.0 — Initial
+Version 1.1 — Active-workout principles refined (cross-reference to core principles + PR exception clarified)

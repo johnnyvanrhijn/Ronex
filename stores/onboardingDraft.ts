@@ -125,7 +125,31 @@ export const useOnboardingDraft = create<OnboardingDraftState>()(
       setDisplayName: (name) => set({ displayName: name }),
       setBiologicalSex: (sex) => set({ biologicalSex: sex }),
       setExperienceBucket: (bucket) => set({ experienceBucket: bucket }),
-      setUsageType: (type) => set({ usageType: type }),
+
+      // T-110: when the user switches from 'plan' back to 'loose' (typically
+      // via back-chevron + reselect), we clear the plan-only fields so a
+      // later flush doesn't persist stale selections the user abandoned.
+      // Setter-level is the correct seam because it's the single write-point
+      // for usageType: any caller (screen, devtool, future deep-link) that
+      // flips to 'loose' gets the invariant enforced automatically. Putting
+      // it in the onContinue handler would split the rule across callsites
+      // and let a future caller forget it.
+      //
+      // Note: we do NOT clear when switching 'loose' -> 'plan'. The plan
+      // fields are written by T-111 AFTER that switch, so the existing
+      // defaults (null, null, []) are already correct.
+      setUsageType: (type) =>
+        set((state) => {
+          if (type === 'loose' && state.usageType === 'plan') {
+            return {
+              usageType: type,
+              trainingFrequencyPerWeek: null,
+              preferredSplit: null,
+              focusMuscleGroups: [],
+            };
+          }
+          return { usageType: type };
+        }),
       setTrainingFrequencyPerWeek: (freq) =>
         set({ trainingFrequencyPerWeek: freq }),
       setPreferredSplit: (split) => set({ preferredSplit: split }),

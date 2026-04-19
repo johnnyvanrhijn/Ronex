@@ -22,8 +22,12 @@ export default function OnboardingLayout() {
     >
       <Stack.Screen name="identity" options={{ gestureEnabled: false }} />
       <Stack.Screen name="experience" />
-      {/* T-113 STUB — replaced when T-110/T-111/T-112 ship. */}
       <Stack.Screen name="usage-type" />
+      {/* T-111 — shown only when usage-type === 'plan'. */}
+      <Stack.Screen name="plan-preferences" />
+      {/* T-112 — terminal onboarding screen (5/5). Reached from either
+          usage-type (loose-branch) or plan-preferences (plan-branch). */}
+      <Stack.Screen name="injuries" />
     </Stack>
   );
 }

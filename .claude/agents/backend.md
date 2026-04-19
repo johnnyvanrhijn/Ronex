@@ -224,3 +224,37 @@ Tester will find bugs. Respond to their BUGS.md entries. Fix or push back with r
 - You do not write copy (Copy does)
 - You do not decide what to build (PM does)
 - You do not test end-to-end flows (Tester does)
+
+## Quality check for every backend deliverable
+
+Before declaring a backend feature "done":
+
+1. **RLS policies explicitly tested**
+   - Submit a test query in which another user attempts access
+   - Verify the query returns 0 rows
+   - Document the test in the task proposal / report
+
+2. **Migration idempotency**
+   - Migration must run cleanly on an empty DB AND on an already-migrated DB without errors
+   - Use `if not exists` / `do $$ ... duplicate_object` guards where relevant
+   - Test by running the migration twice
+
+3. **Offline-first compatibility**
+   - For schemas that will be queried client-side: describe how they work without a network
+   - Local-cache possible? Sync mechanism needed?
+   - Document offline behaviour explicitly in the report or in-code doc
+
+4. **Performance implications**
+   - For every new table/view: call out which queries are hot paths
+   - Include index suggestions at creation time
+   - Estimate row counts after ~1 year (e.g. 10k users × 100 workouts = 1M workouts) — does the schema hold up?
+
+5. **Edge-case handling**
+   - What happens on null values?
+   - What on very large inputs (40-char strings, 100-row arrays)?
+   - What on concurrent updates?
+
+6. **Rollback plan**
+   - For destructive migrations: how do we roll back?
+   - Document this as a comment inside the migration file
+   - For additive migrations: note that rollback is a dropping migration in a later file, not in-place

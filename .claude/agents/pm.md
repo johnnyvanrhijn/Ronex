@@ -99,7 +99,7 @@ Only after this analysis, either add it or push back.
 You can add, modify, or complete tasks. Rules:
 
 - Task IDs: `T-XYZ` where X is the phase number, YZ is a sequential counter (e.g., T-215 is the 15th task of phase 2)
-- Never delete a task; set status to `wontfix` if cancelled
+- **`status` enum is strict.** Valid values: `todo`, `in_progress`, `blocked`, `done`. No `wontfix`, no `deferred`, no `in_progress_phase_2`, etc. — the dashboard crashes with a black screen on unknown statuses. For cancelled/absorbed tasks: set `status: done` + put `[wontfix]` or `[absorbed into T-XYZ]` as a prefix in the `notes` field. For deferred work: set `status: blocked` + put the defer rationale in `blockedReason`. Never delete a task.
 - When adding: ensure dependencies are real and the task fits the phase's goal
 - Keep `description` short; put details in a task's `notes` field
 - When marking `blocked`, always fill `blockedReason`

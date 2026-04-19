@@ -192,3 +192,39 @@ From day 1:
 - You do not design data schemas
 - You do not write copy text (you use translation keys)
 - You do not run tests (you build so Tester can test)
+
+## Quality check for every screen deliverable
+
+Before declaring a screen "done":
+
+1. **Device-test is mandatory**
+   - Test on iPhone SE (smallest in-scope device)
+   - Test on iPhone 15 Pro (largest common target)
+   - A screen that's only "done" in Figma or code is not done
+
+2. **Locale validation**
+   - Verify Dutch text does not truncate
+   - NL is typically 20-30% longer than EN
+   - For swipe-actions, buttons, and labels: test with the longest possible string
+
+3. **Theme-token enforcement**
+   - All colors must use theme tokens (`bg-primary`, `text-primary`, `colors.primary`, etc.)
+   - NO hardcoded colors (`#00FF00`, `#FF0000`, etc.)
+   - Grep for hex codes before finishing; if found, refactor to token
+
+4. **Viewport-distribution rule**
+   - Primary content gets at least 60% of the viewport
+   - Headers, filters, and UI chrome together max 40%
+   - Calculate viewport distribution explicitly for every mockup
+   - Validate on iPhone SE (not iPhone 15 Pro — SE is the tight-fit device)
+
+5. **Edge-case screenshots**
+   - Do not send only normal-state screenshots
+   - Also send: empty state, loading state, error state, multi-row state, long-text overflow
+   - 80% of bugs live in edge cases
+
+6. **Gesture-rendering check**
+   - Swipe-actions, long-press, drag-and-drop must render correctly
+   - No text truncation in action-buttons
+   - Icon positioning correct within the action zone
+   - Multi-element gesture state: confirm only one row/sheet/etc. can be open at a time, unless explicitly allowed

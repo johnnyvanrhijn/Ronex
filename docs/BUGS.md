@@ -239,6 +239,233 @@
 
 ---
 
+### B-016: Injuries flush race — `setInjuries` via React setState is async but `flushOnboardingDraft` reads store synchronously
+
+- **Severity**: high (P1)
+- **Phase**: 1 — onboarding
+- **Status**: FIXED 2026-04-19 (commit TBD by Johnny)
+- **Reported**: 2026-04-19
+- **How fixed**: Changed `flushOnboardingDraft` signature to accept an optional `FlushOverrides` object; any field passed here takes precedence over the zustand store. Updated `injuries.tsx` to pass `{ injuries: selected }` explicitly and removed the `setInjuries(selected)` write that created the ordering dependency. Race is now structurally impossible — the payload is built from the local `selected` array, not from a store that may or may not have committed yet. Files: `lib/onboarding.ts:177-199`, `app/(onboarding)/injuries.tsx:253`.
+- **Device**: static review (all)
+- **Steps to reproduce**:
+  1. Op injuries screen, selecteer 1+ injuries (of "Niks aan de hand")
+  2. Tap Start
+  3. `handleStart` roept `setInjuries(selected)` (zustand setter via hook wrapper)
+  4. Direct daarna `await flushOnboardingDraft()` → `useOnboardingDraft.getState()`
+- **Expected**: Payload bevat precies de selectie die net getoond werd
+- **Actual**: `setInjuries` is de zustand setter die via een hook-subscribed ref was gelezen; bij zustand is `set()` doorgaans synchroon dus dit werkt meestal correct. MAAR: omdat `setInjuries` als memoized function is gelezen via `useOnboardingDraft((s) => s.setInjuries)`, en zustand synchroon commits, is de risicoklasse meer "fragiel" dan "broken". Bij een React batched render (React 18 automatic batching) kunnen store-writes die binnen event-handlers gebeuren gewoonlijk synchroon doorkomen — maar een toekomstige refactor die de setter async maakt (bv. voor async validation) breekt dit stilzwijgend. Zie `app/(onboarding)/injuries.tsx:244-247`.
+- **Notes**: Veiliger: geef `selected` direct mee als argument aan `flushOnboardingDraft(overrides)` of roep `useOnboardingDraft.setState({ injuries: selected })` synchroon aan. @backend. Niet blocking voor Phase 1 exit want zustand `set()` is synchroon, maar wel noteren.
+
+### B-017: `mapError` substring `display_name` matches ANY error message mentioning that column → verwarrende "naam niet beschikbaar" toast
+
+- **Severity**: medium (P2)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Trigger een unrelated update-fout waar Postgres toevallig `display_name` in de errorstring noemt (bv. permission-denied error of RLS-violation op een rij met display_name-colom in het policy-log)
+  2. Of: wijzig profiles.display_name CHECK constraint ooit en Postgres rapporteert `new row for relation "profiles" violates check constraint "profiles_display_name_check"` — bevat subtring `display_name`
+- **Expected**: Blocklist trigger → `nameNotAvailable`; CHECK length → `nameNotAvailable`; andere errors die toevallig "display_name" bevatten → `generic`
+- **Actual**: `lowered.includes('display_name')` vangt te breed. Elke Postgres-error-message die "display_name" noemt (incl. irrelevante ones) wordt ten onrechte als `nameNotAvailable` gemapt. Zie `lib/onboarding.ts:97-101`.
+- **Notes**: Precieze check: `lowered.includes('display_name contains prohibited word')` voor trigger en `lowered.includes('profiles_display_name_check')` voor CHECK constraint (Postgres error_code 23514 + specific constraint name). @backend.
+
+### B-018: `mapError` network-detectie te eng — `AuthRetryableFetchError` / Supabase offline geeft vaak generieke msg zonder "network"
+
+- **Severity**: medium (P2)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Airplane mode aan tijdens injuries-screen Start tap
+  2. `supabase.from('profiles').update(...)` faalt met gotrue/PostgREST-specifieke error
+- **Expected**: User ziet "Geen verbinding" toast en kan retry
+- **Actual**: Supabase-js geeft in offline scenarios soms `{ message: 'TypeError: Network request failed' }` of `AuthRetryableFetchError`. De huidige check zoekt alleen op de tokens `network` / `fetch` / `timeout` / `offline`. `AuthRetryableFetchError` bevat "fetch" dus die slaagt — maar puur `Network request failed` in sommige RN-builds komt door als `TypeError` zonder die tokens. Zie `lib/onboarding.ts:103-110`.
+- **Notes**: Voeg `typeerror` toe aan de match-lijst, of catch op de Supabase error-code/class. Ook: huidige code heeft geen timeout op de update-call → user met slecht netwerk ziet submitting-state voor eeuwig. @backend.
+
+### B-019: Skip-link op experience screen triggert geen zichtbare feedback → user twijfelt of het werkte
+
+- **Severity**: low (P3)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Op experience screen, tap "Weet ik niet precies"
+  2. Direct router.push naar usage-type
+- **Expected**: Duidelijk dat keuze is "geen antwoord" (haptic + push)
+- **Actual**: Er wordt een haptic gefired, maar de bucket-rows staan nog gewoon in un-selected state en er is geen visueel confirmatiemoment. User kan denken dat hij per ongeluk heeft geskipt zonder te willen. `app/(onboarding)/experience.tsx:116-120`. @designer/PM.
+- **Notes**: Nice-to-fix: kleine toast "Overgeslagen" of een heel korte 200ms flash. Niet blocking.
+
+### B-020: Injuries "Niks aan de hand" — eerste mount toont `noneSelected=false` ook als DRAFT al `[]` was uit back-nav → user ziet geen "nog steeds geselecteerd" state
+
+- **Severity**: medium (P2)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. User selecteert "Niks aan de hand" op injuries-screen
+  2. Tapt BackChevron → terug naar plan-preferences (of usage-type)
+  3. Tapt Continue → opnieuw op injuries-screen
+- **Expected**: "Niks aan de hand"-kaart is nog steeds in de geselecteerde (tinted) staat
+- **Actual**: `noneSelected` wordt altijd `false` op mount omdat de store geen `noneSelected` persisteert. Injuries-array is `[]` maar de UI-distinctie tussen "user confirmeerde nothing" vs "user heeft nog niks gedaan" is weg. Als user Continue drukt zonder opnieuw op de kaart te tikken, wordt `[]` weggeschreven — same result. Maar de visual feedback is inconsistent met de rest van de funnel (experience/usage-type onthouden wel de selectie op back-nav). Zie `app/(onboarding)/injuries.tsx:157`.
+- **Notes**: Fix: persist een `noneConfirmed: boolean` flag in de draft store, of hydrateer `noneSelected=true` als `storedInjuries.length === 0` EN de user eerder op deze screen is geweest (track via separate flag). @designer + @backend. Niet blocking — DB-state klopt uiteindelijk — maar gebruikerservaring op back-nav is suboptimaal.
+
+### B-021: Back-nav van plan-preferences naar usage-type en daarna "Wijzig naar loose" → plan-fields gecleared, maar als user terug-swipet naar plan-preferences (die nu niet meer bereikbaar is via Continue) zien ze oude UI-state
+
+- **Severity**: low (P3)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Kies plan op usage-type → push naar plan-preferences
+  2. Kies frequency=4 + split=ppl
+  3. Back → usage-type
+  4. Wijzig naar loose → push naar injuries (store clear plan fields)
+  5. Back → usage-type
+  6. Swipe-back in stack (als gestureEnabled:true) → LANDT op plan-preferences? Of niet?
+- **Expected**: Stack navigation rondom usage-type is voorspelbaar; als user terug swipt komt hij op de logische vorige screen
+- **Actual**: Onduidelijk uit de code — `Stack` default pakt alleen het vorige frame. In scenario hierboven is het vorige frame plan-preferences (uit stap 2) óf usage-type na de loose-selectie route-push — depends on whether `router.push` stackt of replacet. Bij default push-gedrag blijft plan-preferences in de stack → swipe-back ZOU 'm weer tonen. Dan: store heeft `trainingFrequencyPerWeek=null` en `preferredSplit=null`, maar de lokale useState in dat screen laat mogelijk stale data zien? Nee — op mount wordt store gelezen, dus `freq=null, split=null` en isValid=false → Continue disabled. Geen crash maar wel een verwarrende visit. Bovendien is injuries NOG verder in stack — swipe-back van injuries na de loose-switch levert plan-preferences op, wat UX-onlogisch is.
+- **Notes**: Fix-opties: (a) gebruik `router.replace` bij path-switch op usage-type zodat plan-preferences uit stack valt, (b) reset stack na path-switch. @designer. Priority laag want user kan alsnog voortgaan — alleen semantisch vreemd.
+
+### B-022: Onboarding complete-gate flipt naar `true` na succesvolle flush, maar bij re-mount van AuthProvider (hot reload, app-resume via push) wordt `fetchProfile` opnieuw aangeroepen zonder caching → extra roundtrip op elke mount
+
+- **Severity**: low (P3)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Complete onboarding → profile row heeft `onboarding_completed_at` gevuld
+  2. Background de app en resume na 10s
+  3. AuthProvider mount effect fires opnieuw, `getSession` + `fetchProfile`
+- **Expected**: OK, voor correctness is re-fetch fine
+- **Actual**: Werkt correct. Maar elke resume doet een extra profiles SELECT. Niet fout, wel wasteful voor toekomstige frequent mounts. Zie `providers/AuthProvider.tsx:120-153`.
+- **Notes**: Niet blocking. Overweeg client-side cache met stale-while-revalidate (React Query o.i.d.) — post-MVP technical debt.
+
+### B-023: RLS test via MCP niet uitvoerbaar in deze tester-sessie → RLS validatie puur code-review
+
+- **Severity**: medium (P2) — niet een bug, een test-gap
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review only
+- **Steps to reproduce**: N/A
+- **Expected**: Tester kan via MCP `execute_sql` een tweede user simuleren en cross-user update proberen
+- **Actual**: MCP Supabase tool niet beschikbaar in deze agent-sessie. Code-review: policies zien er OK uit (migration 20260418000000 lines 194-213):
+  - `profiles_select_own`: `using (auth.uid() = id)` → OK
+  - `profiles_update_own`: `using (auth.uid() = id) with check (auth.uid() = id)` → correct, both sides gated
+  - `profiles_insert_own`: `with check (auth.uid() = id)` → OK
+  - Geen DELETE policy → default deny (goed, want rij-cleanup gebeurt via `on delete cascade` op `auth.users`)
+  - `banned_display_names`: `for all using (false)` → tabel niet direct leesbaar door clients (alleen via SECURITY DEFINER trigger). OK.
+- **Notes**: Handmatig runtime verifiëren met 2 accounts of Supabase Studio is alsnog aanbevolen. Code zelf is correct. @backend om eventueel sanity-test te draaien.
+
+### B-024: `preferred_split` enum-check via unknown-value injection → niet live te testen in statische review
+
+- **Severity**: low (P3)
+- **Phase**: 1 — onboarding / backend
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Zou willen: patch de zustand store via devtools om `preferredSplit='bogus'` te zetten
+  2. Tap Start op injuries
+  3. Observe Supabase response
+- **Expected**: Postgres weigert met "invalid input value for enum split_type_t"; client toont `generic` error toast
+- **Actual**: Code-review: migration 20260419000000 creëert het enum correct (`ppl | upper_lower | full_body | custom`). Kolom is gealtered met USING-cast. `supabase.from('profiles').update({ preferred_split: 'bogus' })` wordt door PostgREST ge-serialiseerd en faalt op DB-level. `mapError` valt door op `generic`. OK in theorie. BUT: ik zie de mapError niet specifiek een "invalid input value for enum" tokeniseren. Toast wordt `common.errorToast` ("Niet gelukt. Probeer opnieuw.") — dat is prima, want dit is een client-side bug-pad die normale users niet raken.
+- **Notes**: Manual verify gewenst. @backend om via SQL editor te testen: `update profiles set preferred_split='bogus' where id = 'a8830f1e-...';` → expect enum violation.
+
+### B-025: Empty string `display_name` bypass — flush stuurt `draft.displayName.trim()` zonder validatie dat trimmed length >= 1
+
+- **Severity**: high (P1)
+- **Phase**: 1 — onboarding
+- **Status**: FIXED 2026-04-19 (commit TBD by Johnny)
+- **Reported**: 2026-04-19
+- **How fixed**: Added a client-side guard in `flushOnboardingDraft` that returns `{ success: false, error: 'generic' }` when the trimmed display name is empty, BEFORE hitting Supabase. Prevents silent corruption from a draft with an empty or whitespace-only `displayName` and avoids the confusing "name not available" toast that would otherwise fire due to the overly-broad `display_name` substring match in `mapError` (which is itself B-017, intentionally left as P2 for Phase 2). Files: `lib/onboarding.ts:201-211`.
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Op identity screen, type "   " (alleen spaces) — maar `trimmedName.length >= 1` check blokkeert Continue, OK
+  2. ALTERNATIEF: patch draft store via hot reload / devtools / vorige sessie met corrupt draft, zodat `displayName = ''`
+  3. Start injuries Continue → flush stuurt `display_name: ''`
+- **Expected**: DB CHECK `char_length(display_name) between 1 and 40` rejects → `nameNotAvailable` toast
+- **Actual**: CHECK is `display_name is null OR char_length(...) between 1 and 40`. LEGE STRING IS GEEN NULL, is ook niet tussen 1-40 → rejected. Goed. Error-message bevat "display_name" substring → `mapError` → `nameNotAvailable` toast. User ziet verwarrend bericht ("Deze naam kan niet gebruikt worden") voor wat eigenlijk een edge-case is van een corrupte draft, niet een naam-keuze. Zie `lib/onboarding.ts:172`.
+- **Notes**: Fix: client-side guard in flush: `if (!payload.display_name || payload.display_name.length < 1) return { success: false, error: 'generic' }`. Of: force re-entry to identity screen. @backend.
+
+### B-026: Timezone-resolve met fallback `Europe/Amsterdam` — dit is wrong default voor non-NL users
+
+- **Severity**: medium (P2)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. User op JS runtime waar `Intl.DateTimeFormat().resolvedOptions().timeZone` throwt of undefined returnt (oudere Hermes / niet-standaard builds)
+  2. Flush → `resolveTimezone()` valt terug op `'Europe/Amsterdam'`
+  3. User zit in bv. New York → hele weekly league-reset logica is 6 uur verschoven
+- **Expected**: Onbekende timezone → DB default (table default is óók `Europe/Amsterdam` trouwens) OF forceer detectie uit device locale
+- **Actual**: Code: `resolveTimezone()` keert `'Europe/Amsterdam'` terug als Intl faalt. Voor Amsterdam-users klopt dit, voor internationale users is het een stil-fout. Zie `lib/onboarding.ts:66-74`.
+- **Notes**: Overweeg `expo-localization` (Localization.timezone) als secondaire fallback vóór de Amsterdam-string. @backend. Niet blocking voor Phase 1 exit want MVP is NL-first.
+
+### B-027: No submit-debounce gate op experience/usage-type/plan-preferences Continue tap — dubbele tap triggert potentieel twee `router.push`
+
+- **Severity**: low (P3)
+- **Phase**: 1 — onboarding
+- **Status**: open
+- **Reported**: 2026-04-19
+- **Device**: static review
+- **Steps to reproduce**:
+  1. Tap Continue op experience (bv.) 2x zeer snel
+  2. Beide tap-events fire `handleContinue` → `router.push` wordt 2x aangeroepen
+- **Expected**: Eén navigatie
+- **Actual**: Expo Router dedupet meestal snelle duplicate pushes, maar er is geen expliciete guard. injuries.tsx heeft wel `submitting` state; de andere screens niet. Niet catastrofaal want ze pushen naar dezelfde route.
+- **Notes**: Niet blocking. Defensief: voeg `const [pushing, setPushing] = useState(false)` toe en gate.
+
+---
+
+### B-028: Finish-flow bootstrap-race — ResumeCard + lege "actieve" workout na "Klaar"
+
+- **Severity**: high (P1)
+- **Phase**: 2 — workout logging (T-209 Phase 2 device-test)
+- **Status**: fixed (2026-04-19)
+- **Reported**: 2026-04-19 (Johnny, device-test T-209 Phase 2)
+- **Device**: physical iPhone
+- **Steps to reproduce**:
+  1. Log een workout met ≥1 completed set
+  2. Tap "Klaar" → bevestig in FinishSheet
+  3. App navigeert terug naar Challenge-tab
+- **Expected**: Challenge-tab toont geen ResumeCard (workout is afgerond + gesynced)
+- **Actual**: ResumeCard blijft zichtbaar met tikkende timer. Tap "Verder" → active-screen toont "Nog niks gelogd" (lege sets)
+- **Root cause**: `app/workout/active.tsx` bootstrap-useEffect had `[startedAt, completedAt, startWorkout]` als deps. In de finish-flow:
+  1. `completeWorkout()` zet `completedAt`
+  2. 500ms timeout: `resetWorkout()` → beide null
+  3. Screen is nog mounted → useEffect re-firet op dep-change
+  4. Ziet `startedAt===null && completedAt===null` → `startWorkout('manual')` → startedAt = new Date()
+  5. `router.back()` → Challenge-tab ziet `startedAt!==null && completedAt===null` → ResumeCard met fresh 0:00 timer
+- **Fix**: Bootstrap mount-only gemaakt via `useActiveWorkout.getState()` i.p.v. reactive selectors. Effect fired nu alleen op mount, niet op state-transities tijdens teardown.
+- **Notes**: Ontdekt bij T-209 Phase 2 device-test. Fix is één `useEffect` in `app/workout/active.tsx`; zelfde pattern zou elders ook misbruikt kunnen zijn — tester kan check doen of er andere bootstrap-effects met reactive deps op de store staan.
+
+---
+
+### B-029: Geen optie om hele oefening-bucket te verwijderen in active-workout
+
+- **Severity**: medium (P2)
+- **Phase**: 2 — workout logging
+- **Status**: fixed (2026-04-19)
+- **Reported**: 2026-04-19 (Johnny, device-test T-209 Phase 2)
+- **Device**: physical iPhone
+- **Steps to reproduce**:
+  1. Voeg meerdere oefeningen toe aan een workout
+  2. Probeer een hele oefening te verwijderen (bv. per ongeluk verkeerde gekozen)
+- **Expected**: Mogelijkheid om exercise-bucket te verwijderen (analoog aan set-delete)
+- **Actual**: Je kunt alleen per-set × tappen — je moet elke set één-voor-één wissen om een oefening te verwijderen, en zelfs dan blijft de laatste set staan (want `last-set-in-group → auto-add fresh`)
+- **Notes**: Designer moet mockup voorstellen. Suggestie: klein × op exercise-header + bevestigings-modal omdat N sets tegelijk wissen een grotere destructieve actie is dan een single-set delete. Workflow: × → modal ("Verwijder [naam]? X sets gaan verloren") → confirm.
+- **Fix (2026-04-19)**: Header × icon + new `DeleteExerciseModal` + store.`removeExercise(exerciseId)`. Files: `stores/activeWorkout.ts`, `components/workout/ExerciseGroup.tsx`, `components/workout/DeleteExerciseModal.tsx` (new), `app/workout/active.tsx`, `i18n/{nl,en}.json` (`workout.deleteExercise*` keys, pluralized body). Server-orphan policy mirrors `removeSet` (Phase 3 cleanup).
+
+---
+
 ## Fixed bugs
 
 *None yet.*

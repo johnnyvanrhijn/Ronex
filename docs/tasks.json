@@ -3,7 +3,7 @@
     "name": "Ronex",
     "startDate": "2026-04-17",
     "targetLaunchDate": "2026-07-13",
-    "currentPhase": "phase-0"
+    "currentPhase": "phase-2"
   },
   "phases": [
     {
@@ -14,23 +14,243 @@
       "estimatedWeeks": 1,
       "exitCriteria": "You can scan a QR code, open the app, log in with email, and see a home screen in your device language.",
       "tasks": [
-        { "id": "T-001", "title": "Initialize Expo project with TypeScript", "owner": "backend", "status": "done", "priority": "critical", "dependencies": [], "estimateHours": 1, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Expo SDK 54, React Native 0.81.5, TypeScript 5.9.2 strict, Expo Router v6 with typed routes. scheme: ronex, bundleId: app.ronex.ios" },
-        { "id": "T-002", "title": "Set up Git repo and push to GitHub", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-001"], "estimateHours": 0.5, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Repo: github.com/johnnyvanrhijn/Ronex, branch: main, initial commit with full project structure" },
-        { "id": "T-003", "title": "Create Supabase project", "owner": "backend", "status": "done", "priority": "critical", "dependencies": [], "estimateHours": 0.5, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Supabase project: Ronex, URL: ambnbzvrgvqpiniksklf.supabase.co, .env created with EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY" },
-        { "id": "T-004", "title": "Install Supabase JS client, configure env vars", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-001", "T-003"], "estimateHours": 1, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Installed @supabase/supabase-js, @react-native-async-storage/async-storage, react-native-url-polyfill. Client configured in lib/supabase.ts with AsyncStorage auth adapter. .env.example created." },
-        { "id": "T-005", "title": "Set up NativeWind (Tailwind for React Native)", "owner": "designer", "status": "done", "priority": "high", "dependencies": ["T-001"], "estimateHours": 1.5, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "NativeWind 4.2.3 + Tailwind 3.4.19. metro.config.js wraps withNativeWind, global.css imported in _layout.tsx. Theme extend empty for T-006." },
-        { "id": "T-006", "title": "Define design tokens (colors, spacing, typography)", "owner": "designer", "status": "done", "priority": "high", "dependencies": ["T-005"], "estimateHours": 2, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Full token system in tailwind.config.js: semantic colors, Inter font (7 weights via @expo-google-fonts/inter), 6 typography presets, spacing base-4px, border radius presets. lib/theme.ts for programmatic access." },
-        { "id": "T-007", "title": "Install and configure Expo Router", "owner": "designer", "status": "done", "priority": "high", "dependencies": ["T-001"], "estimateHours": 1, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Expo Router v6 was included with SDK 54 tabs template in T-001. File-based routing with (tabs) group already configured." },
-        { "id": "T-008", "title": "Install i18next + expo-localization, set up NL + EN structure", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-001"], "estimateHours": 2, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "i18next 26 + react-i18next 17 + expo-localization 17. Auto-detects device locale, falls back to EN. Type-safe keys via i18next.d.ts. Translations in i18n/en.json and i18n/nl.json." },
-        { "id": "T-009", "title": "Create translations.json with initial strings", "owner": "copy", "status": "done", "priority": "high", "dependencies": ["T-008"], "estimateHours": 1.5, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "82 keys added: common, auth, onboarding, navigation, profile, errors, workout. Native NL+EN, TONE.md compliant. Fixed banned 'we' pronoun in existing auth copy." },
-        { "id": "T-010", "title": "Implement auth flow (magic link email)", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-004", "T-007"], "estimateHours": 3, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Magic link via OTP (6-digit code). AuthProvider with session tracking, useProtectedRoute hook for route guarding. (auth)/login.tsx functional but unstyled. Auth keys added to i18n. Deep link scheme ronex:// ready, needs Supabase dashboard redirect URL config." },
-        { "id": "T-011", "title": "Design login/signup screens", "owner": "designer", "status": "done", "priority": "critical", "dependencies": ["T-006", "T-009"], "estimateHours": 3, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "3 premium screens: welcome.tsx (wordmark + dual CTA), login.tsx (email input + magic link), verify.tsx (6-box OTP with auto-advance, paste support, auto-submit, 60s resend cooldown). All NativeWind, all i18n, all accessible. Flow: welcome → login → verify → (tabs)." },
-        { "id": "T-012", "title": "Basic home screen (placeholder, post-login)", "owner": "designer", "status": "done", "priority": "high", "dependencies": ["T-010", "T-011"], "estimateHours": 1.5, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "Dashboard home: time-based greeting, gradient Start Workout CTA, 3-col stats row (placeholders), recent workouts empty state. 4 tabs: Home, Workout, Stats, Profile (with sign-out). All i18n, NativeWind, Ionicons. expo-linear-gradient installed." },
-        { "id": "T-013", "title": "Configure eas.json and app.json for builds", "owner": "backend", "status": "done", "priority": "high", "dependencies": ["T-001"], "estimateHours": 1, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "eas.json met development/preview/production profiles. .easignore excludes docs/dashboard/.claude. Placeholders voor EAS project ID, Apple Team ID, ASC app ID — invullen bij eerste build." },
-        { "id": "T-014", "title": "Test on physical iPhone via Expo Go", "owner": "tester", "status": "done", "priority": "high", "dependencies": ["T-010", "T-012"], "estimateHours": 1, "startedAt": "2026-04-17", "completedAt": "2026-04-17", "notes": "LAN mode via Expo Go werkt (ngrok/tunnel faalde). Login via 6-digit OTP succesvol, user zit in app op home screen. Observaties: app werkt technisch, maar leeg en visueel nog niet premium. babel.config.js toegevoegd voor NativeWind v4 + Reanimated. Supabase email template staat nog op 8-digit code, moet handmatig naar 6 digits." },
-        { "id": "T-015", "title": "Extend design tokens: 3 typographic levels (display-lg, body, small-caps)", "owner": "designer", "status": "done", "priority": "high", "dependencies": ["T-006"], "estimateHours": 1, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "SPEC §14 Rule 5 mandates exactly 3 typographic levels per screen. Add/align tokens: display-lg (28-32px screen titles/primary data), body (16-18px sections/secondary), small-caps (11-12px labels/metadata). Document in lib/theme.ts and tailwind.config.js. Existing 6 typography presets moeten tegen deze 3-niveau hierarchie gemapped worden — cut or collapse where redundant. 2026-04-18: designer produces mockup-proposal FIRST (specs table + mapping + preview), Johnny approves, then implementation + apply to welcome/login/verify screens so change is visible on Expo Go. Phase B shipped. tailwind.config.js + lib/theme.ts updated. Applied to welcome/login/verify/home. 2 documented exceptions: welcome wordmark (52px) + OTP digits (24px) — see docs/design-system.md. Fast Refresh picks up on Johnny's Expo Go instantly." },
-        { "id": "T-016", "title": "Refactor tab navigation: 4 tabs (Challenge default, Workout dominant, Stats, Profile)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-012"], "estimateHours": 2, "notes": "SPEC §13 IA restructure (updated 2026-04-18: 4 tabs, not 5). Current: 4 tabs (Home/Workout/Stats/Profile) met Home als default. New: 4 tabs, Challenge tab = default landing (replaces Home), Workout = visually dominant (largest icon, lime accent). Leaderboard is NOT a standalone tab — it lives as a subsection at the top of the Challenge tab (see T-117 scope). Requires renaming (tabs)/index → (tabs)/challenge, tuning Tabs options per SPEC §13. Keep Profile for auth/signout." },
-        { "id": "T-017", "title": "Define per-screen UX checklist template (7 questions + 5 states)", "owner": "pm", "status": "done", "priority": "high", "dependencies": [], "estimateHours": 0.5, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "Template created at docs/templates/ux-checklist-template.md. Covers 7 SPEC §14 UX questions (one job / primary action / title / top third / states / no-action path / halve test) + 5 required states table (loading/empty/error/success/edge). PM pastes this into notes of every Phase 1+ designer task. Moved from temp-files/ to docs/templates/ because it's permanent reference, not ephemeral." }
+        {
+          "id": "T-001",
+          "title": "Initialize Expo project with TypeScript",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 1,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Expo SDK 54, React Native 0.81.5, TypeScript 5.9.2 strict, Expo Router v6 with typed routes. scheme: ronex, bundleId: app.ronex.ios"
+        },
+        {
+          "id": "T-002",
+          "title": "Set up Git repo and push to GitHub",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Repo: github.com/johnnyvanrhijn/Ronex, branch: main, initial commit with full project structure"
+        },
+        {
+          "id": "T-003",
+          "title": "Create Supabase project",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Supabase project: Ronex, URL: ambnbzvrgvqpiniksklf.supabase.co, .env created with EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY"
+        },
+        {
+          "id": "T-004",
+          "title": "Install Supabase JS client, configure env vars",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-001",
+            "T-003"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Installed @supabase/supabase-js, @react-native-async-storage/async-storage, react-native-url-polyfill. Client configured in lib/supabase.ts with AsyncStorage auth adapter. .env.example created."
+        },
+        {
+          "id": "T-005",
+          "title": "Set up NativeWind (Tailwind for React Native)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 1.5,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "NativeWind 4.2.3 + Tailwind 3.4.19. metro.config.js wraps withNativeWind, global.css imported in _layout.tsx. Theme extend empty for T-006."
+        },
+        {
+          "id": "T-006",
+          "title": "Define design tokens (colors, spacing, typography)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-005"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Full token system in tailwind.config.js: semantic colors, Inter font (7 weights via @expo-google-fonts/inter), 6 typography presets, spacing base-4px, border radius presets. lib/theme.ts for programmatic access."
+        },
+        {
+          "id": "T-007",
+          "title": "Install and configure Expo Router",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Expo Router v6 was included with SDK 54 tabs template in T-001. File-based routing with (tabs) group already configured."
+        },
+        {
+          "id": "T-008",
+          "title": "Install i18next + expo-localization, set up NL + EN structure",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "i18next 26 + react-i18next 17 + expo-localization 17. Auto-detects device locale, falls back to EN. Type-safe keys via i18next.d.ts. Translations in i18n/en.json and i18n/nl.json."
+        },
+        {
+          "id": "T-009",
+          "title": "Create translations.json with initial strings",
+          "owner": "copy",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-008"
+          ],
+          "estimateHours": 1.5,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "82 keys added: common, auth, onboarding, navigation, profile, errors, workout. Native NL+EN, TONE.md compliant. Fixed banned 'we' pronoun in existing auth copy."
+        },
+        {
+          "id": "T-010",
+          "title": "Implement auth flow (magic link email)",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-004",
+            "T-007"
+          ],
+          "estimateHours": 3,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Magic link via OTP (6-digit code). AuthProvider with session tracking, useProtectedRoute hook for route guarding. (auth)/login.tsx functional but unstyled. Auth keys added to i18n. Deep link scheme ronex:// ready, needs Supabase dashboard redirect URL config."
+        },
+        {
+          "id": "T-011",
+          "title": "Design login/signup screens",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-006",
+            "T-009"
+          ],
+          "estimateHours": 3,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "3 premium screens: welcome.tsx (wordmark + dual CTA), login.tsx (email input + magic link), verify.tsx (6-box OTP with auto-advance, paste support, auto-submit, 60s resend cooldown). All NativeWind, all i18n, all accessible. Flow: welcome → login → verify → (tabs)."
+        },
+        {
+          "id": "T-012",
+          "title": "Basic home screen (placeholder, post-login)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-010",
+            "T-011"
+          ],
+          "estimateHours": 1.5,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "Dashboard home: time-based greeting, gradient Start Workout CTA, 3-col stats row (placeholders), recent workouts empty state. 4 tabs: Home, Workout, Stats, Profile (with sign-out). All i18n, NativeWind, Ionicons. expo-linear-gradient installed."
+        },
+        {
+          "id": "T-013",
+          "title": "Configure eas.json and app.json for builds",
+          "owner": "backend",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "eas.json met development/preview/production profiles. .easignore excludes docs/dashboard/.claude. Placeholders voor EAS project ID, Apple Team ID, ASC app ID — invullen bij eerste build."
+        },
+        {
+          "id": "T-014",
+          "title": "Test on physical iPhone via Expo Go",
+          "owner": "tester",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-010",
+            "T-012"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-17",
+          "completedAt": "2026-04-17",
+          "notes": "LAN mode via Expo Go werkt (ngrok/tunnel faalde). Login via 6-digit OTP succesvol, user zit in app op home screen. Observaties: app werkt technisch, maar leeg en visueel nog niet premium. babel.config.js toegevoegd voor NativeWind v4 + Reanimated. Supabase email template staat nog op 8-digit code, moet handmatig naar 6 digits."
+        },
+        {
+          "id": "T-015",
+          "title": "Extend design tokens: 3 typographic levels (display-lg, body, small-caps)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-006"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "SPEC §14 Rule 5 mandates exactly 3 typographic levels per screen. Add/align tokens: display-lg (28-32px screen titles/primary data), body (16-18px sections/secondary), small-caps (11-12px labels/metadata). Document in lib/theme.ts and tailwind.config.js. Existing 6 typography presets moeten tegen deze 3-niveau hierarchie gemapped worden — cut or collapse where redundant. 2026-04-18: designer produces mockup-proposal FIRST (specs table + mapping + preview), Johnny approves, then implementation + apply to welcome/login/verify screens so change is visible on Expo Go. Phase B shipped. tailwind.config.js + lib/theme.ts updated. Applied to welcome/login/verify/home. 2 documented exceptions: welcome wordmark (52px) + OTP digits (24px) — see docs/design-system.md. Fast Refresh picks up on Johnny's Expo Go instantly."
+        },
+        {
+          "id": "T-016",
+          "title": "Refactor tab navigation: 4 tabs (Challenge default, Workout dominant, Stats, Profile)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-012"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "SPEC §13 IA restructure (updated 2026-04-18: 4 tabs, not 5). Current: 4 tabs (Home/Workout/Stats/Profile) met Home als default. New: 4 tabs, Challenge tab = default landing (replaces Home), Workout = visually dominant (largest icon, lime accent). Leaderboard is NOT a standalone tab — it lives as a subsection at the top of the Challenge tab (see T-117 scope). Requires renaming (tabs)/index → (tabs)/challenge, tuning Tabs options per SPEC §13. Keep Profile for auth/signout. 2026-04-19 DONE: 4-tab refactor live. Redirect issue opgelost door (tabs)/index.tsx Redirect component naar challenge te zetten (expo-router default resolution via index-route). Challenge-tab content is nog placeholder — live scaffold in T-117. 2026-04-19 FINAL: Tab-dominance decision UNIFORM (alle 4× 24pt, dominance via content) — SPEC §13 bijgewerkt."
+        },
+        {
+          "id": "T-017",
+          "title": "Define per-screen UX checklist template (7 questions + 5 states)",
+          "owner": "pm",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "Template created at docs/templates/ux-checklist-template.md. Covers 7 SPEC §14 UX questions (one job / primary action / title / top third / states / no-action path / halve test) + 5 required states table (loading/empty/error/success/edge). PM pastes this into notes of every Phase 1+ designer task. Moved from temp-files/ to docs/templates/ because it's permanent reference, not ephemeral."
+        }
       ]
     },
     {
@@ -41,25 +261,283 @@
       "estimatedWeeks": 1,
       "exitCriteria": "A new user can complete onboarding end-to-end and their profile is in Supabase.",
       "tasks": [
-        { "id": "T-100", "title": "Review profiles schema proposal + beantwoord 4 open vragen", "owner": "pm", "status": "done", "priority": "critical", "dependencies": ["T-014"], "estimateHours": 0.25, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "Design-doc in temp-files/t-101-profiles-schema-proposal.md. 2026-04-18: alle 4 vragen RESOLVED — (1) years_experience vervangen door experience_bucket enum (<1y/1-3y/3-5y/5+y) + UI-mapping in T-109, (2) injuries vervangen door injury_t[] preset enum met 15 values (14 specifiek + 'other'), checkbox-UI in T-112, AI-filtering in T-304, (3) display_name blocklist van 41 woorden (11 impersonatie + 15 NL + 15 EN) via banned_display_names seed-table + word-boundary regex trigger + CHECK length 1-40, (4) gender hernoemd naar biological_sex / biological_sex_t met framed onboarding copy. Extra verbeteringen: timezone-kolom (default Europe/Amsterdam, geseed via Intl.DateTimeFormat bij T-113). Downstream impact: T-108 +0.25u, T-109 +0.25u, T-112 +0.5u, T-113 +0.25u, T-114 +0.5u, T-304 +1u, T-725 +0.5u (totaal +3.25u). T-101 is nu ontblokkeerd." },
-        { "id": "T-101", "title": "Design Supabase schema: profiles table + RLS policies", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-014", "T-100"], "estimateHours": 2, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "Built idempotent migration at supabase/migrations/20260418000000_profiles.sql (229 SQL lines). Contents: 7 enums (biological_sex_t, level_t, language_t, usage_type_t, onboarding_type_t, experience_bucket_t, injury_t 15 values) wrapped in do-blocks with duplicate_object guards; banned_display_names lookup table seeded with 41 words (11 impersonation + 15 NL + 15 EN profanity) via on-conflict-do-nothing; check_display_name_allowed() trigger with PostgreSQL word-boundary regex (\\m...\\M); profiles table with all 17 columns per proposal (id PK→auth.users CASCADE, display_name CHECK 1-40, nullable identity fields until onboarding_completed_at is set, focus_muscle_groups+injuries NOT NULL default '{}', timezone default 'Europe/Amsterdam'); handle_updated_at() trigger on BEFORE UPDATE; handle_new_user() SECURITY DEFINER trigger on auth.users AFTER INSERT for auto-profile-creation; 3 RLS policies on profiles (select/update/insert own via auth.uid()=id), plus deny-all RLS on banned_display_names. Also scaffolded supabase/config.toml stub (project_id placeholder 'ronex', no CLI link yet). No deviations from approved proposal. How to apply: open Supabase dashboard (ambnbzvrgvqpiniksklf) → SQL editor → paste migration file contents → run. Alternatively once CLI is linked: `supabase db push`. Verification queries after apply: `select count(*) from public.banned_display_names;` should return 41; `select count(*) from pg_type where typname in ('biological_sex_t','level_t','language_t','usage_type_t','onboarding_type_t','experience_bucket_t','injury_t');` should return 7; `select tablename from pg_tables where schemaname='public';` should include profiles + banned_display_names; `select policyname from pg_policies where schemaname='public' and tablename='profiles';` should return 3 rows. Also fixed a pre-existing missing comma after the T-101 entry in tasks.json that broke JSON parsing." },
-        { "id": "T-102", "title": "Review exercise library proposal + beantwoord 8 open vragen", "owner": "pm", "status": "done", "priority": "critical", "dependencies": ["T-014"], "estimateHours": 0.5, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "Design-doc staat in temp-files/t-103-exercise-library-proposal.md. 2026-04-18: Proposal finaal gepatcht na 4 beslissingen — (1) sumo-deadlift + stiff-leg-deadlift challenge_suitable=false, (2) Q9 equipment availability resolved als optie A (MVP) + SPEC §16 bullet toegevoegd, (3) hip-dominant gender_bias_factor 1.05→1.15 op 8 glute-rows + calibration-note toegevoegd, (4) weighted bodyweight handling sectie toegevoegd (reps_only + optional weight, challenge-scoring negeert added weight). Finale totals: 118 exercises / 88 challenge_suitable / 30 niet / 74%. Q1-Q9 allemaal resolved. Downstream: T-201 +0.5u, T-209 +1.5u, T-304 +0.5u, T-713 +1u (totaal +3.5u, doorgevoerd in tasks.json). T-103 en T-104 zijn nu ontblokkeerd." },
-        { "id": "T-103", "title": "Design Supabase schema: exercises + categories tables", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-014", "T-102"], "estimateHours": 2, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: Started. Building migration per approved proposal (temp-files/t-103-exercise-library-proposal.md). Scope: 6 new enums (muscle_t, equipment_t, pattern_t, difficulty_t, leverage_t, logging_t) + exercises table with 14 columns (slug-PK id, name, primary_muscle, secondary_muscles[], equipment, movement_pattern, is_compound, is_unilateral, difficulty, gender_bias_factor, bodyweight_leverage, logging_type, challenge_suitable, created_at) + RLS (public read, authenticated, no writes). No separate categories table — muscle_t enum replaces it per proposal. Seed data is T-104/T-105 scope, not T-103. Delivered: supabase/migrations/20260418010000_exercises.sql with all 6 enums (idempotent do-blocks), exercises table (14 NOT NULL columns, slug-PK, gender_bias_factor CHECK [1.00, 2.00], secondary_muscles[] default '{}'), two indexes (primary_muscle full idx, challenge_suitable partial idx WHERE true), and RLS stance per spec (RLS ON + single exercises_select_all policy FOR SELECT TO authenticated USING true, zero write policies — seeds via service_role bypass RLS). Apply via Supabase SQL editor or Management API query endpoint." },
-        { "id": "T-104", "title": "Curate canonical exercise list (~100-150 exercises, NL+EN names)", "owner": "pm", "status": "done", "priority": "critical", "dependencies": ["T-102"], "estimateHours": 4, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: Started. Converting the approved 118-exercise list from temp-files/t-103-exercise-library-proposal.md into data/exercises.json (single source of truth for T-105 seed script). Per proposal decision: English names only (international gym lingua franca), no NL translations needed. Scope: parse 11 markdown tables into JSON array, validate counts per muscle (13/13/13/10/10/5/16/9/10/6/13 = 118), validate challenge_suitable split (88 true / 30 false), validate every id is a valid slug. 2026-04-18 DONE: Delivered data/exercises.json (118 objects, 13 fields each, pretty 2-space indent). All structural checks PASS: length=118, per-muscle counts all match (13/13/13/10/10/5/16/9/10/6/13), 118 unique ids, all ids match slug regex ^[a-z0-9]+(-[a-z0-9]+)*$, all enum values valid against 6 enum sets, all gender_bias_factor values in [1.00, 2.00], every object has exactly the 13 required fields. Edge cases handled: burpee.secondary='full body' prose dropped from source → secondary_muscles=[]; dead-hang primary=forearms per section header; weighted-sit-up logging_type=weight_reps; back-extension=hinge pattern. ANOMALY FOUND in source proposal: §Challenge-suitable analysis summary sentence claims '88 true / 30 false / 74%' but the enumerated exclusion bullet list contains 40 items (14 machine + 16 cable + 10 technical-risk) which matches exactly the per-row ✗/✓ markers in the 11 tables. Actual ratio from per-row markers = 78 true / 40 false (66%). Task spec instructed to use the per-row markers as source of truth, so JSON reflects 78/40. Recommend flagging for Johnny whether to reclassify 10 items (e.g. some cable isolation exercises) back to true to hit the ~80% challenge-suitability target noted in the proposal, OR update proposal summary to match the 78/40 reality. Tracking as non-blocking for T-105 seed (seed script inserts what's in the JSON). 2026-04-18 RECLASSIFICATION (Johnny's call, Option C): flipped 19 exercises false → true to reach 97/21 (82.2%). Flipped: 9 machines (machine-chest-press, pec-deck, leg-press, leg-extension, hack-squat, lying-leg-curl, seated-leg-curl, machine-hip-thrust, hip-abduction-machine — accepted despite brand variance), 5 calves (all calf-raise variants — low stakes), 4 cable (face-pull, pallof-press, cable-crunch, cable-wood-chopper — common movements), 1 barbell (sumo-deadlift — recognized powerlifting variant). Kept FALSE (21): 12 cable isolation (pulley ratio truly varies), 7 technical/injury-risk (pendlay-row, push-press, good-morning, nordic-hamstring-curl, glute-ham-raise, sissy-squat, stiff-leg-deadlift), 2 trivial wrist curls. data/exercises.json updated; temp-files/t-103-exercise-library-proposal.md synchronized (per-row markers, analysis section rebuilt with new categorization, count totals updated to 97/21/82.2%). All enum/id/count validations still PASS. Ready for T-105." },
-        { "id": "T-105", "title": "Seed exercises table with canonical list", "owner": "backend", "status": "done", "priority": "critical", "dependencies": ["T-103", "T-104"], "estimateHours": 1, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: Started. Building seed migration that inserts all 118 exercises from data/exercises.json into public.exercises. File: supabase/migrations/20260418020000_exercises_seed.sql. Must be idempotent (on conflict do nothing or upsert on id) so re-applying doesn't error. Main agent will apply via Supabase Management API after review. 2026-04-18 DONE: Delivered supabase/migrations/20260418020000_exercises_seed.sql (155 lines, 20968 bytes). Generated programmatically via a throwaway Node script that read data/exercises.json, escaped apostrophes (only occurrence: 'Farmer''s Walk'), emitted muscle_t[] array casts (ARRAY[...]::muscle_t[] for non-empty, ARRAY[]::muscle_t[] for 48 rows with empty secondary_muscles), and formatted gender_bias_factor as 2-decimal numeric to match numeric(3,2). Structure: one multi-row INSERT with 13-column list followed by exactly 118 VALUES tuples (verified: regex match on /^  \\(/gm = 118), terminated with ON CONFLICT (id) DO UPDATE SET updating all 12 non-id columns from EXCLUDED (preserves created_at default). Enum literals are bare quoted strings — Postgres auto-casts inside VALUES. Spot-checks all PASS: (1) first chest 'barbell-bench-press' → ARRAY['triceps','shoulders']::muscle_t[], 'barbell', 1.35, 'weight_reps', true. (2) 'dumbbell-fly' → ARRAY[]::muscle_t[] empty secondary, 'isolation' pattern. (3) 'farmers-walk' → apostrophe correctly doubled to 'Farmer''s Walk', logging_type='time_seconds'. (4) 'push-up' reps_only + bodyweight 'partial'. (5) last row 'weighted-sit-up' has no trailing comma before ON CONFLICT. No 'create_at' field in column list. Helper generator script was deleted after use (no .js artifact in repo). Apply instructions for main agent: POST the file contents to Supabase Management API /pg-meta query endpoint (same channel used for T-101 / T-103); verify with `select count(*) from public.exercises;` → 118, `select count(*) filter (where challenge_suitable) from public.exercises;` → 97, `select logging_type, count(*) from public.exercises group by 1;` → weight_reps 90 / reps_only 22 / time_seconds 6. Re-running the migration is safe (upsert path, created_at unchanged). No gotchas beyond the single apostrophe in 'Farmer''s Walk'." },
-        { "id": "T-106", "title": "Welcome screen with 'code' vs 'train' fork", "owner": "designer", "status": "done", "priority": "critical", "dependencies": ["T-012"], "estimateHours": 2, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: Mockup proposal (docs/mockups/t-106-welcome-fork-proposal.md) approved with UX-optimization nuances: expo-blur glow, ghost secondary CTA, value-prop tagline over generic subtitle, fade-in sequence, version label, clipboard auto-detect, auto-focus, return-key submit, animated button enable transition, error toast component, accessibility labels. Implementation delivered: (1) welcome.tsx rewritten with glow (expo-blur), two-line tagline, Start primary + 'Ik ben uitgedaagd' ghost CTA, 600ms fade-in cascade (glow→wordmark→tagline→buttons, 150ms each with 150ms stagger via reanimated withDelay/withTiming), v0.1.0·beta footer at 40% opacity, haptics on both presses; (2) new enter-code.tsx with back chevron, display-lg title, single full-width TextInput (letter-spacing 1.5, maxLength 8, autoCapitalize characters), 100ms auto-focus, clipboard regex detect /^[A-Z0-9]{3}-?[A-Z0-9]{3,4}$/i with 10s banner + Plakken Pressable, returnKeyType go, 200ms ease-out bg/text color transition via interpolateColor on valid state, stub Alert handler flagged for T-115; (3) new components/Toast.tsx (reanimated translateY+opacity, auto-hide 3s, accessibilityRole alert, accessibilityLiveRegion polite); (4) new deps: expo-blur@15.0.8, expo-haptics@15.0.8, expo-clipboard@8.0.8 (all SDK 54 compatible via npx expo install). Typography rule-5 clean on both screens (welcome: 52px exception + body + small-caps; enter-code: display-lg + body + small-caps). Accessibility: all Pressables labelled and roled, decorative glow hidden, banner announces as alert. Inline strings (flagged for Copy T-114): 'CODE' field label (identical NL/EN), onboarding.enterCodeSubtitle added to i18n inline by Designer (NL: 'Plak 'm hier om mee te doen aan een challenge.' / EN: 'Paste it here to join a challenge.'). Verified via Johnny on physical iPhone after resolving two runtime issues: (a) port conflict on 8081 resolved by killing stale PID 9428, (b) Metro cache staleness causing 'Unable to resolve module ./ExpoClipboard' error fixed with npx expo start --clear. Johnny confirmed no visible regressions post-login (Home/tabs unchanged as expected — welcome flow is pre-auth only). Stale i18n keys onboarding.wantToTrain + onboarding.hasCode can now be deleted; doing that as part of this turnover." },
-        { "id": "T-107", "title": "Welcome screen copy (NL + EN)", "owner": "copy", "status": "done", "priority": "high", "dependencies": ["T-106"], "estimateHours": 0.5, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: Started. Running in parallel with T-106 implementation. Johnny provided exact strings (NL+EN) for 8 new i18n keys during T-106 mockup approval. Scope: add keys to i18n/nl.json + i18n/en.json, verify TONE.md compliance, update i18next.d.ts typing if needed. 2026-04-18 DONE: 8 keys added verbatim per Johnny's approval. Files touched: i18n/nl.json (6 new onboarding keys: welcomeHookLine1, welcomeHookLine2, ctaStart, ctaChallenged, enterCodeHint, clipboardBanner; 2 new common keys: paste, errorToast), i18n/en.json (same 8 keys, EN values). {{code}} interpolation preserved in clipboardBanner. TONE.md tone-check: 7/8 pass; 1 FLAG — common.errorToast NL 'Oeps, probeer opnieuw' + EN 'Oops, try again' violate TONE.md banned-words list (NL line 247: 'oei, oeps, helaas'; EN line 254: 'oops, whoops'). Johnny explicitly approved these strings during T-106 mockup review so shipped as-is per Copy-agent instruction 'flag rather than silently edit'. Recommend Johnny confirm intent: either (a) accept the banned-word exception for the generic error-toast (document in TONE.md §evolution), or (b) swap to non-apologetic variant like NL 'Ging mis, probeer opnieuw' / EN 'Didn't work, try again'. i18next.d.ts typing: NO CHANGE. File does not exist in repo — searched repo root, i18n/, types/, and tsconfig.json include-globs; T-008 notes mention 'Type-safe keys via i18next.d.ts' but the file was never created (likely aspirational or removed pre-merge). lib/i18n.ts uses plain resources object without module augmentation, so t('key') is currently typed as returning any. Flag for future typing hardening task but out of T-107 scope. Stale keys for post-T-106 cleanup (flagged here because JSON forbids comments): onboarding.wantToTrain ('Ik wil trainen' / 'I want to train') and onboarding.hasCode ('Ik heb een uitdagingscode' / 'I have a challenge code') become unreferenced once T-106's welcome.tsx rewire lands — delete both from nl.json + en.json after Designer confirms T-106 turnover. Tabs/home/profile sections untouched per task spec." },
-        { "id": "T-108", "title": "Full onboarding flow: name + biological_sex screen", "owner": "designer", "status": "done", "priority": "critical", "dependencies": ["T-106"], "estimateHours": 2.25, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: estimate 2u → 2.25u (+0.25u). Kolom/enum hernoemd van gender naar biological_sex; screen-framing moet expliciet maken dat dit puur voor challenge-handicap is en nooit gedeeld wordt met andere users (copy zie T-114). Ook display_name input met length 1-40 CHECK (DB-level blocklist-trigger handelt profanity af server-side, client mag generieke foutmelding tonen). 2026-04-18 Started. Scope: first onboarding screen (after verify, before home, shown when profiles.onboarding_completed_at is null). Collect display_name (1-40 chars text) + biological_sex (male/female). Screen 1 of ~5 in full onboarding stack (T-108..T-112). Per memory rule: designer produces mockup proposal first, Johnny approves, then implementation. 2026-04-18 DONE. Implementation summary: (1) new route group app/(onboarding)/ with _layout.tsx (Stack, headerShown:false, gestureEnabled:false on screen 1) and identity.tsx (the screen — SafeArea + KeyboardAvoidingView, auto-focus on mount, animated CTA enable transition mirroring enter-code.tsx, reanimated counter fade-in at 30+ chars or on blocklist error, client-side dev blocklist TODO(T-113)-flagged, success path router.replace('/(tabs)') with TODO(T-109) marker until experience screen exists). (2) Shared progress component at components/onboarding/OnboardingProgress.tsx (5 dots left + small-caps-label right, decorative a11y on dots, progressbar role on container). (3) Draft store at stores/onboardingDraft.ts — zustand with persist+AsyncStorage, key 'ronex-onboarding-draft', full typed shape for T-108..T-112 (displayName, biologicalSex, experienceBucket, usageType, trainingFrequencyPerWeek, preferredSplit, focusMuscleGroups, injuries), per-field setters, clear() for T-113. (4) Temp dev-only 'DEV: Onboarding' Pressable added to Profile tab with TODO(T-113) marker so Johnny can reach the screen before the auth gate exists. (5) 10 i18n placeholder keys added to both nl.json+en.json (onboarding.progressLabel/identityTitle/identitySubtitle/nameLabel/sexLabel/sexMale/sexFemale/sexPrivacyLine1/sexPrivacyLine2/nameNotAvailable) — flagged as placeholders for Copy T-114. Reused existing onboarding.namePlaceholder. (6) SPEC.md §14 Rule 5 extended with 'Typography tokens: casing variants' subsection documenting small-caps-label (uppercase) vs small-caps-helper (sentence-case) — both same size/weight/tracking, both count as single level-3 in the 3-level hierarchy. design-system.md gained a matching 'Casing variants within small-caps' table. (7) Dep: zustand 5.0.12 installed via `npx expo install zustand`. Not touched: auth screens, AuthProvider, T-113 gate (out of scope). Type-check: npx tsc --noEmit exits 0. Dev server: listening on :8081 (PID 29260) after killing stale PID 28416." },
-        { "id": "T-109", "title": "Full onboarding flow: experience level screen", "owner": "designer", "status": "done", "priority": "critical", "dependencies": ["T-108"], "estimateHours": 1.75, "startedAt": "2026-04-18", "completedAt": "2026-04-18", "notes": "2026-04-18: estimate 1.5u → 1.75u (+0.25u). DB slaat experience_bucket enum op (<1y / 1-3y / 3-5y / 5+y). UI toont free int-input of picker en mapt client-side naar bucket: 0/null→null, 1→<1y, 2-3→1-3y, 4-5→3-5y, 6+→5+y. Mapping-logica hoort in de screen, niet in de DB. 2026-04-18 Started. Screen 2 van 5 onboarding. Import bestaande OnboardingProgress component (stap 2 van 5), extend onboardingDraft zustand store met experienceBucket setter. Per memory rule: mockup first, Johnny approves, dan implementation. 2026-04-18 Mockup approved (docs/mockups/t-109-experience-proposal.md) + 3 Johnny-answers + 2 extra decisions. DONE. Implementation summary: (1) NEW `app/(onboarding)/experience.tsx` — screen 2/5: title + small-caps-helper subtitle + 4 stacked full-width bucket rows (body font-semibold normal case, border 1→2px + primary on select) + Continue CTA (reanimated interpolateColor mirror of identity.tsx) + subtle skip link below CTA that direct-navigates (writes null, no Continue gate). Write-on-continue pattern like identity.tsx; draft-store hydrates on mount so back-nav preserves selection. (2) NEW `components/onboarding/BackChevron.tsx` — reusable back chevron for screens 2-5: h-10 w-10, hit-slop to 44pt, ionicons chevron-back 24pt in #A3A3A3, haptic selectionAsync + router.back. (3) REFACTORED `components/onboarding/OnboardingProgress.tsx` — added optional `leading?: ReactNode` prop. When present: renders `[leading][dots at ml-2]`. When absent (screen 1 identity.tsx): unchanged `ml-6` indent. JSDoc updated. (4) UPDATED `app/(onboarding)/_layout.tsx` — added `<Stack.Screen name='experience' />` (inherits default gestureEnabled:true for swipe-back). (5) UPDATED `app/(onboarding)/identity.tsx` — Continue now routes to `/(onboarding)/experience` instead of TODO stub to `/(tabs)`. (6) Added 7 i18n placeholder keys to nl.json + en.json (experienceTitle/Subtitle/BucketLt1y/Bucket1to3y/Bucket3to5y/BucketGte5y/SkipLink) — flagged for Copy T-114. Labels deliberately normal-case per Johnny decision 2 (not uppercase small-caps) for consistency with sex-pills. (7) TODO(T-110) forward-reference cast in experience.tsx — typed-routes can't resolve `/(onboarding)/usage-type` until T-110 ships; cast through `as any` with marker. Not touched: stores/onboardingDraft.ts (already complete from T-108), lib/theme.ts, tailwind.config.js, design-system.md, AuthProvider, auth screens, T-113 gate, temp DEV:Onboarding link on Profile tab (still needed for testing). Type-check: npx tsc --noEmit exits 0. Dev server: already running :8081 (PID 29260 from T-108, untouched). Downstream flags: Copy T-114 owns all 7 strings; Backend has nothing new (store setters were T-108)." },
-        { "id": "T-110", "title": "Full onboarding flow: usage type (loose vs plan)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-109"], "estimateHours": 1.5 },
-        { "id": "T-111", "title": "Full onboarding flow: plan preferences (if plan chosen)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-110"], "estimateHours": 2.5 },
-        { "id": "T-112", "title": "Full onboarding flow: injuries/pain points", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-111"], "estimateHours": 2, "notes": "2026-04-18: estimate 1.5u → 2u (+0.5u). Geen free-form textfield meer — 15 preset injury-checkboxes (injury_t enum: lower_back, upper_back, neck, shoulder_left, shoulder_right, elbow, wrist, knee_left, knee_right, hip, ankle, hamstring, groin, achilles, other). 0-N selecteerbaar, 'other' als catch-all voor post-launch data. Labels NL+EN in T-114." },
-        { "id": "T-113", "title": "Onboarding submission: save profile to Supabase", "owner": "backend", "status": "in_progress", "priority": "critical", "dependencies": ["T-101", "T-112"], "estimateHours": 2.25, "startedAt": "2026-04-18", "notes": "2026-04-18: estimate 2u → 2.25u (+0.25u). Bij profile-save ook timezone seeden via Intl.DateTimeFormat().resolvedOptions().timeZone (Expo Localization API). Essentieel voor per-user lokale weekly league-reset (SPEC §7.7 maandag 00:00 lokaal, gebruikt in T-725). 2026-04-18 PARTIAL SCOPE pulled forward per Johnny's request: implement (1) AuthProvider route-gate checking profiles.onboarding_completed_at after session, (2) Supabase flush helper writing whatever draft fields exist + timezone + onboarding_completed_at, (3) temporary terminal stub at /(onboarding)/usage-type with 'Klaar voor vandaag' button that flushes + routes home, (4) remove DEV: Onboarding link on Profile tab. Remaining work (full T-113): extend flush to cover T-110/T-111/T-112 fields (usage_type, training_frequency_per_week, preferred_split, focus_muscle_groups, injuries) once those screens ship and replace the stub with the real injuries screen + its Klaar button. 2026-04-18 PARTIAL LANDED: (1) providers/AuthProvider.tsx extended — fetches profiles.onboarding_completed_at for the active user on mount + on auth state change + after verifyOtp, exposes onboardingComplete (null|false|true) + refreshProfile() on the context, uses a fetchTokenRef to drop stale responses on rapid session churn, defensive fallback to `false` if row is missing (shouldn't happen due to handle_new_user trigger). (2) app/_layout.tsx — useProtectedRoute rewritten to branch: no session→/(auth)/welcome, session+onboardingComplete===null→render nothing (loading splash, no route push, prevents flicker), session+false→/(onboarding)/identity, session+true→/(tabs). Also registered (onboarding) group in the Stack screens list. (3) lib/onboarding.ts — new flushOnboardingDraft() helper, reads zustand via getState() outside React, writes display_name+biological_sex+experience_bucket+timezone (Intl.DateTimeFormat resolved)+onboarding_completed_at (new Date().toISOString()), clears draft on success, maps server errors to i18n keys (`nameNotAvailable`/`network`/`generic`), discriminated union return {success:true}|{success:false;error:string}. Does NOT write T-110/T-111/T-112 fields — they stay at table defaults. (4) app/(onboarding)/usage-type.tsx — stub screen: step 3/5 progress + BackChevron, title/subtitle from new i18n keys, single always-enabled Klaar CTA (reanimated interpolateColor same as identity/experience), on press: haptics + flush + refreshProfile + router.replace('/(tabs)'). Toast on error (generic message, never leaks blocklist word). (5) app/(onboarding)/_layout.tsx — registered <Stack.Screen name='usage-type' /> with default gestureEnabled:true. (6) app/(tabs)/profile.tsx — removed DEV: Onboarding Pressable + its useRouter import. (7) i18n/nl.json + i18n/en.json — added onboarding.stubTitle / stubSubtitle / stubDone (Copy T-114 refines). Type-check: npx tsc --noEmit exits 0. No migrations. No schema changes. No commits (per instruction). Not touched: identity.tsx / experience.tsx forward-route (already correct), stores/onboardingDraft.ts. Tonight's flow for Johnny: sign out → welcome → login → verify OTP → lands on /(onboarding)/identity (because onboarding_completed_at is null for both test accounts) → fills name+sex → Continue → experience (pick bucket OR skip) → Continue → usage-type stub → Klaar voor vandaag → profile row updates → gate sees timestamp → /(tabs). Re-login after completion skips onboarding and goes straight to /(tabs)." },
-        { "id": "T-114", "title": "All onboarding copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "critical", "dependencies": ["T-108", "T-109", "T-110", "T-111", "T-112"], "estimateHours": 2.5, "notes": "2026-04-18: estimate 2u → 2.5u (+0.5u). Extra copy: (1) biological_sex labels NL+EN: 'Biologisch geslacht' / 'Biological sex' met subtext 'Dit bepaalt hoe we challenges eerlijk houden. We delen deze info nooit met andere gebruikers.' / 'This keeps challenges fair. We never share this with other users.'. (2) experience_bucket labels NL+EN voor 4 buckets. (3) 15 injury-labels NL+EN (lower_back t/m other). (4) Generieke foutmelding voor display_name blocklist-trigger (server-side blokkering, client toont neutraal bericht zoals 'Deze naam kan niet gebruikt worden, kies een andere')." },
-        { "id": "T-115", "title": "Minimal onboarding for challenge invitees (name, gender, level)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-108"], "estimateHours": 1.5 },
-        { "id": "T-116", "title": "Test full onboarding flow end-to-end", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": ["T-113", "T-114"], "estimateHours": 1 },
-        { "id": "T-117", "title": "Challenge-tab landing screen: full §13 content order (scaffold, real data in Phase 7)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-016"], "estimateHours": 3.5, "notes": "Absorbed T-406 scope on 2026-04-18 (merge: Challenge-tab landing IS the new home screen). SPEC §13 content order top-to-bottom: (1) Leaderboard subsection (league tier + position + top 3-5 preview + 'view full leaderboard' CTA), (2) today's volume positively framed, (3) primary 'Send challenge' CTA, (4) active challenges section, (5) training log preview last 2-3 workouts, (6) next workout suggestion widget, (7) CTA to full history. Phase 1 scope = layout + empty states only, no live data. Real data wiring in Phase 7 (challenges) and Phase 4/5 (workout suggestion). Apply UX checklist (T-017). Replaces the old Home screen built in T-012." }
-      ]
+        {
+          "id": "T-100",
+          "title": "Review profiles schema proposal + beantwoord 4 open vragen",
+          "owner": "pm",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-014"
+          ],
+          "estimateHours": 0.25,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "Design-doc in temp-files/t-101-profiles-schema-proposal.md. 2026-04-18: alle 4 vragen RESOLVED — (1) years_experience vervangen door experience_bucket enum (<1y/1-3y/3-5y/5+y) + UI-mapping in T-109, (2) injuries vervangen door injury_t[] preset enum met 15 values (14 specifiek + 'other'), checkbox-UI in T-112, AI-filtering in T-304, (3) display_name blocklist van 41 woorden (11 impersonatie + 15 NL + 15 EN) via banned_display_names seed-table + word-boundary regex trigger + CHECK length 1-40, (4) gender hernoemd naar biological_sex / biological_sex_t met framed onboarding copy. Extra verbeteringen: timezone-kolom (default Europe/Amsterdam, geseed via Intl.DateTimeFormat bij T-113). Downstream impact: T-108 +0.25u, T-109 +0.25u, T-112 +0.5u, T-113 +0.25u, T-114 +0.5u, T-304 +1u, T-725 +0.5u (totaal +3.25u). T-101 is nu ontblokkeerd."
+        },
+        {
+          "id": "T-101",
+          "title": "Design Supabase schema: profiles table + RLS policies",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-014",
+            "T-100"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "Built idempotent migration at supabase/migrations/20260418000000_profiles.sql (229 SQL lines). Contents: 7 enums (biological_sex_t, level_t, language_t, usage_type_t, onboarding_type_t, experience_bucket_t, injury_t 15 values) wrapped in do-blocks with duplicate_object guards; banned_display_names lookup table seeded with 41 words (11 impersonation + 15 NL + 15 EN profanity) via on-conflict-do-nothing; check_display_name_allowed() trigger with PostgreSQL word-boundary regex (\\m...\\M); profiles table with all 17 columns per proposal (id PK→auth.users CASCADE, display_name CHECK 1-40, nullable identity fields until onboarding_completed_at is set, focus_muscle_groups+injuries NOT NULL default '{}', timezone default 'Europe/Amsterdam'); handle_updated_at() trigger on BEFORE UPDATE; handle_new_user() SECURITY DEFINER trigger on auth.users AFTER INSERT for auto-profile-creation; 3 RLS policies on profiles (select/update/insert own via auth.uid()=id), plus deny-all RLS on banned_display_names. Also scaffolded supabase/config.toml stub (project_id placeholder 'ronex', no CLI link yet). No deviations from approved proposal. How to apply: open Supabase dashboard (ambnbzvrgvqpiniksklf) → SQL editor → paste migration file contents → run. Alternatively once CLI is linked: `supabase db push`. Verification queries after apply: `select count(*) from public.banned_display_names;` should return 41; `select count(*) from pg_type where typname in ('biological_sex_t','level_t','language_t','usage_type_t','onboarding_type_t','experience_bucket_t','injury_t');` should return 7; `select tablename from pg_tables where schemaname='public';` should include profiles + banned_display_names; `select policyname from pg_policies where schemaname='public' and tablename='profiles';` should return 3 rows. Also fixed a pre-existing missing comma after the T-101 entry in tasks.json that broke JSON parsing."
+        },
+        {
+          "id": "T-102",
+          "title": "Review exercise library proposal + beantwoord 8 open vragen",
+          "owner": "pm",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-014"
+          ],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "Design-doc staat in temp-files/t-103-exercise-library-proposal.md. 2026-04-18: Proposal finaal gepatcht na 4 beslissingen — (1) sumo-deadlift + stiff-leg-deadlift challenge_suitable=false, (2) Q9 equipment availability resolved als optie A (MVP) + SPEC §16 bullet toegevoegd, (3) hip-dominant gender_bias_factor 1.05→1.15 op 8 glute-rows + calibration-note toegevoegd, (4) weighted bodyweight handling sectie toegevoegd (reps_only + optional weight, challenge-scoring negeert added weight). Finale totals: 118 exercises / 88 challenge_suitable / 30 niet / 74%. Q1-Q9 allemaal resolved. Downstream: T-201 +0.5u, T-209 +1.5u, T-304 +0.5u, T-713 +1u (totaal +3.5u, doorgevoerd in tasks.json). T-103 en T-104 zijn nu ontblokkeerd."
+        },
+        {
+          "id": "T-103",
+          "title": "Design Supabase schema: exercises + categories tables",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-014",
+            "T-102"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: Started. Building migration per approved proposal (temp-files/t-103-exercise-library-proposal.md). Scope: 6 new enums (muscle_t, equipment_t, pattern_t, difficulty_t, leverage_t, logging_t) + exercises table with 14 columns (slug-PK id, name, primary_muscle, secondary_muscles[], equipment, movement_pattern, is_compound, is_unilateral, difficulty, gender_bias_factor, bodyweight_leverage, logging_type, challenge_suitable, created_at) + RLS (public read, authenticated, no writes). No separate categories table — muscle_t enum replaces it per proposal. Seed data is T-104/T-105 scope, not T-103. Delivered: supabase/migrations/20260418010000_exercises.sql with all 6 enums (idempotent do-blocks), exercises table (14 NOT NULL columns, slug-PK, gender_bias_factor CHECK [1.00, 2.00], secondary_muscles[] default '{}'), two indexes (primary_muscle full idx, challenge_suitable partial idx WHERE true), and RLS stance per spec (RLS ON + single exercises_select_all policy FOR SELECT TO authenticated USING true, zero write policies — seeds via service_role bypass RLS). Apply via Supabase SQL editor or Management API query endpoint."
+        },
+        {
+          "id": "T-104",
+          "title": "Curate canonical exercise list (~100-150 exercises, NL+EN names)",
+          "owner": "pm",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-102"
+          ],
+          "estimateHours": 4,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: Started. Converting the approved 118-exercise list from temp-files/t-103-exercise-library-proposal.md into data/exercises.json (single source of truth for T-105 seed script). Per proposal decision: English names only (international gym lingua franca), no NL translations needed. Scope: parse 11 markdown tables into JSON array, validate counts per muscle (13/13/13/10/10/5/16/9/10/6/13 = 118), validate challenge_suitable split (88 true / 30 false), validate every id is a valid slug. 2026-04-18 DONE: Delivered data/exercises.json (118 objects, 13 fields each, pretty 2-space indent). All structural checks PASS: length=118, per-muscle counts all match (13/13/13/10/10/5/16/9/10/6/13), 118 unique ids, all ids match slug regex ^[a-z0-9]+(-[a-z0-9]+)*$, all enum values valid against 6 enum sets, all gender_bias_factor values in [1.00, 2.00], every object has exactly the 13 required fields. Edge cases handled: burpee.secondary='full body' prose dropped from source → secondary_muscles=[]; dead-hang primary=forearms per section header; weighted-sit-up logging_type=weight_reps; back-extension=hinge pattern. ANOMALY FOUND in source proposal: §Challenge-suitable analysis summary sentence claims '88 true / 30 false / 74%' but the enumerated exclusion bullet list contains 40 items (14 machine + 16 cable + 10 technical-risk) which matches exactly the per-row ✗/✓ markers in the 11 tables. Actual ratio from per-row markers = 78 true / 40 false (66%). Task spec instructed to use the per-row markers as source of truth, so JSON reflects 78/40. Recommend flagging for Johnny whether to reclassify 10 items (e.g. some cable isolation exercises) back to true to hit the ~80% challenge-suitability target noted in the proposal, OR update proposal summary to match the 78/40 reality. Tracking as non-blocking for T-105 seed (seed script inserts what's in the JSON). 2026-04-18 RECLASSIFICATION (Johnny's call, Option C): flipped 19 exercises false → true to reach 97/21 (82.2%). Flipped: 9 machines (machine-chest-press, pec-deck, leg-press, leg-extension, hack-squat, lying-leg-curl, seated-leg-curl, machine-hip-thrust, hip-abduction-machine — accepted despite brand variance), 5 calves (all calf-raise variants — low stakes), 4 cable (face-pull, pallof-press, cable-crunch, cable-wood-chopper — common movements), 1 barbell (sumo-deadlift — recognized powerlifting variant). Kept FALSE (21): 12 cable isolation (pulley ratio truly varies), 7 technical/injury-risk (pendlay-row, push-press, good-morning, nordic-hamstring-curl, glute-ham-raise, sissy-squat, stiff-leg-deadlift), 2 trivial wrist curls. data/exercises.json updated; temp-files/t-103-exercise-library-proposal.md synchronized (per-row markers, analysis section rebuilt with new categorization, count totals updated to 97/21/82.2%). All enum/id/count validations still PASS. Ready for T-105."
+        },
+        {
+          "id": "T-105",
+          "title": "Seed exercises table with canonical list",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-103",
+            "T-104"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: Started. Building seed migration that inserts all 118 exercises from data/exercises.json into public.exercises. File: supabase/migrations/20260418020000_exercises_seed.sql. Must be idempotent (on conflict do nothing or upsert on id) so re-applying doesn't error. Main agent will apply via Supabase Management API after review. 2026-04-18 DONE: Delivered supabase/migrations/20260418020000_exercises_seed.sql (155 lines, 20968 bytes). Generated programmatically via a throwaway Node script that read data/exercises.json, escaped apostrophes (only occurrence: 'Farmer''s Walk'), emitted muscle_t[] array casts (ARRAY[...]::muscle_t[] for non-empty, ARRAY[]::muscle_t[] for 48 rows with empty secondary_muscles), and formatted gender_bias_factor as 2-decimal numeric to match numeric(3,2). Structure: one multi-row INSERT with 13-column list followed by exactly 118 VALUES tuples (verified: regex match on /^  \\(/gm = 118), terminated with ON CONFLICT (id) DO UPDATE SET updating all 12 non-id columns from EXCLUDED (preserves created_at default). Enum literals are bare quoted strings — Postgres auto-casts inside VALUES. Spot-checks all PASS: (1) first chest 'barbell-bench-press' → ARRAY['triceps','shoulders']::muscle_t[], 'barbell', 1.35, 'weight_reps', true. (2) 'dumbbell-fly' → ARRAY[]::muscle_t[] empty secondary, 'isolation' pattern. (3) 'farmers-walk' → apostrophe correctly doubled to 'Farmer''s Walk', logging_type='time_seconds'. (4) 'push-up' reps_only + bodyweight 'partial'. (5) last row 'weighted-sit-up' has no trailing comma before ON CONFLICT. No 'create_at' field in column list. Helper generator script was deleted after use (no .js artifact in repo). Apply instructions for main agent: POST the file contents to Supabase Management API /pg-meta query endpoint (same channel used for T-101 / T-103); verify with `select count(*) from public.exercises;` → 118, `select count(*) filter (where challenge_suitable) from public.exercises;` → 97, `select logging_type, count(*) from public.exercises group by 1;` → weight_reps 90 / reps_only 22 / time_seconds 6. Re-running the migration is safe (upsert path, created_at unchanged). No gotchas beyond the single apostrophe in 'Farmer''s Walk'."
+        },
+        {
+          "id": "T-106",
+          "title": "Welcome screen with 'code' vs 'train' fork",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-012"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: Mockup proposal (docs/mockups/t-106-welcome-fork-proposal.md) approved with UX-optimization nuances: expo-blur glow, ghost secondary CTA, value-prop tagline over generic subtitle, fade-in sequence, version label, clipboard auto-detect, auto-focus, return-key submit, animated button enable transition, error toast component, accessibility labels. Implementation delivered: (1) welcome.tsx rewritten with glow (expo-blur), two-line tagline, Start primary + 'Ik ben uitgedaagd' ghost CTA, 600ms fade-in cascade (glow→wordmark→tagline→buttons, 150ms each with 150ms stagger via reanimated withDelay/withTiming), v0.1.0·beta footer at 40% opacity, haptics on both presses; (2) new enter-code.tsx with back chevron, display-lg title, single full-width TextInput (letter-spacing 1.5, maxLength 8, autoCapitalize characters), 100ms auto-focus, clipboard regex detect /^[A-Z0-9]{3}-?[A-Z0-9]{3,4}$/i with 10s banner + Plakken Pressable, returnKeyType go, 200ms ease-out bg/text color transition via interpolateColor on valid state, stub Alert handler flagged for T-115; (3) new components/Toast.tsx (reanimated translateY+opacity, auto-hide 3s, accessibilityRole alert, accessibilityLiveRegion polite); (4) new deps: expo-blur@15.0.8, expo-haptics@15.0.8, expo-clipboard@8.0.8 (all SDK 54 compatible via npx expo install). Typography rule-5 clean on both screens (welcome: 52px exception + body + small-caps; enter-code: display-lg + body + small-caps). Accessibility: all Pressables labelled and roled, decorative glow hidden, banner announces as alert. Inline strings (flagged for Copy T-114): 'CODE' field label (identical NL/EN), onboarding.enterCodeSubtitle added to i18n inline by Designer (NL: 'Plak 'm hier om mee te doen aan een challenge.' / EN: 'Paste it here to join a challenge.'). Verified via Johnny on physical iPhone after resolving two runtime issues: (a) port conflict on 8081 resolved by killing stale PID 9428, (b) Metro cache staleness causing 'Unable to resolve module ./ExpoClipboard' error fixed with npx expo start --clear. Johnny confirmed no visible regressions post-login (Home/tabs unchanged as expected — welcome flow is pre-auth only). Stale i18n keys onboarding.wantToTrain + onboarding.hasCode can now be deleted; doing that as part of this turnover."
+        },
+        {
+          "id": "T-107",
+          "title": "Welcome screen copy (NL + EN)",
+          "owner": "copy",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-106"
+          ],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: Started. Running in parallel with T-106 implementation. Johnny provided exact strings (NL+EN) for 8 new i18n keys during T-106 mockup approval. Scope: add keys to i18n/nl.json + i18n/en.json, verify TONE.md compliance, update i18next.d.ts typing if needed. 2026-04-18 DONE: 8 keys added verbatim per Johnny's approval. Files touched: i18n/nl.json (6 new onboarding keys: welcomeHookLine1, welcomeHookLine2, ctaStart, ctaChallenged, enterCodeHint, clipboardBanner; 2 new common keys: paste, errorToast), i18n/en.json (same 8 keys, EN values). {{code}} interpolation preserved in clipboardBanner. TONE.md tone-check: 7/8 pass; 1 FLAG — common.errorToast NL 'Oeps, probeer opnieuw' + EN 'Oops, try again' violate TONE.md banned-words list (NL line 247: 'oei, oeps, helaas'; EN line 254: 'oops, whoops'). Johnny explicitly approved these strings during T-106 mockup review so shipped as-is per Copy-agent instruction 'flag rather than silently edit'. Recommend Johnny confirm intent: either (a) accept the banned-word exception for the generic error-toast (document in TONE.md §evolution), or (b) swap to non-apologetic variant like NL 'Ging mis, probeer opnieuw' / EN 'Didn't work, try again'. i18next.d.ts typing: NO CHANGE. File does not exist in repo — searched repo root, i18n/, types/, and tsconfig.json include-globs; T-008 notes mention 'Type-safe keys via i18next.d.ts' but the file was never created (likely aspirational or removed pre-merge). lib/i18n.ts uses plain resources object without module augmentation, so t('key') is currently typed as returning any. Flag for future typing hardening task but out of T-107 scope. Stale keys for post-T-106 cleanup (flagged here because JSON forbids comments): onboarding.wantToTrain ('Ik wil trainen' / 'I want to train') and onboarding.hasCode ('Ik heb een uitdagingscode' / 'I have a challenge code') become unreferenced once T-106's welcome.tsx rewire lands — delete both from nl.json + en.json after Designer confirms T-106 turnover. Tabs/home/profile sections untouched per task spec."
+        },
+        {
+          "id": "T-108",
+          "title": "Full onboarding flow: name + biological_sex screen",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-106"
+          ],
+          "estimateHours": 2.25,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: estimate 2u → 2.25u (+0.25u). Kolom/enum hernoemd van gender naar biological_sex; screen-framing moet expliciet maken dat dit puur voor challenge-handicap is en nooit gedeeld wordt met andere users (copy zie T-114). Ook display_name input met length 1-40 CHECK (DB-level blocklist-trigger handelt profanity af server-side, client mag generieke foutmelding tonen). 2026-04-18 Started. Scope: first onboarding screen (after verify, before home, shown when profiles.onboarding_completed_at is null). Collect display_name (1-40 chars text) + biological_sex (male/female). Screen 1 of ~5 in full onboarding stack (T-108..T-112). Per memory rule: designer produces mockup proposal first, Johnny approves, then implementation. 2026-04-18 DONE. Implementation summary: (1) new route group app/(onboarding)/ with _layout.tsx (Stack, headerShown:false, gestureEnabled:false on screen 1) and identity.tsx (the screen — SafeArea + KeyboardAvoidingView, auto-focus on mount, animated CTA enable transition mirroring enter-code.tsx, reanimated counter fade-in at 30+ chars or on blocklist error, client-side dev blocklist TODO(T-113)-flagged, success path router.replace('/(tabs)') with TODO(T-109) marker until experience screen exists). (2) Shared progress component at components/onboarding/OnboardingProgress.tsx (5 dots left + small-caps-label right, decorative a11y on dots, progressbar role on container). (3) Draft store at stores/onboardingDraft.ts — zustand with persist+AsyncStorage, key 'ronex-onboarding-draft', full typed shape for T-108..T-112 (displayName, biologicalSex, experienceBucket, usageType, trainingFrequencyPerWeek, preferredSplit, focusMuscleGroups, injuries), per-field setters, clear() for T-113. (4) Temp dev-only 'DEV: Onboarding' Pressable added to Profile tab with TODO(T-113) marker so Johnny can reach the screen before the auth gate exists. (5) 10 i18n placeholder keys added to both nl.json+en.json (onboarding.progressLabel/identityTitle/identitySubtitle/nameLabel/sexLabel/sexMale/sexFemale/sexPrivacyLine1/sexPrivacyLine2/nameNotAvailable) — flagged as placeholders for Copy T-114. Reused existing onboarding.namePlaceholder. (6) SPEC.md §14 Rule 5 extended with 'Typography tokens: casing variants' subsection documenting small-caps-label (uppercase) vs small-caps-helper (sentence-case) — both same size/weight/tracking, both count as single level-3 in the 3-level hierarchy. design-system.md gained a matching 'Casing variants within small-caps' table. (7) Dep: zustand 5.0.12 installed via `npx expo install zustand`. Not touched: auth screens, AuthProvider, T-113 gate (out of scope). Type-check: npx tsc --noEmit exits 0. Dev server: listening on :8081 (PID 29260) after killing stale PID 28416."
+        },
+        {
+          "id": "T-109",
+          "title": "Full onboarding flow: experience level screen",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-108"
+          ],
+          "estimateHours": 1.75,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-18",
+          "notes": "2026-04-18: estimate 1.5u → 1.75u (+0.25u). DB slaat experience_bucket enum op (<1y / 1-3y / 3-5y / 5+y). UI toont free int-input of picker en mapt client-side naar bucket: 0/null→null, 1→<1y, 2-3→1-3y, 4-5→3-5y, 6+→5+y. Mapping-logica hoort in de screen, niet in de DB. 2026-04-18 Started. Screen 2 van 5 onboarding. Import bestaande OnboardingProgress component (stap 2 van 5), extend onboardingDraft zustand store met experienceBucket setter. Per memory rule: mockup first, Johnny approves, dan implementation. 2026-04-18 Mockup approved (docs/mockups/t-109-experience-proposal.md) + 3 Johnny-answers + 2 extra decisions. DONE. Implementation summary: (1) NEW `app/(onboarding)/experience.tsx` — screen 2/5: title + small-caps-helper subtitle + 4 stacked full-width bucket rows (body font-semibold normal case, border 1→2px + primary on select) + Continue CTA (reanimated interpolateColor mirror of identity.tsx) + subtle skip link below CTA that direct-navigates (writes null, no Continue gate). Write-on-continue pattern like identity.tsx; draft-store hydrates on mount so back-nav preserves selection. (2) NEW `components/onboarding/BackChevron.tsx` — reusable back chevron for screens 2-5: h-10 w-10, hit-slop to 44pt, ionicons chevron-back 24pt in #A3A3A3, haptic selectionAsync + router.back. (3) REFACTORED `components/onboarding/OnboardingProgress.tsx` — added optional `leading?: ReactNode` prop. When present: renders `[leading][dots at ml-2]`. When absent (screen 1 identity.tsx): unchanged `ml-6` indent. JSDoc updated. (4) UPDATED `app/(onboarding)/_layout.tsx` — added `<Stack.Screen name='experience' />` (inherits default gestureEnabled:true for swipe-back). (5) UPDATED `app/(onboarding)/identity.tsx` — Continue now routes to `/(onboarding)/experience` instead of TODO stub to `/(tabs)`. (6) Added 7 i18n placeholder keys to nl.json + en.json (experienceTitle/Subtitle/BucketLt1y/Bucket1to3y/Bucket3to5y/BucketGte5y/SkipLink) — flagged for Copy T-114. Labels deliberately normal-case per Johnny decision 2 (not uppercase small-caps) for consistency with sex-pills. (7) TODO(T-110) forward-reference cast in experience.tsx — typed-routes can't resolve `/(onboarding)/usage-type` until T-110 ships; cast through `as any` with marker. Not touched: stores/onboardingDraft.ts (already complete from T-108), lib/theme.ts, tailwind.config.js, design-system.md, AuthProvider, auth screens, T-113 gate, temp DEV:Onboarding link on Profile tab (still needed for testing). Type-check: npx tsc --noEmit exits 0. Dev server: already running :8081 (PID 29260 from T-108, untouched). Downstream flags: Copy T-114 owns all 7 strings; Backend has nothing new (store setters were T-108)."
+        },
+        {
+          "id": "T-110",
+          "title": "Full onboarding flow: usage type (loose vs plan)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-109"
+          ],
+          "estimateHours": 1.5,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: Designer + Copy gecombineerd afgeleverd (copy inline per screen, niet in centrale T-114 pass). Screen 3/5 onboarding, usage_type enum (loose/plan). Volgt identity/experience-patroon: BackChevron + OnboardingProgress + 2 pills + Continue CTA met reanimated color-transition. Draft-store setter al aanwezig (T-108 scope). Stub usage-type screen uit T-113 partial werd vervangen door full screen; flush-logic in lib/onboarding.ts uitgebreid naar full scope in T-113 (zie T-113 notes)."
+        },
+        {
+          "id": "T-111",
+          "title": "Full onboarding flow: plan preferences (if plan chosen)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-110"
+          ],
+          "estimateHours": 2.5,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: Designer + Copy inline. Conditional screen (alleen als usage_type=plan), anders skip naar T-112. Velden: training_frequency_per_week (int 2-6), preferred_split (split_type_t enum — zie T-113-A migration), focus_muscle_groups (muscle_t[] multi-select). Volgt bekend screen-patroon."
+        },
+        {
+          "id": "T-112",
+          "title": "Full onboarding flow: injuries/pain points",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-111"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-18: estimate 1.5u → 2u (+0.5u). Geen free-form textfield meer — 15 preset injury-checkboxes (injury_t enum: lower_back, upper_back, neck, shoulder_left, shoulder_right, elbow, wrist, knee_left, knee_right, hip, ankle, hamstring, groin, achilles, other). 0-N selecteerbaar, 'other' als catch-all voor post-launch data. 2026-04-19 DONE: Designer + Copy inline. Labels NL+EN inline geleverd per checkbox. Laatste screen in onboarding-stack; Klaar CTA triggert flushOnboardingDraft (T-113 full flush)."
+        },
+        {
+          "id": "T-113-A",
+          "title": "Backend migration: split_type_t enum",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-101"
+          ],
+          "estimateHours": 0.5,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19: Carved out from T-111 to land DB enum needed for preferred_split column. split_type_t values TBD in migration notes. Applied live via Supabase Management API (MCP) — no CLI link yet. Migration file committed alongside."
+        },
+        {
+          "id": "T-113",
+          "title": "Onboarding submission: save profile to Supabase",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-101",
+            "T-112"
+          ],
+          "estimateHours": 2.25,
+          "startedAt": "2026-04-18",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-18: estimate 2u → 2.25u (+0.25u). Bij profile-save ook timezone seeden via Intl.DateTimeFormat().resolvedOptions().timeZone (Expo Localization API). Essentieel voor per-user lokale weekly league-reset (SPEC §7.7 maandag 00:00 lokaal, gebruikt in T-725). 2026-04-18 PARTIAL landed (AuthProvider gate, stub usage-type, flush helper voor identity/experience velden). 2026-04-19 FULL SCOPE DONE: flushOnboardingDraft() uitgebreid naar alle T-110/T-111/T-112 velden (usage_type, training_frequency_per_week, preferred_split, focus_muscle_groups, injuries), stub usage-type vervangen door full screen (T-110), injuries-screen (T-112) is nu de terminale 'Klaar' trigger. End-to-end flow verified in T-116."
+        },
+        {
+          "id": "T-114",
+          "title": "All onboarding copy (NL + EN)",
+          "owner": "copy",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-108",
+            "T-109",
+            "T-110",
+            "T-111",
+            "T-112"
+          ],
+          "estimateHours": 2.5,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE als pass: n.v.t. Copy is inline-geleverd per screen tijdens T-108/T-109/T-110/T-111/T-112 (elke Designer-task bracht eigen NL+EN strings mee, direct in i18n/nl.json + i18n/en.json). Geen aparte centrale audit-pass nodig; Johnny expliciet gedefer'd. Als er ooit inconsistenties blijken: log als P2 bug, niet als nieuwe T-114 revival."
+        },
+        {
+          "id": "T-115",
+          "title": "Minimal onboarding for challenge invitees (name, gender, level)",
+          "owner": "designer",
+          "status": "blocked",
+          "priority": "high",
+          "dependencies": [
+            "T-108"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-19 DEFERRED naar Phase 7: minimal invitee-onboarding hoort logisch bij de challenge-invite flow (Phase 7 — Challenges & Leagues). Loskoppelen van Phase 1 omdat er in Phase 1 nog geen challenge-invite-entrypoint is om deze flow te triggeren. Heractieveren bij T-706 challenge-code landing + T-715 first-app-open code input.",
+          "blockedReason": "Deferred to Phase 7: not valuable for MVP without live challenges."
+        },
+        {
+          "id": "T-116",
+          "title": "Test full onboarding flow end-to-end",
+          "owner": "tester",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-113",
+            "T-114"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: E2E run van welcome → login → verify → identity → experience → usage-type → plan-preferences (indien plan) → injuries → Klaar → /(tabs). 12 bugs gelogd in docs/BUGS.md. P0/P1 (B-025 + B-016) direct gefixt — Phase 1 exit-criterium (0 open P0/P1) bereikt. P2/P3 doorgeschoven naar Phase 2 backlog: B-017, B-018, B-019, B-020, B-021, B-022, B-023, B-024, B-026, B-027."
+        },
+        {
+          "id": "T-117",
+          "title": "Challenge-tab landing screen: full §13 content order (scaffold, real data in Phase 7)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-016"
+          ],
+          "estimateHours": 3.5,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "Absorbed T-406 scope on 2026-04-18 (merge: Challenge-tab landing IS the new home screen). SPEC §13 content order top-to-bottom: (1) Leaderboard subsection (league tier + position + top 3-5 preview + 'view full leaderboard' CTA), (2) today's volume positively framed, (3) primary 'Send challenge' CTA, (4) active challenges section, (5) training log preview last 2-3 workouts, (6) next workout suggestion widget, (7) CTA to full history. Phase 1 scope = layout + empty states only, no live data. Real data wiring in Phase 7 (challenges) and Phase 4/5 (workout suggestion). Apply UX checklist (T-017). Replaces the old Home screen built in T-012. 2026-04-19 DONE: MOCK_DATA toggle aanwezig (flip naar false zodra Phase 7 real data levert), 4 sub-components (Leaderboard, TodayVolume, ActiveChallenges, WorkoutHistory preview). Empty states + layout live, content wiring in Phase 4/5/7."
+        }
+      ],
+      "closedAt": "2026-04-19",
+      "closureNotes": "Phase 1 gesloten op 2026-04-19 met 0 open P0/P1 bugs. T-115 defer'd naar Phase 7 (minimal invitee-onboarding hoort bij challenge-invite flow). T-114 als aparte pass n.v.t. — copy is inline per screen geleverd. P2/P3 bugs (10x) doorgeschoven naar Phase 2 backlog."
     },
     {
       "id": "phase-2",
@@ -69,26 +547,326 @@
       "estimatedWeeks": 2,
       "exitCriteria": "You can go to the gym without internet, log a full workout, and see your PR updated when you get home.",
       "tasks": [
-        { "id": "T-201", "title": "Design schema: workouts + workout_sets + personal_records tables", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-105"], "estimateHours": 3, "notes": "2026-04-18: estimate 2.5u → 3u (+0.5u). Schema-uitbreiding per T-103 proposal: workout_sets.weight_kg nullable, duration_seconds toegevoegd, logging_type per row (gedreven door exercises.logging_type)." },
-        { "id": "T-202", "title": "RLS policies for all workout tables", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-201"], "estimateHours": 2 },
-        { "id": "T-203", "title": "Set up Zustand for workout state", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-001"], "estimateHours": 1 },
-        { "id": "T-204", "title": "Set up TanStack Query for server state", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-001"], "estimateHours": 1 },
-        { "id": "T-205", "title": "AsyncStorage persistence layer for offline-first", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-203"], "estimateHours": 3 },
-        { "id": "T-206", "title": "Exercise picker UI (search canonical list)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-006", "T-105"], "estimateHours": 3 },
-        { "id": "T-207", "title": "Workout setup screen (pick exercises, set targets)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-206"], "estimateHours": 3 },
-        { "id": "T-208", "title": "Active workout UI: big buttons, gym-friendly", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-207"], "estimateHours": 4 },
-        { "id": "T-209", "title": "Per-set logging: weight + reps input", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-208"], "estimateHours": 4, "notes": "2026-04-18: estimate 2.5u → 4u (+1.5u). 3 UI-varianten gedreven door logging_type (weight_reps / reps_only / time_seconds) + optional weight-input bij reps_only (weighted pull-ups, dips — via '+gewicht' knop, niet prominent) + L/R inputs voor unilateral exercises (aggregated voor scoring)." },
-        { "id": "T-210", "title": "Historical data surfacing: 'last time X kg for Y reps'", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-201", "T-209"], "estimateHours": 2 },
-        { "id": "T-211", "title": "Progression suggestion UI during logging", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-210"], "estimateHours": 2 },
-        { "id": "T-212", "title": "Workout complete flow", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-208"], "estimateHours": 2 },
-        { "id": "T-213", "title": "Sync logic: local state → Supabase on network available", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-205", "T-212"], "estimateHours": 4 },
-        { "id": "T-214", "title": "PR detection logic on workout complete", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-213"], "estimateHours": 2 },
-        { "id": "T-215", "title": "PR celebration UI (moment, not inflation)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-214"], "estimateHours": 1.5 },
-        { "id": "T-216", "title": "Workout history screen", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-213"], "estimateHours": 2.5 },
-        { "id": "T-217", "title": "All logging-flow copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-209", "T-211", "T-212", "T-215"], "estimateHours": 1.5 },
-        { "id": "T-218", "title": "Test offline scenario: airplane mode, log workout, come back online", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": ["T-213", "T-214"], "estimateHours": 1.5 },
-        { "id": "T-219", "title": "Test: close app mid-workout, reopen, state persists", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": ["T-205"], "estimateHours": 1 },
-        { "id": "T-220", "title": "Test: PR detection accuracy on edge cases", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-214"], "estimateHours": 1 }
+        {
+          "id": "T-201",
+          "title": "Design schema: workouts + workout_sets + personal_records tables",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-105"
+          ],
+          "estimateHours": 3,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-18: estimate 2.5u → 3u (+0.5u). Schema-uitbreiding per T-103 proposal: workout_sets.weight_kg nullable, duration_seconds toegevoegd, logging_type per row (gedreven door exercises.logging_type). 2026-04-19 DONE: migratie 20260419105008 live in Supabase. Tables: workouts, workout_sets, personal_records. RLS enabled (policies bundled hier — zie T-202). security_invoker view voor join-queries. 4 indexen (workouts.user_id, workout_sets.workout_id, personal_records.user_id+exercise_id, etc.). Trigger enforces logging_type consistency met exercises.logging_type."
+        },
+        {
+          "id": "T-202",
+          "title": "RLS policies for all workout tables",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-201"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: RLS policies bundled in T-201 migratie 20260419105008 (own-row select/insert/update/delete via auth.uid()=user_id). Security_invoker view gebruikt voor join-queries zodat RLS doorpropageert. Geen aparte migratie nodig."
+        },
+        {
+          "id": "T-203",
+          "title": "Set up Zustand for workout state",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: stores/activeWorkout.ts + types/workout.ts. Zustand 5 met persist middleware + AsyncStorage adapter. Shape: active workout draft, exercises[], sets[], timers, dirty-flags. Setters triggeren lazy-require sync-hook (T-213) om require-cycle te vermijden. Hydratation-guard in _layout."
+        },
+        {
+          "id": "T-204",
+          "title": "Set up TanStack Query for server state",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-001"
+          ],
+          "estimateHours": 1,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: Al geland tijdens T-206 (picker gebruikt @tanstack/react-query 5.99). lib/queryClient.ts + QueryClientProvider in app/_layout.tsx. Hook-pattern: lib/queries/useExercises.ts. staleTime+gcTime Infinity voor canonieke data."
+        },
+        {
+          "id": "T-205",
+          "title": "AsyncStorage persistence layer for offline-first",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-203"
+          ],
+          "estimateHours": 3,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: gebundeld in T-203. Zustand persist middleware met AsyncStorage adapter — survives app-kill, 24h auto-cleanup stale drafts, resume-card in Challenge-tab leest uit dezelfde store. Validated door Johnny (close app mid-workout → reopen → state intact). T-219 tester-task dekt dit scenario formeel af."
+        },
+        {
+          "id": "T-206",
+          "title": "Exercise picker UI (search canonical list)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-006",
+            "T-105"
+          ],
+          "estimateHours": 3,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE. 9-decision mockup approved, implementation shipped. (1) NEW `app/picker/exercises.tsx` — full-screen modal route: header (display-lg title + close X), sticky 48pt search, 2 horizontal pill rows (muscle / equipment, 'Alle' pill resets each axis), results via SectionList grouped per muscle by default, flat when exactly one muscle is filtered. (2) NEW `app/picker/_layout.tsx` — Stack with `presentation: 'modal'` for native iOS slide-up + swipe-down dismiss. Registered in root `app/_layout.tsx` as a Stack.Screen. (3) NEW `lib/queries/useExercises.ts` — TanStack Query hook, selects `id, name, primary_muscle, equipment, logging_type, is_compound, is_unilateral` from `exercises` table. staleTime + gcTime Infinity (canonical library, read-only). Client-side sort: compound DESC then name ASC. (4) NEW `lib/queryClient.ts` + QueryClientProvider wired in `app/_layout.tsx`. (5) NEW `stores/exercisePickerResult.ts` — one-shot Zustand channel for handing selected exerciseId back to caller (rationale: survives modal animation, de-couples from T-203 workout store parallel build, multi-caller-ready for T-207 + Phase 5). Contract: picker writes id + router.back(); caller reads + clears on focus. (6) NEW `components/picker/FilterPill.tsx` — 36pt pill, lime active / surface inactive, small-caps uppercase label, haptic selection. (7) NEW `components/picker/ExerciseRow.tsx` — 64pt row, name + optional 'L/R' small-caps, muscle · equipment · Compound metadata line, logging-type label right-aligned (WEIGHT × REPS / REPS / TIJD per approved decision 6). (8) i18n: 26 new keys added to nl.json + en.json under `picker.*` namespace (title, search, filter-all, empty-state, section-header template, 11 muscleGroups, 8 equipment, 3 loggingType, compound, unilateral). Flagged for Copy polish pass. (9) Installed `@tanstack/react-query@^5.99.1`. Dynamic i18n lookups (muscleGroups.${enum}, equipment.${enum}) cast via local `TFn` widening since i18next v17 typed-keys reject runtime-constructed strings — matches existing `as any` pattern for typed-routes forward-refs. (10) Supabase live-data confirmed: `@/lib/supabase` imported correctly, no MOCK_DATA in picker. npx tsc --noEmit exit 0. Open issues: picker uses SectionList for both grouped + flat (single-section) paths — fine for 118 rows but if library 5x's we should switch to FlashList (T-2xx if perf regression). T-203 parallel build: when it lands, the active-workout screen will consume `useExercisePickerResult` on focus — no picker changes needed."
+        },
+        {
+          "id": "T-207",
+          "title": "Workout setup screen (pick exercises, set targets)",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-206"
+          ],
+          "estimateHours": 3,
+          "notes": "2026-04-19 WONTFIX: scope absorbed into T-208 active workout screen. Ontwerp-beslissing: geen apart 'setup' scherm — user tapt 'Add exercise' direct op het active-workout scherm, picker opent, selectie wordt toegevoegd aan live sessie. Geen targets vooraf (progression suggestion T-211 dekt dit in-line per set). Vereenvoudigt MVP flow en past bij SPEC §13 Workout-tab IA. [wontfix] Scope absorbed into T-208 — direct add-exercise on active screen, no separate setup step.",
+          "completedAt": "2026-04-19T12:03:26.522Z"
+        },
+        {
+          "id": "T-208",
+          "title": "Active workout UI: big buttons, gym-friendly",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-206"
+          ],
+          "estimateHours": 4,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE (Fase 1 — weight_reps): volledige active-workout screen infrastructure. Header met wall-clock + elapsed timer, volume-badge met bounce-animatie bij set-complete, rest-timer met preset (60/90/120/180s) + custom input + skip, finish-sheet (bottom-sheet met volume + duration summary → confirm save), discard-modal (destructive alert), resume-card op Challenge-tab als draft bestaat, 24h auto-cleanup stale drafts. Delete-UX: kruisje per set-row + long-press toggle voor edit-mode (swipe-to-delete weggegooid na UX-issues met truncation + multi-open). Device-gevalideerd door Johnny. Bug-fixes in dezelfde sessie: Metro retryer resolve (unstable_enablePackageExports), SSR window-guard in supabase.ts, require-cycle fix via lazy require in setters, empty-state subtitle copy disambiguatie."
+        },
+        {
+          "id": "T-209",
+          "title": "Per-set logging: weight + reps input + reps_only + time_seconds variants",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-208"
+          ],
+          "estimateHours": 4,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-18: estimate 2.5u → 4u (+1.5u). 3 UI-varianten gedreven door logging_type (weight_reps / reps_only / time_seconds) + optional weight-input bij reps_only (weighted pull-ups, dips — via '+gewicht' knop, niet prominent) + L/R inputs voor unilateral exercises (aggregated voor scoring). 2026-04-19 FASE 1 DONE (weight_reps variant): input-rows met weight-kg + reps numeriek, keyboard-accessory slot, checkmark om set te voltooien, edit-mode voor correcties. 2026-04-19 FASE 2 DONE: `RepsOnlyRow` + `TimeSecondsRow` gebouwd, variant-dispatch in `ExerciseGroup.tsx` (switch op `exercise.logging_type`) met per-variant column-headers. Johnny's 4 beslissingen geïmplementeerd: (1) unilateral time_seconds = ONE stopwatch + L/R pill (sequentieel, niet twee tegelijk), aggregation `max(L,R)` in `seconds` + raw `{l,r}` JSON in `notes`; (2) manual-entry is pure integer seconds (geen mm:ss parsing) met display-only `formatSeconds()` helper; (3) `+ kg` toggle voor reps_only is ALWAYS subtly visible (text-small-caps muted), per-group ephemeral expanded-state in ExerciseGroup (niet gepersisteerd, per-exercise preference = post-MVP); (4) Reset-knop op TimeSecondsRow alleen post-Stop (geen mid-run). Fase-1 guard + `unsupportedLoggingType` toast verwijderd uit `app/workout/active.tsx` (i18n-key blijft voor later). Nieuwe i18n keys: setsHeaderTime, addWeightToggle, removeWeightToggle, stopwatchStart/Stop/Reset, unilateralLeft/Right, timeManualEntryHint (NL loanwords: Start/Stop/Reset blijven Engels in NL). `lastTime?: LastTimeData | null` optional prop toegevoegd aan RepsOnlyRow + TimeSecondsRow als T-211 drop-in. KeyboardAccessory niet gemount (T-211 scope), trend/useLastSetForExercise niet bekabeld (T-211). Copy-flag in TimeSecondsRow: Johnny overweegt 'Nieuwe poging' i.p.v. 'Reset' — Copy agent valideert in T-217. 2026-04-19 TimeSecondsRow redesign: stopwatch → optional helper, non-destructive merge, long-press cancel."
+        },
+        {
+          "id": "T-210",
+          "title": "Historical data surfacing: 'last time X kg for Y reps'",
+          "owner": "backend",
+          "status": "done",
+          "priority": "high",
+          "dependencies": [
+            "T-201",
+            "T-209"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-19",
+          "notes": "2026-04-19: keyboard-accessory slot is al gebouwd in T-208 Fase 1, wacht alleen nog op data-query. Scope: Supabase query die laatste set per exercise-id ophaalt (weight_kg + reps + duration_seconds afhankelijk van logging_type), caching via TanStack Query, rendering in keyboard-accessory boven het toetsenbord. Alleen data + hook + minimale render — full progression-suggestion UI is T-211. 2026-04-19 DONE: hook `lib/queries/useLastSetForExercise.ts` (query key `['lastSetForExercise', exerciseId]`, staleTime 5min, JOIN on workouts!inner + explicit user_id filter as belt-and-braces alongside RLS, returns all 3 value cols). Cache invalidation geïntegreerd in `lib/sync/syncActiveWorkout.ts` (invalidateLastSetCaches() na markSynced, dedup exercise_ids met completed=true). KeyboardAccessory render-wiring uitgesteld naar T-211 via TODO in active.tsx — KeyboardAccessory is nu nog niet gemount in de screen en het active-row ↔ accessory pad is T-211's designer-scope. Hook is drop-in voor T-211."
+        },
+        {
+          "id": "T-211",
+          "title": "Progression suggestion (split into T-211a + T-211b)",
+          "owner": "pm",
+          "status": "wontfix",
+          "priority": "high",
+          "dependencies": [
+            "T-210"
+          ],
+          "estimateHours": 0,
+          "notes": "2026-04-19 SPLIT: opgebroken in T-211a (backend helper) + T-211b (designer mount). Rationale: rule-logica is unit-testbaar en los van render; designer kan drop-in helper consumeren. Zie T-211a/T-211b voor scope."
+        },
+        {
+          "id": "T-211a",
+          "title": "Progression rule helper (double-progression, conservative)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "medium",
+          "dependencies": [
+            "T-210"
+          ],
+          "estimateHours": 1.5,
+          "notes": "Pure helper `lib/progression/suggest.ts`. API: `suggestNext(lastSet, exercise) => { hint: { kgDelta?: number, repDelta?: number, copyKey: string, copyVars?: object }, trend: 'up'|'same'|'down'|null }`. Regels: COMPOUND (is_compound=true, rep-range 8-10): alle sets 10+ reps → +2.5kg reset 8 reps; 8-9 reps → zelfde kg +1 rep; <8 reps → stabiliseer. ISOLATION (is_compound=false, 10-12): idem maar +1.25kg increment. REPS_ONLY (bodyweight): geen kg, altijd +1 rep vs vorige. TIME_SECONDS: +5sec vs vorige. TREND: current-typed vs last → up/same/down (nullable als nog niks getypt). EDGE: geen last-set → copyKey 'progression.firstTime'; last >4 weken geleden → copyKey 'progression.longGap'. i18n-copy-keys met placeholders toevoegen in en.json + nl.json (bijv. 'progression.tryMoreReps' = 'Vorige: {{kg}}kg × {{reps}}. Probeer +1 rep.'). Unit-testbaar, géén Supabase-call hier — hook `useLastSetForExercise` (T-210) levert input. Geen render — dat is T-211b. 2026-04-19 DEFERRED: priority high → medium. Reden: parallel-tranche UX-herziening (pre-fill uit historie + carry-forward + steppers, via `lib/exerciseStep.ts` + `addSetWithPrefill`) levert de 80% progressie-UX via dumb copy-last-values heuristiek. Pas na device-ship van die UX-herziening en 1-2 weken gebruik kan Johnny voelen of de smart bump-nudge (3×8 → 82.5×5) extra waarde geeft boven de stepper-tap. Herzien na dat feedback-moment."
+        },
+        {
+          "id": "T-211b",
+          "title": "Mount KeyboardAccessory + render progression hint",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "medium",
+          "dependencies": [
+            "T-211a"
+          ],
+          "estimateHours": 1,
+          "notes": "Mount `KeyboardAccessory` (al gebouwd in T-208 Fase 1) op `app/workout/active.tsx` via `ExerciseGroup.tsx` rows. Data-flow: `useLastSetForExercise(exerciseId)` (T-210) → `suggestNext(last, exercise)` (T-211a) → render copy + trend-arrow in accessory. Trend-arrow: ↑ lime (colors.primary) bij up, → muted bij same, ↓ subtiel rood (niet alarmerend) bij down. CRITICAL: input-velden blijven LEEG; suggestie is HINT, niet pre-fill. User mag negeren. Neemt T-209 weight_reps row-variant mee. Copy via i18n-keys uit T-211a, geen hardcoded strings. 2026-04-19 DEFERRED: priority high → medium (cascade van T-211a). Zie T-211a notes voor rationale."
+        },
+        {
+          "id": "T-212",
+          "title": "Workout complete flow",
+          "owner": "designer",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-208"
+          ],
+          "estimateHours": 2,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: finish-sheet + discard-modal + 24h auto-cleanup gebundeld in T-208 implementation. Finish-sheet toont totale volume + duration + set-count, confirm save flusht draft naar Supabase via T-213 sync-layer, clear activeWorkout store. Discard-modal (destructive alert) toont warning, on confirm wist draft zonder save."
+        },
+        {
+          "id": "T-213",
+          "title": "Sync logic: local state → Supabase on network available",
+          "owner": "backend",
+          "status": "done",
+          "priority": "critical",
+          "dependencies": [
+            "T-205",
+            "T-212"
+          ],
+          "estimateHours": 4,
+          "startedAt": "2026-04-19",
+          "completedAt": "2026-04-19",
+          "notes": "2026-04-19 DONE: offline-first sync engine compleet. Architectuur: stores/syncStatus.ts (zustand: idle/syncing/error/offline), useIsOnline() hook via @react-native-community/netinfo, debounce (1.5s coalesce) + retry-backoff (exp, max 5 attempts, resets bij online-event), integrated in activeWorkout setters via lazy require() om circular import te vermijden. Queue-based: elke mutatie enqueued, drained bij online + stable-network. Formele tester-pass in T-218."
+        },
+        {
+          "id": "T-214",
+          "title": "PR detection logic on workout complete (incl. tie-break)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-213"
+          ],
+          "estimateHours": 2.5,
+          "notes": "Regel: gelijk gewicht + meer reps = PR-UPDATE (overschrijven). Rationale: sterker worden op zelfde kg IS progressie, hypertrofie-reps erkend. Schema: `personal_records` unique (user_id, exercise_id, metric) bestaat al (migration 20260419105008). Voeg migration toe die `personal_records` uitbreidt: optie A nullable smallint `reps_context`, optie B `context_json jsonb` — backend kiest (advies A: simpeler + queryable). Logica per metric: `max_weight`: nieuwe set met weight_kg == current_pr.value EN reps > current_pr.reps_context → UPDATE; weight_kg > current_pr.value → UPDATE (nieuwe kg, reset reps_context). `max_reps`, `max_time_seconds`, `max_1rm_estimated`: strict greater-than wint, gelijk = geen update. Return per PR-hit een `level`: 'new_weight' (nieuwe kg) of 'updated_weight' (zelfde kg meer reps) of 'new_reps'/'new_time'/'new_1rm' — T-215 gebruikt dit voor celebration-niveaus (GROOT vs KLEIN). +0.5h in estimate voor migration-uitbreiding."
+        },
+        {
+          "id": "T-215",
+          "title": "PR celebration UI (moment, not inflation)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-214"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-19 PM-tranche enrichment. PRIMAIRE REFERENTIE: iOS Activity-app ring-close moment (Apple Move/Exercise ring fill). Patroon: ring vult ~500ms met animation, twee korte haptic success-tikjes, kleine in-place text-overlay 'Move goal complete', verdwijnt auto na 2-3s, GEEN modal, GEEN full-screen, user kan doorgaan zonder tap. Vertaling naar Ronex: IN-PLACE animation op de set-row die PR was (NIET full-screen). Lime-accent (colors.primary) 'glow' rond row voor 600-800ms, text-overlay naast row: 'PR · +2.5 kg' of 'PR · +2 reps'. Haptics: Haptics.notificationAsync(Success) — subtiel success-pattern, geen jubel. Verdwijnt automatisch, user blijft in flow. Optional subtle sound (default OFF, user-toggle in profile-tab = POST-MVP, zie SPEC §16). Celebration-niveaus gedreven door T-214 `level` output: 'new_weight' = GROTE celebration (fuller glow animation + wider overlay), 'updated_weight' (zelfde kg meer reps) = KLEINE celebration (subtiel accent, korter). VERMIJDEN expliciet: Duolingo streak-fire, Strava prominent post-run banner, Peloton leaderboard pop-ups, full-screen takeover, confetti, auto-share forcing, inflation. Designer instructie: ~70% minder visueel gewicht dan typische Duolingo-patroon. 'Erkennen, niet vieren.' Tone: 'Knap gedaan' niet 'WOW AWESOME'. Post-workout FinishSheet: prominente lijst '2 PRs vandaag', tap voor details, GEEN forced social share. PM-ACTIE: designer-agent mockup-proposal vragen NA T-214 completion (blocker). Per design-mockup rule: mockup-proposal FIRST, Johnny approves, dan implementation."
+        },
+        {
+          "id": "T-216a",
+          "title": "History query hook (workouts + PR-count join)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-213",
+            "T-214"
+          ],
+          "estimateHours": 1,
+          "notes": "Hook `lib/queries/useWorkoutHistory.ts` met TanStack Query infinite query. Data-bron: view `public.workouts_with_totals` (migration 20260419105008 §8, bevat al volume + duration). PR-count: join met `personal_records` — per workout tellen hoeveel PRs tijdens die sessie gezet/updated zijn (via `personal_records.achieved_in_workout_id` of equivalent, backend checkt schema). Page-size 20, infinite scroll, query-key `['workoutHistory', userId]`. Invalidatie bij workout-save (T-213 sync succes). Returns: `{ id, date, volume_kg, duration_min, pr_count }[]`."
+        },
+        {
+          "id": "T-216",
+          "title": "Workout history LIST screen",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-213",
+            "T-216a"
+          ],
+          "estimateHours": 2.5,
+          "notes": "2026-04-19 SPLIT: detail-view uitgehaald naar T-216b (aparte mockup-behoefte). T-216 = LIST screen only. Layout: scroll-lijst, chronologisch recent-first, per dag gegroepeerd. GEEN kalender-view. Card format (3 datapunten): volume (kg getild), duur (min), PR-count badge (hidden bij 0). Tap card → navigate naar T-216b detail-view `app/history/[workoutId].tsx`. Edge cases: dag zonder workout → skip (geen lege-rij); multiple workouts/dag → twee cards onder dezelfde date-header; eerste workout ever → card + 'Welkom in je geschiedenis' banner. Tech: FlatList + infinite scroll via T-216a hook, initial 20. Date-range filter = POST-MVP (NIET bouwen, wel code-comment). Geen extra filters in MVP. Copy-keys voor T-217: history.title, history.empty, history.welcome, history.volumeSuffix ('kg getild'), history.durationSuffix ('min'), history.prBadge ('{{n}} PR{{plural}}'). Estimate 3h → 2.5h na split (detail-view eruit). PM-ACTIE: designer-agent mockup-proposal vragen voor LIST screen — mockup first, Johnny approves, dan implementation."
+        },
+        {
+          "id": "T-216b",
+          "title": "Workout history DETAIL screen (read-only)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-216",
+            "T-216a"
+          ],
+          "estimateHours": 2,
+          "notes": "2026-04-19 NEW — carved out from T-216. Route: `app/history/[workoutId].tsx`. LAYOUT: (1) Top-strip horizontaal compact met 4 datapunten: duur · volume · PR-count · datum. (2) Per exercise een uitgeklapte sectie met sets-tabel (kolommen: # / kg / reps / completed-check icon). READ-ONLY in MVP — GEEN edit-mode. Visueel duidelijk read-only: dimmed input-look, geen focus-ring op 'velden', sets-tabel rendert als static text/rows niet als TextInput. NAVIGATION: chevron left-top voor terug (PRIMARY — gym-context favors buttons over swipes). Swipe-down-to-dismiss als bonus iOS-native secondary gesture indien trivially implementable via Stack.Screen presentation, anders skip. Rationale: knoppen zijn discoverable + thumb-reachable, swipes zijn bonus. Unilateral exercises: toon L/R split consistent met T-209 display-helper. TimeSeconds exercises: gebruik formatSeconds() helper. STATES: loading (skeleton rows), error (retry CTA), success (full render), empty-exercises (edge — shouldn't happen post-T-214 maar defensief: 'Geen oefeningen gelogd'). Data-bron: join via T-216a extended of aparte hook `useWorkoutDetail(workoutId)` — designer stemt met backend af. POST-MVP FLAG (zie SPEC §16 'Herhaal deze workout'): CTA-slot NIET bouwen in MVP, alleen code-comment waar 'Herhaal deze workout' knop later komt. PM-ACTIE: designer-agent mockup-proposal vragen — mockup first, Johnny approves, dan implementation."
+        },
+        {
+          "id": "T-217",
+          "title": "All logging-flow copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-209",
+            "T-211a",
+            "T-211b",
+            "T-212",
+            "T-215",
+            "T-216",
+            "T-216b"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-19: T-216b toegevoegd aan dependencies (history-detail-view heeft eigen copy-behoefte: top-strip labels, read-only hints, exercise-section headers)."
+        },
+        {
+          "id": "T-218",
+          "title": "Test offline scenario: airplane mode, log workout, come back online",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-213",
+            "T-214"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-219",
+          "title": "Test: close app mid-workout, reopen, state persists",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-205"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-220",
+          "title": "Test: PR detection accuracy on edge cases",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-214"
+          ],
+          "estimateHours": 1
+        }
       ]
     },
     {
@@ -99,18 +877,158 @@
       "estimatedWeeks": 1,
       "exitCriteria": "User picks 3 muscle groups + 45 min, gets a sensible workout from canonical DB.",
       "tasks": [
-        { "id": "T-301", "title": "Set up Supabase Edge Functions environment", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-014"], "estimateHours": 1 },
-        { "id": "T-302", "title": "Configure Anthropic API key in Supabase secrets", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-301"], "estimateHours": 0.5 },
-        { "id": "T-303", "title": "Write generate-workout Edge Function skeleton", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-301"], "estimateHours": 2 },
-        { "id": "T-304", "title": "Design Claude prompt for workout generation", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-104"], "estimateHours": 3.5, "notes": "2026-04-18 (profiles-patch): estimate 2.5u → 3.5u (+1u). Bovenop de bestaande challenge_suitable filter moet de prompt nu ook injury-based exercise filtering toepassen via mapping tussen injury_t enum (15 values uit profiles.injuries) en exercise-tags — bv. lower_back → skip good-mornings/conventional deadlift-variants bij advanced, knee_left/right → skip heavy squat-variants, shoulder_* → skip overhead press-variants, etc. Mapping moet expliciet in de prompt-system-message + test-cases per injury. 'other' injury = geen auto-filter, prompt moet generiek voorzichtig zijn. Historische bump: 2026-04-18 (exercise-library-patch): 2u → 2.5u voor challenge_suitable filter." },
-        { "id": "T-305", "title": "JSON schema validation on AI output", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-303", "T-304"], "estimateHours": 2 },
-        { "id": "T-306", "title": "Rate limiting per user (free vs pro)", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-303"], "estimateHours": 1.5 },
-        { "id": "T-307", "title": "Workout generator UI: muscle group + duration input", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-207"], "estimateHours": 2.5 },
-        { "id": "T-308", "title": "Integration: generator UI → Edge Function → active workout", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-307", "T-305"], "estimateHours": 2 },
-        { "id": "T-309", "title": "Fallback logic when API fails (template workouts)", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-308"], "estimateHours": 2 },
-        { "id": "T-310", "title": "Generator copy + loading states (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-307"], "estimateHours": 1 },
-        { "id": "T-311", "title": "Test: quality of generated workouts across user profiles", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-308"], "estimateHours": 2 },
-        { "id": "T-312", "title": "Test: failure modes (no internet, API down, malformed response)", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-309"], "estimateHours": 1.5 }
+        {
+          "id": "T-301",
+          "title": "Set up Supabase Edge Functions environment",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-014"
+          ],
+          "estimateHours": 1,
+          "notes": "2026-04-19 PM-tranche: MVP-beslissing om AI-generator via Supabase Edge Function te draaien (NIET client-side). Rationale: Anthropic API-key mag niet client-bundled zijn, en rate-limit + logging staat DB-side dichter bij de user-auth context. Scope T-301: initialiseer `supabase/functions/` directory + local dev setup (`supabase functions serve`). Geen deployment hier — dat volgt in T-303."
+        },
+        {
+          "id": "T-302",
+          "title": "Configure Anthropic API key in Supabase secrets",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-301"
+          ],
+          "estimateHours": 0.5
+        },
+        {
+          "id": "T-303",
+          "title": "Write generate-workout Edge Function skeleton",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-301",
+            "T-306a"
+          ],
+          "estimateHours": 2.5,
+          "notes": "2026-04-19 PM-tranche. MODEL + API SETTINGS: Anthropic Claude Sonnet 4.6 via id `claude-sonnet-4-6` (of `-latest` alias — check Anthropic docs bij implementation voor best practice). Prompt caching ENABLED: `cache_control: { type: 'ephemeral' }` op system prompt (system prompt bevat exercise library JSON + user profile snapshot — beide groot + static per request). Temperature: 0.7 (variatie zonder willekeur). Max tokens: 2500 (10 exercises met rationale past). Cost-model: ~$0.03-0.04 per workout → 99% marge op €3.99/mnd. AUTH: Supabase client JWT (geen service role) — Edge Function ontvangt user JWT via Authorization header, extracts user_id server-side, nooit trust client-provided user_id. RATE-LIMIT FLOW: voor Anthropic-call eerst T-306 rate-limit check tegen `ai_generation_usage` table (T-306a levert schema); bij quotum-overschrijding 429 response zonder Anthropic-call. LOGGING FLOW: na succesvolle generation log naar `ai_generation_logs` (T-306a levert schema) met tokens_in/out/cached_tokens, cost_usd, duration_ms, success_bool, error_message NULL. Bij failure: log success=false + error, quotum NIET verbruiken (fairness). Estimate 2u → 2.5u (+0.5u) voor rate-limit wiring + logging. Regenerate-button (binnen 60s na eerste gen) telt als 1 quotum NIET 2 — implementeer via idempotency-key header of short-window dedup check."
+        },
+        {
+          "id": "T-304",
+          "title": "Design Claude prompt for workout generation",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-104"
+          ],
+          "estimateHours": 3.5,
+          "notes": "2026-04-18 (profiles-patch): estimate 2.5u → 3.5u (+1u). Bovenop de bestaande challenge_suitable filter moet de prompt nu ook injury-based exercise filtering toepassen via mapping tussen injury_t enum (15 values uit profiles.injuries) en exercise-tags — bv. lower_back → skip good-mornings/conventional deadlift-variants bij advanced, knee_left/right → skip heavy squat-variants, shoulder_* → skip overhead press-variants, etc. Mapping moet expliciet in de prompt-system-message + test-cases per injury. 'other' injury = geen auto-filter, prompt moet generiek voorzichtig zijn. Historische bump: 2026-04-18 (exercise-library-patch): 2u → 2.5u voor challenge_suitable filter. 2026-04-19 PM-tranche: WORKOUT SHAPE experience-gescaled. Exercise-count ranges per experience_bucket: Beginner (<1y) 5-7 exercises, Intermediate (1-3y) 6-8, Advanced (3-5y) 7-9, Advanced (5+y) 8-10. Binnen ranges: Full body → hoge kant, Upper/Lower → midden, PPL → midden, Custom → AI bepaalt op context. STRUCTUUR binnen elke workout (prompt-engineering guidance, expliciet in system message): eerste 2-3 oefeningen = primary compound lifts (heaviest, multi-joint), middle 2-3 = secondary compounds of heavy isolation, laatste 2-3 = accessory isolation (curls, laterals, calves). GEEN expliciete warmup, GEEN expliciete cooldown (user's responsibility — spec in system prompt). DURATION-ESTIMATE uitgerekend op 3-4 sets × 2min rest: 6 exercises ≈ 45-60 min, 8 ≈ 60-75 min, 10 ≈ 75-90 min — AI toont deze inschatting in generation preview (UI in T-307). Rationale tegen Haiku: te beperkt voor nuanced injury/equipment edge cases, Sonnet nodig voor kwaliteit + injury-mapping."
+        },
+        {
+          "id": "T-305",
+          "title": "JSON schema validation on AI output",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-303",
+            "T-304"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-306a",
+          "title": "Migrations: ai_generation_usage + ai_generation_logs tables",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-101"
+          ],
+          "estimateHours": 1,
+          "notes": "2026-04-19 PM-tranche NEW. Carved uit T-306 zodat schema af is voordat T-303 gebouwd wordt. PM-BESLISSING: APARTE TABLES (advies A gekozen boven hergebruik bestaande telemetrie — ai_generation_logs krijgt kostprijs-data die niet in generieke events hoort, en usage-table is hot-path voor rate-limit check). MIGRATION 1 — `ai_generation_usage`: columns (user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, week_start date NOT NULL, count smallint NOT NULL DEFAULT 0 CHECK (count >= 0), updated_at timestamptz DEFAULT now()), PRIMARY KEY (user_id, week_start). RLS: user kan eigen rij lezen, geen direct-write (alleen server-side via Edge Function met service role key). week_start = lokale maandag 00:00 volgens profiles.timezone (consistent met T-725 weekly rollup — hergebruik dezelfde tz-aware date-computation). MIGRATION 2 — `ai_generation_logs`: columns (id uuid PK default gen_random_uuid(), user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, created_at timestamptz default now(), success boolean NOT NULL, tokens_in int, tokens_out int, cached_tokens int, cost_usd numeric(8,6), duration_ms int, model_id text, error_message text, request_payload jsonb, response_summary jsonb). RLS: user leest eigen rows (debugging transparency), service role all-access. Indexen: (user_id, created_at desc) voor per-user log queries, (success, created_at desc) voor cost-monitoring dashboards. Beide migrations idempotent (IF NOT EXISTS). Apply via Supabase Management API (MCP), zelfde channel als T-101/T-103."
+        },
+        {
+          "id": "T-306",
+          "title": "Rate limiting per user (free vs pro)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-303",
+            "T-306a"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-19 PM-tranche. LIMITS: Free tier = 3 generations per week, Pro = unlimited. Reset: maandag 00:00 LOCAL time volgens profiles.timezone (consistent met T-725 league weekly rollup). REGENERATE-DEDUP: regenerate-button binnen 60s na eerste generation telt als 1 quotum NIET 2 — implementeer via idempotency-key header (client genereert UUID bij eerste preview-render, blijft 60s geldig) OF via short-window check: if last ai_generation_logs row voor user <60s ago AND success=true THEN don't increment usage.count. CHALLENGE-SCOPE: challenge-generated workouts zijn BUITEN MVP quotum (Phase 7 krijgt eigen systeem, zie T-713/T-714 scope). Voeg een `source` parameter toe aan T-303 Edge Function ('loose' | 'plan' | 'challenge') zodat T-306 alleen 'loose' en 'plan' tegen quotum laadt. QUOTUM-INDICATOR (UI-koppeling, valt onder T-307 designer scope maar data komt uit T-306): endpoint of Supabase RPC `get_ai_usage_this_week(user_id)` returns { used: int, limit: int | null }. Display: in profile-tab (T-4xx) + bij generation screen ('2/3 deze week'). Backend levert hook, designer rendert."
+        },
+        {
+          "id": "T-307",
+          "title": "Workout generator UI: muscle group + duration input",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-207"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-308",
+          "title": "Integration: generator UI → Edge Function → active workout",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-307",
+            "T-305"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-309",
+          "title": "Fallback logic when API fails (template workouts)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-308"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-310",
+          "title": "Generator copy + loading states (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-307"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-311",
+          "title": "Test: quality of generated workouts across user profiles",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-308"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-312",
+          "title": "Test: failure modes (no internet, API down, malformed response)",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-309"
+          ],
+          "estimateHours": 1.5
+        }
       ]
     },
     {
@@ -121,16 +1039,184 @@
       "estimatedWeeks": 1,
       "exitCriteria": "TestFlight build submitted. 5-10 beta testers invited. Listen carefully to feedback.",
       "tasks": [
-        { "id": "T-401", "title": "Per-exercise history view with line graph", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-216"], "estimateHours": 3 },
-        { "id": "T-402", "title": "Per-exercise PR display", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-401"], "estimateHours": 1.5 },
-        { "id": "T-403", "title": "Global stats queries in Supabase (total volume, periods)", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-201"], "estimateHours": 2 },
-        { "id": "T-404", "title": "Global stats screen UI", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-403"], "estimateHours": 3 },
-        { "id": "T-407", "title": "Stats copy + empty states (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-404", "T-117"], "estimateHours": 1.5, "notes": "2026-04-18: T-406 merged into T-117; dependency updated from T-406 → T-117. Copy must cover Stats screens + Challenge-tab landing empty states." },
-        { "id": "T-408", "title": "Set up App Store Connect account + TestFlight", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 2 },
-        { "id": "T-409", "title": "Configure EAS Build for TestFlight submission", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-013", "T-408"], "estimateHours": 2 },
-        { "id": "T-410", "title": "Create first TestFlight build and submit", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-409", "T-117"], "estimateHours": 2, "notes": "2026-04-18: T-406 merged into T-117; dependency updated from T-406 → T-117." },
-        { "id": "T-411", "title": "Invite 5-10 beta testers", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-410"], "estimateHours": 1 },
-        { "id": "T-412", "title": "Collect and synthesize beta feedback (make/break moment)", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-411"], "estimateHours": 3 }
+        {
+          "id": "T-401",
+          "title": "Per-exercise history view with line graph",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-216"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-402",
+          "title": "Per-exercise PR display",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-401"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-403",
+          "title": "Global stats queries in Supabase (total volume, periods)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-201"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-404",
+          "title": "Global stats screen UI",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-403"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-407",
+          "title": "Stats copy + empty states (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-404",
+            "T-117"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-18: T-406 merged into T-117; dependency updated from T-406 → T-117. Copy must cover Stats screens + Challenge-tab landing empty states."
+        },
+        {
+          "id": "T-408",
+          "title": "Set up App Store Connect account + TestFlight",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-409",
+          "title": "Configure EAS Build for TestFlight submission",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-013",
+            "T-408"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-410",
+          "title": "Create first TestFlight build and submit",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-409",
+            "T-117"
+          ],
+          "estimateHours": 2,
+          "notes": "2026-04-18: T-406 merged into T-117; dependency updated from T-406 → T-117."
+        },
+        {
+          "id": "T-411",
+          "title": "Invite 5-10 beta testers",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-410"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-412",
+          "title": "Collect and synthesize beta feedback (make/break moment)",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-411"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-413",
+          "title": "Migration: profiles.units column (kg | lb)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-101"
+          ],
+          "estimateHours": 0.5,
+          "notes": "2026-04-19 PM-tranche NEW. Prerequisite voor T-415 units-toggle. Huidige `profiles` migration (20260418000000_profiles.sql) heeft GEEN units-kolom — geverifieerd door PM op 2026-04-19. NEW migration (bv. 20260420000000_profiles_units.sql): (1) CREATE TYPE units_t AS ENUM ('kg', 'lb') in idempotent do-block, (2) ALTER TABLE profiles ADD COLUMN units units_t NOT NULL DEFAULT 'kg'. Default 'kg' = Europees publiek. CRITICAL: DB blijft altijd kg als single source of truth — workout_sets.weight_kg, personal_records.value (weight), ai_generation output, challenge-scoring — alle numerieke kolommen zijn + blijven kg. Units-kolom is UITSLUITEND display-preference. Geen back-fill nodig (enum default vult bestaande rows). Apply via Supabase Management API."
+        },
+        {
+          "id": "T-414",
+          "title": "formatWeight helper + i18n keys kg/lb",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-413"
+          ],
+          "estimateHours": 0.5,
+          "notes": "2026-04-19 PM-tranche NEW. Utility `lib/units/formatWeight.ts` met signature: `formatWeight(kg: number, unit: 'kg' | 'lb', opts?: { decimals?: number }): string`. Conversie: lb = kg × 2.2046226218. Default decimals: kg=1 (bv '82.5 kg'), lb=0 (bv '182 lb'). Return format: numeric + space + unit-label via i18n. i18n keys toevoegen: `units.kg` ('kg' in beide NL+EN), `units.lb` ('lb' in beide). Hook `useUnits()` leest profiles.units uit cache (TanStack Query, stale-while-revalidate op profile-hook uit T-113). Alle bestaande weergaves van gewicht (workout-history cards, exercise-picker last-set preview, active workout rows, PR displays) migreren in een follow-up pass — MVP: alleen nieuwe profile-tab surfaces gebruiken formatWeight, oude surfaces blijven 'kg' literal. PM-flag: na T-414 ship een sweep-task openen om bestaande weight-displays te migreren. Unit-tests: 100 kg → '100 kg' / '220 lb'; 82.5 kg → '82.5 kg' / '182 lb'; 0 → '0 kg' / '0 lb'."
+        },
+        {
+          "id": "T-415",
+          "title": "Profile-tab MVP screen (7-item layout)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-117",
+            "T-414",
+            "T-416",
+            "T-417"
+          ],
+          "estimateHours": 3,
+          "notes": "2026-04-19 PM-tranche NEW. MVP-scope profile-tab, 7 items. VISUELE HIËRARCHIE top-to-bottom: (1) user-info card non-interactive: display_name + biological_sex + level (read-only, edit = post-MVP), (2) stats-at-a-glance — 3 LARGE numbers (display-lg): total workouts logged, total volume (kg of lb afhankelijk van units), current league (tier + positie binnen league) — data via T-417 hook, (3) settings section: language toggle NL/EN (bestaande functionaliteit) + units toggle kg/lb (nieuw, schrijft profiles.units via updateProfile mutation), (4) action section onderaan: sign-out button, delete-account button (T-416), Pro-upgrade CTA (conditional: alleen zichtbaar voor free users — gated via is_pro flag T-608, in Phase 4 nog niet aanwezig dus voor MVP render als disabled met TODO-marker of hide via feature-flag). POST-MVP expliciet uitgesloten (zie SPEC §16): profielfoto, bio, notifications-preferences, data-export, theme-switcher. AI-generator quotum-indicator (T-306 '2/3 deze week') rendert in settings-section zodra Phase 3 ship. PM-ACTIE: designer-agent mockup-proposal vragen — mockup first met viewport-math op iPhone SE (chrome max 40%, content min 60%), Johnny approves, dan implementation. Apply UX checklist (T-017)."
+        },
+        {
+          "id": "T-416",
+          "title": "Delete-account Edge Function (cascading delete + GDPR)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-301",
+            "T-101"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-19 PM-tranche NEW. GDPR Article 17 compliance (Right to Erasure) — EU-verplicht voor launch. Edge Function `delete-account`: ontvangt user JWT, verifieert auth, voert cascading delete uit. Cascade-keten via reeds bestaande FK ON DELETE CASCADE constraints: auth.users delete → profiles.id (CASCADE) → workouts (user_id CASCADE) → workout_sets (workout_id CASCADE) → personal_records (user_id CASCADE) → ai_generation_usage (CASCADE) → ai_generation_logs (CASCADE) → challenges/friendships/leagues (Phase 7 tables moeten bij aanmaak ON DELETE CASCADE hebben — PM flag voor T-701). AUDIT-TRAIL: voor delete, schrijf naar `deletion_audit` table: user_id, deleted_at, reason (optional), initiated_by ('user_self'), ip_address, user_agent. Audit-rij blijft bewaard (GDPR staat anonieme retention toe voor legitimate interest = fraude/juridisch). UI-CONFIRMATIE (T-415 scope): double-confirm modal 'Dit kan NIET ongedaan worden' + typ 'VERWIJDER' om te bevestigen. Na succesvolle delete: client wist AsyncStorage + secure-store + redirect naar welcome. Test in T-801 bug-bash."
+        },
+        {
+          "id": "T-417",
+          "title": "Stats-at-a-glance hook (workout-count + total-volume + league-tier)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-201",
+            "T-403"
+          ],
+          "estimateHours": 1,
+          "notes": "2026-04-19 PM-tranche NEW. Hook `lib/queries/useProfileStats.ts` via TanStack Query. Returns: `{ workoutCount: number, totalVolumeKg: number, leagueTier: string | null, leaguePosition: number | null }`. Data-bronnen: (1) workoutCount = `select count(*) from workouts where user_id = auth.uid()`, (2) totalVolumeKg = sum via bestaande view `workouts_with_totals` (migration 20260419105008 §8) — kan hergebruiken of aggregate function rollen, stem met T-403 af om duplicate queries te voorkomen, (3) leagueTier + leaguePosition = Phase 7 dependency (T-723 league assignment); in Phase 4 retourneert de hook NULL voor league-velden → designer rendert 'Bronze — joining soon' placeholder of hide-if-null. Cache: staleTime 2 min, gcTime 10 min (stats hoeven niet realtime maar wel fresh bij profile-tab refresh). Invalidation: invalidate key `['profileStats', userId]` bij workout-save (T-213 sync success). Display-conversie (kg → lb) = T-414 formatWeight verantwoordelijkheid, hook geeft altijd kg."
+        }
       ]
     },
     {
@@ -141,17 +1227,133 @@
       "estimatedWeeks": 2,
       "exitCriteria": "User can request a plan, sees weekly schedule, logs workouts against plan days.",
       "tasks": [
-        { "id": "T-501", "title": "Schema: plans table + RLS", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-201"], "estimateHours": 1.5 },
-        { "id": "T-502", "title": "Design Claude prompt for plan generation (larger scope)", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-304"], "estimateHours": 2.5 },
-        { "id": "T-503", "title": "generate-plan Edge Function", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-303", "T-502"], "estimateHours": 3 },
-        { "id": "T-504", "title": "1 free plan gating logic", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-503"], "estimateHours": 1.5 },
-        { "id": "T-505", "title": "Plan request UI (uses onboarding preferences)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-111"], "estimateHours": 2 },
-        { "id": "T-506", "title": "Weekly schedule display UI", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-503"], "estimateHours": 3.5 },
-        { "id": "T-507", "title": "Current plan widget on Challenge-tab landing", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-506", "T-117"], "estimateHours": 2, "notes": "2026-04-18: T-406 merged into T-117; dependency updated. Title updated from 'home screen' to 'Challenge-tab landing' reflecting 4-tab IA." },
-        { "id": "T-508", "title": "Start workout from plan day (links to Phase 2 logging)", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-507", "T-213"], "estimateHours": 2 },
-        { "id": "T-509", "title": "Plan progress tracking (weeks completed)", "owner": "backend", "status": "todo", "priority": "medium", "dependencies": ["T-508"], "estimateHours": 2 },
-        { "id": "T-511", "title": "All plan copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-505", "T-506", "T-507"], "estimateHours": 1.5 },
-        { "id": "T-512", "title": "Test plan generation quality across different profiles", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-503"], "estimateHours": 2 }
+        {
+          "id": "T-501",
+          "title": "Schema: plans table + RLS",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-201"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-502",
+          "title": "Design Claude prompt for plan generation (larger scope)",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-304"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-503",
+          "title": "generate-plan Edge Function",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-303",
+            "T-502"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-504",
+          "title": "1 free plan gating logic",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-503"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-505",
+          "title": "Plan request UI (uses onboarding preferences)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-111"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-506",
+          "title": "Weekly schedule display UI",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-503"
+          ],
+          "estimateHours": 3.5
+        },
+        {
+          "id": "T-507",
+          "title": "Current plan widget on Challenge-tab landing",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-506",
+            "T-117"
+          ],
+          "estimateHours": 2,
+          "notes": "2026-04-18: T-406 merged into T-117; dependency updated. Title updated from 'home screen' to 'Challenge-tab landing' reflecting 4-tab IA."
+        },
+        {
+          "id": "T-508",
+          "title": "Start workout from plan day (links to Phase 2 logging)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-507",
+            "T-213"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-509",
+          "title": "Plan progress tracking (weeks completed)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "medium",
+          "dependencies": [
+            "T-508"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-511",
+          "title": "All plan copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-505",
+            "T-506",
+            "T-507"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-512",
+          "title": "Test plan generation quality across different profiles",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-503"
+          ],
+          "estimateHours": 2
+        }
       ]
     },
     {
@@ -162,18 +1364,139 @@
       "estimatedWeeks": 1,
       "exitCriteria": "Run full subscription lifecycle in sandbox: trial → convert → cancel → resubscribe.",
       "tasks": [
-        { "id": "T-601", "title": "Create RevenueCat account", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 0.5 },
-        { "id": "T-602", "title": "Configure subscription product in App Store Connect", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-408"], "estimateHours": 1.5 },
-        { "id": "T-603", "title": "Install RevenueCat SDK in Expo app", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-601"], "estimateHours": 1.5 },
-        { "id": "T-604", "title": "Connect RevenueCat to App Store Connect", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-602", "T-603"], "estimateHours": 1 },
-        { "id": "T-605", "title": "14-day trial logic + entitlement setup", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-604"], "estimateHours": 2 },
-        { "id": "T-606", "title": "Design paywall screen", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-006"], "estimateHours": 3 },
-        { "id": "T-607", "title": "Paywall copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-606"], "estimateHours": 1 },
-        { "id": "T-608", "title": "Add is_pro flag to profiles table", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-101"], "estimateHours": 0.5 },
-        { "id": "T-609", "title": "revenuecat-webhook Edge Function with signature verification", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-605", "T-608"], "estimateHours": 2.5 },
-        { "id": "T-610", "title": "Configure RevenueCat webhook URL → Edge Function", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-609"], "estimateHours": 0.5 },
-        { "id": "T-611", "title": "Feature gating: free tier limitations", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-608"], "estimateHours": 2 },
-        { "id": "T-612", "title": "Test subscription lifecycle in sandbox", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": ["T-610", "T-611"], "estimateHours": 2 }
+        {
+          "id": "T-601",
+          "title": "Create RevenueCat account",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 0.5
+        },
+        {
+          "id": "T-602",
+          "title": "Configure subscription product in App Store Connect",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-408"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-603",
+          "title": "Install RevenueCat SDK in Expo app",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-601"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-604",
+          "title": "Connect RevenueCat to App Store Connect",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-602",
+            "T-603"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-605",
+          "title": "14-day trial logic + entitlement setup",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-604"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-606",
+          "title": "Design paywall screen",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-006"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-607",
+          "title": "Paywall copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-606"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-608",
+          "title": "Add is_pro flag to profiles table",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-101"
+          ],
+          "estimateHours": 0.5
+        },
+        {
+          "id": "T-609",
+          "title": "revenuecat-webhook Edge Function with signature verification",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-605",
+            "T-608"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-610",
+          "title": "Configure RevenueCat webhook URL → Edge Function",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-609"
+          ],
+          "estimateHours": 0.5
+        },
+        {
+          "id": "T-611",
+          "title": "Feature gating: free tier limitations",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-608"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-612",
+          "title": "Test subscription lifecycle in sandbox",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-610",
+            "T-611"
+          ],
+          "estimateHours": 2
+        }
       ]
     },
     {
@@ -184,44 +1507,445 @@
       "estimatedWeeks": 2,
       "exitCriteria": "You can send a challenge to someone without the app, they install, do the workout, see the reveal, share on Instagram.",
       "tasks": [
-        { "id": "T-701", "title": "Schema: challenges + friendships + leagues tables", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-201"], "estimateHours": 3 },
-        { "id": "T-702", "title": "RLS policies for challenge tables (nuanced visibility)", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-701"], "estimateHours": 2 },
-        { "id": "T-703", "title": "Challenge code generator (6-char, unique, no ambiguous chars)", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-701"], "estimateHours": 1.5 },
-        { "id": "T-704", "title": "Challenge creation UI (pick opponent or share)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-208"], "estimateHours": 3 },
-        { "id": "T-705", "title": "Challenge creation copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-704"], "estimateHours": 1 },
-        { "id": "T-706", "title": "Set up Vercel project for landing page", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 1 },
-        { "id": "T-707", "title": "Landing page at ronex.app/c/[code]", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-706"], "estimateHours": 3 },
-        { "id": "T-708", "title": "Landing page copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-707"], "estimateHours": 1 },
-        { "id": "T-709", "title": "Auto-copy challenge code to clipboard on landing page", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-707"], "estimateHours": 1 },
-        { "id": "T-710", "title": "Configure Universal Links in Expo app", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-409"], "estimateHours": 2 },
-        { "id": "T-711", "title": "First-app-open 'challenge code' input screen with clipboard detect", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-105", "T-703"], "estimateHours": 2 },
-        { "id": "T-712", "title": "Challenge code verification + challenge load", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-703", "T-711"], "estimateHours": 2 },
-        { "id": "T-713", "title": "Handicap calculation logic (biological_sex + level + bodyweight → multiplier)", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-701"], "estimateHours": 4.5, "notes": "2026-04-18 (scenarios-patch): estimate 4u → 4.5u (+0.5u). Same-gender early-return conditie toegevoegd: als user_a.biological_sex == user_b.biological_sex → gender_multiplier = 1.0 (skip apply_gender_bias); anders female-user krijgt gender_bias_factor. Scenario A/B/C routing per proposal: A=same-gender (bodyweight+level), B=mixed-gender (gender+bodyweight+level), C=identieke users (geen aanpassing). Zie t-101-profiles-schema-proposal.md §Handicap formula scenarios voor pseudocode. 2026-04-18 (profiles-patch): title + code-refs rename van gender → biological_sex; 0u impact, alleen pure refactor van veldnaam in de formule. Formule-logica (gender_bias_factor × bodyweight_leverage) blijft ongewijzigd. Historische bump: 2026-04-18 (exercise-library-patch): 3u → 4u voor per-exercise gender_bias_factor × bodyweight_leverage adjustment + weighted-bodyweight rule: voor logging_type=reps_only exercises moet de formule workout_sets.weight_kg expliciet negeren bij challenge-scoring (reps × bodyweight-contribution only). Added weight blijft in DB voor PR-tracking maar telt niet mee in challenge-totals." },
-        { "id": "T-714", "title": "Challenge workout flow (reuses Phase 2 logging)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-208", "T-712"], "estimateHours": 2.5 },
-        { "id": "T-715", "title": "Waiting-for-opponent state UI", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-714"], "estimateHours": 1.5 },
-        { "id": "T-716", "title": "Push notification when opponent finishes", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-714"], "estimateHours": 2 },
-        { "id": "T-717", "title": "3-phase reveal UI (raw → handicap → adjusted winner)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-713", "T-714"], "estimateHours": 4.5, "notes": "2026-04-18 (scenarios-patch): estimate 4u → 4.5u (+0.5u). 'Aanpassing actief' hint per scenario toegevoegd: same-gender+equal-level+similar-weight → 'Geen aanpassing — vergelijkbare niveaus'; same-gender+different-weight → 'Bodyweight aanpassing'; same-gender+different-level → 'Level aanpassing'; mixed-gender → 'Geslacht + Bodyweight + Level aanpassing'. Dynamic copy-rendering gedreven door T-713 output (multiplier-metadata moet aangeven WELKE factoren niet-1.0 waren). Exacte numerieke multipliers blijven verborgen (mystery > information per SPEC §12), alleen hint-categorie zichtbaar. Zie t-101-profiles-schema-proposal.md §Reveal transparency voor full hint-matrix. Copy-strings landen in T-718." },
-        { "id": "T-718", "title": "Reveal copy with drama beats (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-717"], "estimateHours": 1.5 },
-        { "id": "T-719", "title": "Instagram Story visual generator (1080×1920)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-717"], "estimateHours": 4 },
-        { "id": "T-720", "title": "Share flow to Instagram + WhatsApp", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-719"], "estimateHours": 2 },
-        { "id": "T-721", "title": "Post-reveal upsell card (profile completion CTA)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-717"], "estimateHours": 1.5 },
-        { "id": "T-722", "title": "Daily league volume tracking", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-701", "T-213"], "estimateHours": 2.5 },
-        { "id": "T-723", "title": "League assignment logic (everyone starts Bronze)", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-722"], "estimateHours": 2 },
-        { "id": "T-724", "title": "Daily leaderboard UI (today's active users only)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": ["T-722"], "estimateHours": 2.5 },
-        { "id": "T-725", "title": "Weekly totals rollup cron + promotion/degradation", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-722"], "estimateHours": 3.5, "notes": "2026-04-18: estimate 3u → 3.5u (+0.5u). Cron moet per-user lokale weekly reset doen op basis van profiles.timezone (IANA tz-string), NIET UTC-based. SPEC §7.7: weekly reset = maandag 00:00 lokale tijd. Implementatie-optie: cron draait elk uur, voor elke user wiens lokale tijd net over maandag 00:00 heen is → rollup triggeren. Alternatief: partitioneren per timezone-bucket. Besluit implementatie-aanpak bij T-725 kickoff." },
-        { "id": "T-726", "title": "Promotion/degradation notifications + UI", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-725"], "estimateHours": 2 },
-        { "id": "T-729", "title": "All league copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-724", "T-726"], "estimateHours": 1.5, "notes": "2026-04-18: T-727 dependency removed (Friends tab deferred to SPEC §16). Scope now covers leagues + promotion/degradation only, not friends." },
-        { "id": "T-730", "title": "Test end-to-end: send challenge to someone without app", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": ["T-720"], "estimateHours": 2 },
-        { "id": "T-731", "title": "Test handicap accuracy across gender/level combos", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-713"], "estimateHours": 1.5 },
-        { "id": "T-732", "title": "Test weekly rollover and league redistribution", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-725"], "estimateHours": 1.5 },
-        { "id": "T-733", "title": "Rematch UI on reveal screen for loser", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-717"], "estimateHours": 1.5 },
-        { "id": "T-734", "title": "Rematch trigger backend: create new challenge with same workout data", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-701", "T-713"], "estimateHours": 2 },
-        { "id": "T-735", "title": "Push notification to winner on rematch claim", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-716", "T-734"], "estimateHours": 1, "notes": "Depends on T-734: rematch trigger must create the challenge row first, then emit push. Reuses T-716 push infra. Copy lives in T-737." },
-        { "id": "T-737", "title": "Rematch copy NL+EN (reveal buttons, push notification, accept screen)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-733"], "estimateHours": 1, "notes": "2026-04-18: T-736 dependency removed (profile-history rematch button deferred to SPEC §16). Scope now covers reveal-screen rematch CTA + push notification copy only." },
-        { "id": "T-738", "title": "Test end-to-end rematch flow including multiple rematches in sequence", "owner": "tester", "status": "todo", "priority": "high", "dependencies": ["T-733", "T-734", "T-735", "T-737"], "estimateHours": 1.5, "notes": "2026-04-18: T-736 dependency removed (profile-history rematch button deferred to SPEC §16)." },
-        { "id": "T-739", "title": "Analytics instrumentation for rematch behavior (post-MVP data for limit decision)", "owner": "backend", "status": "todo", "priority": "high", "dependencies": ["T-734"], "estimateHours": 2, "notes": "Priority upgraded medium → high on 2026-04-18: critical for validating (a) default-landing choice and (b) whether profile-history rematch (deferred in SPEC §16) is actually missed. SPEC §16: 'Rematch limit adjustment (monitor behavior 4 weeks post-launch)'. Track events: rematch_claimed, rematch_chain_length (1/2/3/4+), time_to_rematch (minutes between reveal and claim), rematch_accepted vs abandoned. Use Supabase table 'events' or PostHog if already installed. Minimum viable: log to Supabase with user_id, event_type, metadata JSON. Needed so Johnny can decide after launch whether to cap rematches and whether to bring back the profile-history rematch button." },
-        { "id": "T-740", "title": "Empty states copy with viral framing for Challenge landing + Leaderboard", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-724", "T-117"], "estimateHours": 1, "notes": "SPEC §13 explicit empty-state examples: no challenges → 'Challenge someone — get a response within 5 minutes'. No friends → 'Add someone to see them on your leaderboard'. Bronze starter → 'Start where everyone begins. Train to promote'. Must be NL+EN. Explicitly frame emptiness as opportunity, never as lack. Never negative league position framing (see §13 pitfalls)." },
-        { "id": "T-741", "title": "Full leaderboard sub-screen (reached via 'view full leaderboard' CTA from Challenge tab)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": ["T-117", "T-724"], "estimateHours": 2, "notes": "2026-04-18: Scope changed — Leaderboard is NOT a standalone tab anymore. SPEC §13 now defines 4 tabs with Leaderboard as a subsection at the top of the Challenge tab. This task builds the FULL leaderboard sub-screen reached via 'View full leaderboard' CTA from the Challenge-tab subsection (the subsection preview itself is part of T-117). This sub-screen shows complete ~20-member league ranking, weekly totals, promotion/degradation zones. Friends toggle removed from scope (Friends tab deferred per SPEC §16). Apply UX checklist (T-017)." }
+        {
+          "id": "T-701",
+          "title": "Schema: challenges + friendships + leagues tables",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-201"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-702",
+          "title": "RLS policies for challenge tables (nuanced visibility)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-701"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-703",
+          "title": "Challenge code generator (6-char, unique, no ambiguous chars)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-701"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-704",
+          "title": "Challenge creation UI (pick opponent or share)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-208"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-705",
+          "title": "Challenge creation copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-704"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-706",
+          "title": "Set up Vercel project for landing page",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-707",
+          "title": "Landing page at ronex.app/c/[code]",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-706"
+          ],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-708",
+          "title": "Landing page copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-707"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-709",
+          "title": "Auto-copy challenge code to clipboard on landing page",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-707"
+          ],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-710",
+          "title": "Configure Universal Links in Expo app",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-409"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-711",
+          "title": "First-app-open 'challenge code' input screen with clipboard detect",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-105",
+            "T-703"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-712",
+          "title": "Challenge code verification + challenge load",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-703",
+            "T-711"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-713",
+          "title": "Handicap calculation logic (biological_sex + level + bodyweight → multiplier)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-701"
+          ],
+          "estimateHours": 4.5,
+          "notes": "2026-04-18 (scenarios-patch): estimate 4u → 4.5u (+0.5u). Same-gender early-return conditie toegevoegd: als user_a.biological_sex == user_b.biological_sex → gender_multiplier = 1.0 (skip apply_gender_bias); anders female-user krijgt gender_bias_factor. Scenario A/B/C routing per proposal: A=same-gender (bodyweight+level), B=mixed-gender (gender+bodyweight+level), C=identieke users (geen aanpassing). Zie t-101-profiles-schema-proposal.md §Handicap formula scenarios voor pseudocode. 2026-04-18 (profiles-patch): title + code-refs rename van gender → biological_sex; 0u impact, alleen pure refactor van veldnaam in de formule. Formule-logica (gender_bias_factor × bodyweight_leverage) blijft ongewijzigd. Historische bump: 2026-04-18 (exercise-library-patch): 3u → 4u voor per-exercise gender_bias_factor × bodyweight_leverage adjustment + weighted-bodyweight rule: voor logging_type=reps_only exercises moet de formule workout_sets.weight_kg expliciet negeren bij challenge-scoring (reps × bodyweight-contribution only). Added weight blijft in DB voor PR-tracking maar telt niet mee in challenge-totals."
+        },
+        {
+          "id": "T-714",
+          "title": "Challenge workout flow (reuses Phase 2 logging)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-208",
+            "T-712"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-715",
+          "title": "Waiting-for-opponent state UI",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-714"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-716",
+          "title": "Push notification when opponent finishes",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-714"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-717",
+          "title": "3-phase reveal UI (raw → handicap → adjusted winner)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-713",
+            "T-714"
+          ],
+          "estimateHours": 4.5,
+          "notes": "2026-04-18 (scenarios-patch): estimate 4u → 4.5u (+0.5u). 'Aanpassing actief' hint per scenario toegevoegd: same-gender+equal-level+similar-weight → 'Geen aanpassing — vergelijkbare niveaus'; same-gender+different-weight → 'Bodyweight aanpassing'; same-gender+different-level → 'Level aanpassing'; mixed-gender → 'Geslacht + Bodyweight + Level aanpassing'. Dynamic copy-rendering gedreven door T-713 output (multiplier-metadata moet aangeven WELKE factoren niet-1.0 waren). Exacte numerieke multipliers blijven verborgen (mystery > information per SPEC §12), alleen hint-categorie zichtbaar. Zie t-101-profiles-schema-proposal.md §Reveal transparency voor full hint-matrix. Copy-strings landen in T-718."
+        },
+        {
+          "id": "T-718",
+          "title": "Reveal copy with drama beats (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-717"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-719",
+          "title": "Instagram Story visual generator (1080×1920)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-717"
+          ],
+          "estimateHours": 4
+        },
+        {
+          "id": "T-720",
+          "title": "Share flow to Instagram + WhatsApp",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-719"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-721",
+          "title": "Post-reveal upsell card (profile completion CTA)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-717"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-722",
+          "title": "Daily league volume tracking",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-701",
+            "T-213"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-723",
+          "title": "League assignment logic (everyone starts Bronze)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-722"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-724",
+          "title": "Daily leaderboard UI (today's active users only)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-722"
+          ],
+          "estimateHours": 2.5
+        },
+        {
+          "id": "T-725",
+          "title": "Weekly totals rollup cron + promotion/degradation",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-722"
+          ],
+          "estimateHours": 3.5,
+          "notes": "2026-04-18: estimate 3u → 3.5u (+0.5u). Cron moet per-user lokale weekly reset doen op basis van profiles.timezone (IANA tz-string), NIET UTC-based. SPEC §7.7: weekly reset = maandag 00:00 lokale tijd. Implementatie-optie: cron draait elk uur, voor elke user wiens lokale tijd net over maandag 00:00 heen is → rollup triggeren. Alternatief: partitioneren per timezone-bucket. Besluit implementatie-aanpak bij T-725 kickoff."
+        },
+        {
+          "id": "T-726",
+          "title": "Promotion/degradation notifications + UI",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-725"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-729",
+          "title": "All league copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-724",
+            "T-726"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-18: T-727 dependency removed (Friends tab deferred to SPEC §16). Scope now covers leagues + promotion/degradation only, not friends."
+        },
+        {
+          "id": "T-730",
+          "title": "Test end-to-end: send challenge to someone without app",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-720"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-731",
+          "title": "Test handicap accuracy across gender/level combos",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-713"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-732",
+          "title": "Test weekly rollover and league redistribution",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-725"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-733",
+          "title": "Rematch UI on reveal screen for loser",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-717"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-734",
+          "title": "Rematch trigger backend: create new challenge with same workout data",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-701",
+            "T-713"
+          ],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-735",
+          "title": "Push notification to winner on rematch claim",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-716",
+            "T-734"
+          ],
+          "estimateHours": 1,
+          "notes": "Depends on T-734: rematch trigger must create the challenge row first, then emit push. Reuses T-716 push infra. Copy lives in T-737."
+        },
+        {
+          "id": "T-737",
+          "title": "Rematch copy NL+EN (reveal buttons, push notification, accept screen)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-733"
+          ],
+          "estimateHours": 1,
+          "notes": "2026-04-18: T-736 dependency removed (profile-history rematch button deferred to SPEC §16). Scope now covers reveal-screen rematch CTA + push notification copy only."
+        },
+        {
+          "id": "T-738",
+          "title": "Test end-to-end rematch flow including multiple rematches in sequence",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-733",
+            "T-734",
+            "T-735",
+            "T-737"
+          ],
+          "estimateHours": 1.5,
+          "notes": "2026-04-18: T-736 dependency removed (profile-history rematch button deferred to SPEC §16)."
+        },
+        {
+          "id": "T-739",
+          "title": "Analytics instrumentation for rematch behavior (post-MVP data for limit decision)",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-734"
+          ],
+          "estimateHours": 2,
+          "notes": "Priority upgraded medium → high on 2026-04-18: critical for validating (a) default-landing choice and (b) whether profile-history rematch (deferred in SPEC §16) is actually missed. SPEC §16: 'Rematch limit adjustment (monitor behavior 4 weeks post-launch)'. Track events: rematch_claimed, rematch_chain_length (1/2/3/4+), time_to_rematch (minutes between reveal and claim), rematch_accepted vs abandoned. Use Supabase table 'events' or PostHog if already installed. Minimum viable: log to Supabase with user_id, event_type, metadata JSON. Needed so Johnny can decide after launch whether to cap rematches and whether to bring back the profile-history rematch button."
+        },
+        {
+          "id": "T-740",
+          "title": "Empty states copy with viral framing for Challenge landing + Leaderboard",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-724",
+            "T-117"
+          ],
+          "estimateHours": 1,
+          "notes": "SPEC §13 explicit empty-state examples: no challenges → 'Challenge someone — get a response within 5 minutes'. No friends → 'Add someone to see them on your leaderboard'. Bronze starter → 'Start where everyone begins. Train to promote'. Must be NL+EN. Explicitly frame emptiness as opportunity, never as lack. Never negative league position framing (see §13 pitfalls)."
+        },
+        {
+          "id": "T-741",
+          "title": "Full leaderboard sub-screen (reached via 'view full leaderboard' CTA from Challenge tab)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-117",
+            "T-724"
+          ],
+          "estimateHours": 2,
+          "notes": "2026-04-18: Scope changed — Leaderboard is NOT a standalone tab anymore. SPEC §13 now defines 4 tabs with Leaderboard as a subsection at the top of the Challenge tab. This task builds the FULL leaderboard sub-screen reached via 'View full leaderboard' CTA from the Challenge-tab subsection (the subsection preview itself is part of T-117). This sub-screen shows complete ~20-member league ranking, weekly totals, promotion/degradation zones. Friends toggle removed from scope (Friends tab deferred per SPEC §16). Apply UX checklist (T-017)."
+        }
       ]
     },
     {
@@ -232,20 +1956,142 @@
       "estimatedWeeks": 1,
       "exitCriteria": "Ronex is in App Review.",
       "tasks": [
-        { "id": "T-801", "title": "Bug bash: review all open bugs in BUGS.md", "owner": "tester", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 4 },
-        { "id": "T-802", "title": "Empty states for every screen", "owner": "designer", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 3 },
-        { "id": "T-803", "title": "Empty state copy (NL + EN)", "owner": "copy", "status": "todo", "priority": "high", "dependencies": ["T-802"], "estimateHours": 1.5 },
-        { "id": "T-804", "title": "Error handling audit: every network call", "owner": "backend", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 3 },
-        { "id": "T-805", "title": "Loading states for all async operations", "owner": "designer", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 2 },
-        { "id": "T-806", "title": "Accessibility pass (VoiceOver labels)", "owner": "designer", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 3 },
-        { "id": "T-808", "title": "App icon design (1024×1024)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 3 },
-        { "id": "T-809", "title": "App Store screenshots (3-5 per device size)", "owner": "designer", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 3 },
-        { "id": "T-810", "title": "App Store description (NL + EN)", "owner": "copy", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 2 },
-        { "id": "T-811", "title": "App Store keywords research", "owner": "pm", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 1 },
-        { "id": "T-812", "title": "Privacy policy page", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": [], "estimateHours": 1.5 },
-        { "id": "T-813", "title": "Support URL / help page", "owner": "pm", "status": "todo", "priority": "high", "dependencies": [], "estimateHours": 1 },
-        { "id": "T-814", "title": "Final EAS production build", "owner": "backend", "status": "todo", "priority": "critical", "dependencies": ["T-801"], "estimateHours": 1.5 },
-        { "id": "T-815", "title": "Submit to App Review", "owner": "pm", "status": "todo", "priority": "critical", "dependencies": ["T-814", "T-808", "T-809", "T-810", "T-812"], "estimateHours": 1.5 }
+        {
+          "id": "T-801",
+          "title": "Bug bash: review all open bugs in BUGS.md",
+          "owner": "tester",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 4
+        },
+        {
+          "id": "T-802",
+          "title": "Empty states for every screen",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-803",
+          "title": "Empty state copy (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [
+            "T-802"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-804",
+          "title": "Error handling audit: every network call",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-805",
+          "title": "Loading states for all async operations",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-806",
+          "title": "Accessibility pass (VoiceOver labels)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-808",
+          "title": "App icon design (1024×1024)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-809",
+          "title": "App Store screenshots (3-5 per device size)",
+          "owner": "designer",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 3
+        },
+        {
+          "id": "T-810",
+          "title": "App Store description (NL + EN)",
+          "owner": "copy",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 2
+        },
+        {
+          "id": "T-811",
+          "title": "App Store keywords research",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-812",
+          "title": "Privacy policy page",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-813",
+          "title": "Support URL / help page",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "high",
+          "dependencies": [],
+          "estimateHours": 1
+        },
+        {
+          "id": "T-814",
+          "title": "Final EAS production build",
+          "owner": "backend",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-801"
+          ],
+          "estimateHours": 1.5
+        },
+        {
+          "id": "T-815",
+          "title": "Submit to App Review",
+          "owner": "pm",
+          "status": "todo",
+          "priority": "critical",
+          "dependencies": [
+            "T-814",
+            "T-808",
+            "T-809",
+            "T-810",
+            "T-812"
+          ],
+          "estimateHours": 1.5
+        }
       ]
     }
   ]
